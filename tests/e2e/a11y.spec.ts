@@ -16,8 +16,8 @@ test.beforeEach(async ({ page }) => {
   await resetApp(page)
 })
 
-test('público: início, detalhe do NFT e login', async ({ page }) => {
-  for (const path of ['/', `/nft/${NFT_ID}`, '/login']) {
+test('público: início, detalhe do NFT, login e 404', async ({ page }) => {
+  for (const path of ['/', `/nft/${NFT_ID}`, '/login', '/rota-inexistente']) {
     await page.goto(path)
     await expectNoSevereViolations(page)
   }
