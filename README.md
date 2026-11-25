@@ -52,7 +52,9 @@ pnpm typecheck  # verificação de tipos (tsc --noEmit)
 pnpm lint       # ESLint (máx 0 warnings)
 pnpm format     # Prettier
 pnpm test       # testes unitários com Vitest
-pnpm test:e2e   # testes E2E com Playwright
+pnpm test:e2e   # E2E com Playwright (fluxos; desktop 1440 e mobile 390)
+pnpm test:e2e:update # gera/atualiza as baselines de regressão visual
+pnpm test:e2e:visual # compara com as baselines visuais
 pnpm lighthouse # auditoria de performance (ver docs/lighthouse/)
 ```
 
@@ -110,3 +112,11 @@ design/            # screenshots Figma, tokens, assets
 ## Reproduzir fluxos de falha (disponíveis a partir das etapas 05-07)
 
 Ver `ARCHITECTURE.md` — seção Estratégia de cache e reconciliação.
+
+## Testes E2E (Playwright)
+- Primeira vez: `pnpm exec playwright install chromium`.
+- `pnpm test:e2e` compila o app com `VITE_ENABLE_MOCKS=true`, sobe o `vite preview` (porta 4173) e roda os fluxos em dois projetos: `chromium-desktop` (1440x900) e `chromium-mobile` (390x844). `PW_DEV=1 pnpm test:e2e` usa o servidor de dev.
+- Cada teste restaura o banco simulado e o cenário por `window.__mocks.reset(...)`; nenhum teste mexe no cache ou no estado da UI.
+- Cobertura: compra completa, pagamento recusado, clique repetido, timeout após criar o pedido, preço alterado e esgotado no checkout, retomada de pedido pendente, eventos Socket.IO (atualização, duplicado/antigo, queda e reconexão), perfil, avatar, senha e carteiras.
+- Regressão visual (início, detalhe, carrinho, pagamento): rode `pnpm test:e2e:update` uma vez para criar as baselines em `tests/e2e/__screenshots__/` e depois `pnpm test:e2e:visual`. As baselines dependem do sistema operacional; gere-as na máquina que as comparará.
+- Relatório: `pnpm exec playwright show-report`.

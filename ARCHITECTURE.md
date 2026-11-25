@@ -325,3 +325,10 @@ Nenhum desvio até a Etapa 00.
 - "Nome ENS" é um único campo (`nome.eth`) em vez de select `.eth` + input.
 - "Carteira secundária" lista as existentes (com "Tornar principal"); o radio "Igual à carteira principal / Adicionar" só aparece enquanto não há secundária.
 - Itens do menu fora do escopo ficam desabilitados com "Em breve".
+
+## Decisões desta etapa (Etapa 09 — E2E)
+- Testes rodam contra o **build** servido por `vite preview` com mocks ligados (mais próximo do deploy); `PW_DEV=1` usa o dev server.
+- Isolamento: `resetApp` limpa localStorage/sessionStorage e chama `window.__mocks.reset(cenário)`; cenários são trocados por `window.__mocks.setScenario`. Os testes nunca escrevem no cache do TanStack Query nem no estado da UI; eventos de tempo real passam por `window.__mocks.emitNft`, que usa o servidor Socket.IO simulado.
+- Asserções de "um único pedido" leem `getState().orders` do banco simulado, não a interface.
+- Seletores por papel/rótulo acessível (`getByRole`, `getByLabel`); `data-testid` só em totais e no input de avatar.
+- Regressão visual separada do conjunto padrão (`test:e2e` a ignora) porque as baselines dependem do sistema; `animations: 'disabled'`, `reducedMotion: 'reduce'` e tolerância de 2%.
