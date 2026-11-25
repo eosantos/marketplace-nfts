@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from '@/features/auth/hooks'
 import { qk } from '@/shared/api/query-keys'
-import type { Wallet, WalletConnection } from '@/shared/contracts'
+import type { Wallet, WalletConnection, WalletUpdateInput } from '@/shared/contracts'
 import {
   connectWalletRequest,
   createWalletRequest,
   disconnectWalletRequest,
   fetchWallets,
+  updateWalletRequest,
 } from './api'
 
 export function useWallets() {
@@ -58,6 +59,19 @@ export function useCreateWallet() {
   const key = useWalletsKey()
   return useMutation({
     mutationFn: createWalletRequest,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: key })
+    },
+  })
+}
+
+/** Editar pode promover/rebaixar a principal (outras mudam no servidor): recarrega a lista. */
+export function useUpdateWallet() {
+  const queryClient = useQueryClient()
+  const key = useWalletsKey()
+  return useMutation({
+    mutationFn: ({ walletId, input }: { walletId: string; input: WalletUpdateInput }) =>
+      updateWalletRequest(walletId, input),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: key })
     },
