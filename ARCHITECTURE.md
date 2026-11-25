@@ -118,7 +118,14 @@ e as roteia para handlers no service worker. Limitação: apenas navegador (sem 
 
 ## Política de sessão
 
-> A preencher na Etapa 02 (auth)
+- **Token:** opaco (`kurio_<hex>`), validade de 2 h, enviado como `Authorization: Bearer`. Fica em `localStorage` (`kurio:session`) para sobreviver ao refresh e sincronizar abas pelo evento `storage` (logout em uma aba derruba as outras). É uma escolha de demonstração com backend simulado; num backend real o ideal seria cookie `HttpOnly` + `SameSite`.
+- **Restauração:** com token guardado, `GET /session` (TanStack Query, `retry: false`) devolve o usuário. Se falhar com 401, a limpeza é silenciosa (o usuário vira visitante).
+- **Injeção sem acoplamento:** `src/shared/api/http.ts` não conhece a feature de auth; `setupAuth()` injeta `getToken` e o tratamento de 401 via `configureHttp`.
+- **Sessão expirada:** um 401 (`SESSION_EXPIRED` ou `UNAUTHENTICATED` com token) em qualquer chamada que não seja `/auth/*` nem `/session` limpa o token e abre um diálogo **não dispensável** com duas saídas: "Entrar novamente" (vai a `/login?redirect=<rota atual>` e retoma depois do login) ou "Continuar como visitante" (limpa o estado e volta ao início). `/auth/*` fica de fora porque senha errada também é 401.
+- **Redirect seguro:** `?redirect=` só aceita caminhos internos (`safeRedirect`): rejeita URL absoluta, `//host`, `javascript:`, barra invertida, caracteres de controle e as próprias telas de auth.
+- **Rotas privadas:** `checkout`, `order/$orderId`, `profile` e `wallets` usam `beforeLoad: requireAuth` (sem token, redireciona para `/login?redirect=...`). `/login` e `/signup` usam `redirectIfAuthenticated`.
+- **Isolamento entre usuários:** `completeAuth` limpa o cache quando o usuário muda; logout e "continuar como visitante" chamam `resetClientState` (token + `queryClient.clear()` + callbacks registrados com `onClientReset`, onde a Etapa 06 desconecta o Socket.IO). Chaves privadas sempre incluem o `userId` (`src/shared/api/query-keys.ts`).
+- **Cadastro:** o Figma pede só usuário, e-mail e senha; nome de exibição e nome do perfil partem do nome de usuário e podem ser editados em "Perfil do colecionador" (Etapa 08).
 
 ## Estado do carrinho
 

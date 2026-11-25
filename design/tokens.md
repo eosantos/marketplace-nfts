@@ -13,14 +13,14 @@
 | `surface` | `#231815` | cards, sidebar, modais, inputs, painel do carrinho |
 | `surface-strong` | `#3A2413` | faixa da marca no rodapé |
 | `border` | `#4A2F1E` | bordas de input, linhas divisórias, sublinhado do header |
-| `accent` | `#D08A4B` | botões primários, links ativos, ícones, badges |
+| `accent` | `#D28A4C` | botões primários, links ativos, ícones, badges (**valor exato**, extraído dos SVGs do Figma) |
 | `accent-strong` | `#E08A3C` | preços em ETH, totais |
 | `on-accent` | `#1A100A` | texto sobre botão primário |
 | `text` | `#F3E9DA` | títulos e texto principal |
 | `text-muted` | `#C9A67C` | descrições, labels, placeholders, texto secundário |
 | `danger` | `#E0714A` | asterisco de campo obrigatório, erros |
 
-Mobile: botões primários grandes têm **gradiente** cobre (`#D08A4B` → ~`#A8703F`).
+Mobile: botões primários grandes têm **gradiente** cobre (`#D28A4C` → ~`#A8703F`).
 
 ## Tipografia
 - Família: **monospace**, muito provavelmente **Roboto Mono** (zero cortado). Confirmar no Figma.
@@ -46,7 +46,7 @@ Mobile: botões primários grandes têm **gradiente** cobre (`#D08A4B` → ~`#A8
   --color-surface: #231815;
   --color-surface-strong: #3a2413;
   --color-border: #4a2f1e;
-  --color-accent: #d08a4b;
+  --color-accent: #d28a4c;
   --color-accent-strong: #e08a3c;
   --color-on-accent: #1a100a;
   --color-text: #f3e9da;

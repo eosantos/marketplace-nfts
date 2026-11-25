@@ -1,21 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import '@fontsource-variable/roboto-mono'
 // routeTree.gen.ts é gerado pelo @tanstack/router-plugin
 import { routeTree } from '../routeTree.gen'
+import { setupAuth } from '@/features/auth/lifecycle'
+import { queryClient } from '@/shared/api/query-client'
 import { Toaster } from '@/shared/ui/sonner'
 import './globals.css'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60,
-      retry: 1,
-    },
-  },
-})
+// Injeta o token Bearer e o tratamento de 401 no cliente HTTP.
+setupAuth()
 
 const router = createRouter({
   routeTree,

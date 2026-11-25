@@ -13,7 +13,7 @@
   --color-surface: #231815;
   --color-surface-strong: #3a2413;
   --color-border: #4a2f1e;
-  --color-accent: #d08a4b;
+  --color-accent: #d28a4c;
   --color-accent-strong: #e08a3c;
   --color-on-accent: #1a100a;
   --color-muted-foreground: #c9a67c;
@@ -24,7 +24,7 @@
   --color-card-foreground: #f3e9da;
   --color-popover: #231815;
   --color-popover-foreground: #f3e9da;
-  --color-primary: #d08a4b;
+  --color-primary: #d28a4c;
   --color-primary-foreground: #1a100a;
   --color-secondary: #3a2413;
   --color-secondary-foreground: #f3e9da;
@@ -33,7 +33,7 @@
   --color-destructive: #e0714a;
   --color-destructive-foreground: #f3e9da;
   --color-input: #4a2f1e;
-  --color-ring: #d08a4b;
+  --color-ring: #d28a4c;
 
   --radius-sm: 0.125rem;
   --radius-md: 0.25rem;
@@ -42,21 +42,28 @@
   --radius: 0.25rem;
 }
 
-html {
-  color-scheme: dark;
-}
+@layer base {
+  html {
+    color-scheme: dark;
+  }
 
-/* Base styles */
-* {
-  border-color: var(--color-border);
-}
+  * {
+    border-color: var(--color-border);
+  }
 
-body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Foco visível padrão; componentes com ring próprio (shadcn) sobrescrevem via utilitários. */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
 }
 
 /* Reduced motion */
@@ -68,10 +75,4 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Visible focus ring */
-:focus-visible {
-  outline: 2px solid var(--color-ring);
-  outline-offset: 2px;
 }

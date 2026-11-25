@@ -23,7 +23,7 @@ function HealthCheck() {
 
 function HomePage() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-[1200px] flex-col items-center justify-center gap-6 px-6 text-center">
+    <main className="mx-auto flex min-h-[70vh] max-w-[1200px] flex-col items-center justify-center gap-6 px-6 text-center">
       <h1 className="text-4xl font-bold tracking-widest">KURIO</h1>
       <p className="max-w-md text-sm text-muted-foreground">
         Ambiente configurado. A Home será implementada na etapa 03.
