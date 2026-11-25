@@ -1,22 +1,36 @@
 import { defineConfig, devices } from '@playwright/test'
 
 /**
- * Playwright E2E configuration.
- * Specs will be added in the e2e testing stage (Step 09).
- * Mocks (MSW) are activated via VITE_ENABLE_MOCKS=true in the dev server.
+ * E2E contra o app real com MSW (REST + Socket.IO simulados no navegador).
+ * - desktop 1440x900 e mobile 390 (iPhone 14 = 390x844);
+ * - cada teste reseta o banco simulado via `window.__mocks` (ver tests/e2e/helpers.ts);
+ * - usa `vite preview` do build (mais próximo do deploy). Use `PW_DEV=1` para o servidor de dev.
  */
+const PORT = 4173
+const useDev = process.env['PW_DEV'] === '1'
+const baseURL = useDev ? 'http://localhost:5173' : `http://localhost:${PORT}`
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 4,
-  reporter: [['html', { outputFolder: 'playwright-report' }], ['list']],
+  forbidOnly: !!process.env['CI'],
+  retries: process.env['CI'] ? 2 : 0,
+  workers: process.env['CI'] ? 1 : 4,
+  timeout: 45_000,
+  expect: {
+    timeout: 10_000,
+    toHaveScreenshot: { maxDiffPixelRatio: 0.02, animations: 'disabled' },
+  },
+  snapshotPathTemplate: '{testDir}/__screenshots__/{projectName}/{testFileName}/{arg}{ext}',
+  reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }], ['list']],
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
+    locale: 'pt-BR',
+    timezoneId: 'America/Sao_Paulo',
+    reducedMotion: 'reduce',
   },
   projects: [
     {
@@ -25,14 +39,14 @@ export default defineConfig({
     },
     {
       name: 'chromium-mobile',
-      use: { ...devices['iPhone 14'] },
+      use: { ...devices['iPhone 14'], browserName: 'chromium' },
     },
   ],
-  /* Start the dev server before running tests */
   webServer: {
-    command: 'pnpm dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 30_000,
+    command: useDev ? 'pnpm dev' : `pnpm build && pnpm preview --port ${PORT} --strictPort`,
+    url: baseURL,
+    reuseExistingServer: !process.env['CI'],
+    timeout: 180_000,
+    env: { VITE_ENABLE_MOCKS: 'true', VITE_MOCK_SCENARIO: 'default' },
   },
 })
