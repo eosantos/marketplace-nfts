@@ -168,7 +168,6 @@ Os desvios, estados inventados e ajustes de acessibilidade estão nas subseçõe
 - MSW fica ativo por padrão (`VITE_ENABLE_MOCKS` só desativa com `"false"`), garantindo `pnpm dev` com mocks e build de demonstração funcional
 - `.gitignore` ignora `.env*`, exceto `.env.example`
 - Vitest usa `environment: 'jsdom'` com `passWithNoTests` até existirem testes unitários
-- `.agents/skills/` é gerado/gerenciado pelo pnpm (skills dos pacotes TanStack) e ignorado pelo `.gitignore` interno; não faz parte do runtime da aplicação
 - `pnpm-workspace.yaml` é usado pelo pnpm v12 para permissões de build e skills, não define pacotes adicionais
 
 ## Decisões desta etapa (Etapa 01 — tarefas 1–5)

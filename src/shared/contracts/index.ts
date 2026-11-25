@@ -531,7 +531,7 @@ export const WalletUpdateInputSchema = z.object({
 export type WalletUpdateInput = z.infer<typeof WalletUpdateInputSchema>
 
 // ============================================================================
-// Socket.IO — envelope (AGENTS.md)
+// Socket.IO — envelope dos eventos
 // ============================================================================
 
 export const SocketEventTypeSchema = z.enum(['nft.updated', 'order.updated'])
