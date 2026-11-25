@@ -108,6 +108,22 @@
     }
   }
 
+  /* Gota de suor do macaco da 404: balança de leve (desligada em prefers-reduced-motion). */
+  .monkey-sweat {
+    transform-box: fill-box;
+    transform-origin: top center;
+    animation: monkey-sweat 2.4s ease-in-out infinite;
+  }
+  @keyframes monkey-sweat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+  }
+
   /* Dois <input type="range"> sobrepostos formam o slider de faixa de preço. */
   .range-input {
     -webkit-appearance: none;
