@@ -594,3 +594,18 @@ export const WalletConnectionSchema = z.object({
 })
 
 export type WalletConnection = z.infer<typeof WalletConnectionSchema>
+
+// ============================================================================
+// Artigos editoriais ("Diário da Cunhagem")
+// ============================================================================
+
+export const ArticleSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  excerpt: z.string(),
+  image: AssetPathSchema,
+  publishedAt: IsoDateSchema,
+  readMinutes: z.number().int().min(1),
+})
+
+export type Article = z.infer<typeof ArticleSchema>

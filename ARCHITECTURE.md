@@ -133,12 +133,12 @@ e as roteia para handlers no service worker. Limitação: apenas navegador (sem 
 
 ## Estratégia de cache (TanStack Query)
 
-> A preencher na Etapa 03 (catálogo)
-
-Princípios já definidos:
-- Query keys incluem `userId` em dados privados
-- Logout/troca de usuário: `queryClient.clear()` + desconectar socket + limpar storages privados
-- AbortSignal do TanStack Query repassado ao Axios
+- **Chaves:** todas em `src/shared/api/query-keys.ts`. A lista do catálogo usa todos os parâmetros (`['nfts', 'list', params]`); dados privados incluem o `userId`.
+- **Padrões:** `staleTime` de 60 s, uma nova tentativa só para falha de rede ou 5xx (4xx nunca se repete). Sessão: 5 min e sem retry. Facets e NFT em destaque: 5 min. Artigos: 10 min.
+- **Troca de página/filtro:** `placeholderData: keepPreviousData` mantém a lista anterior (com `aria-busy` e opacidade reduzida) enquanto a nova carrega; sem salto de layout porque o skeleton tem as mesmas dimensões do card.
+- **Cancelamento e ordem:** o `AbortSignal` do TanStack Query é repassado ao Axios; como a chave carrega todos os parâmetros, uma resposta atrasada de uma busca antiga nunca sobrescreve a mais recente (o cenário `out-of-order` dos mocks exercita isso).
+- **Logout/troca de usuário:** `queryClient.clear()` + desconectar socket + limpar storages privados (ver "Política de sessão").
+- **AbortSignal do TanStack Query repassado ao Axios** em todas as queries.
 
 ## Reconciliação REST ↔ Socket.IO
 
@@ -219,3 +219,22 @@ Nenhum desvio até a Etapa 00.
 - **Eventos do banco:** `src/mocks/events.ts` é a única ponte entre os serviços e o Socket.IO simulado; os serviços nunca importam o socket, e a UI nunca é chamada por ali.
 - **Cenários únicos:** `price-changed-at-checkout` e `sold-out-at-checkout` acontecem na primeira tentativa de pedido e ficam registrados em `scenarioFlags` (limpos pelo reset), o que torna o fluxo repetível: tentativa 1 falha, a nova cotação reflete a mudança.
 - **Timeout:** em `timeout-after-order-created` a resposta é substituída por erro de rede após 20 s; o cliente do checkout (Etapa 07) deve usar um timeout menor e reenviar com a mesma `Idempotency-Key`.
+
+## Decisões desta etapa (Etapa 03 — catálogo)
+
+- **URL como estado:** `q`, `category`, `network`, `minPrice`, `maxPrice`, `tab`, `orderBy` e `page` vivem na URL (`validateSearch` com zod). Valores inválidos caem no padrão via `.catch`, nunca quebram a página. Os padrões (`todos`, `recentes`, página 1) são removidos da URL por `stripSearchParams`, deixando links limpos e compartilháveis.
+- **Histórico:** filtros, abas, ordenação e páginas usam `push` (voltar/avançar restaura o estado); a digitação na busca usa `replace` com debounce de 300 ms. Qualquer filtro volta para a página 1.
+- **Contagens da sidebar:** vêm de `GET /nfts/facets` (catálogo inteiro, estáticas como no Figma). "Coleções" no Figma são as categorias do contrato.
+- **Faixa de preço:** dois `<input type="range">` nativos sobrepostos (teclado e leitor de tela de graça) trabalhando em centésimos de ETH inteiros; o valor aplicado volta à URL como string decimal. Nenhum `number` de dinheiro sai do componente.
+- **Imagens:** `width`/`height` e `aspect-ratio` fixos; as 3 primeiras do grid e a do hero carregam com prioridade, o resto com `loading="lazy"`.
+- **Diário da Cunhagem:** os artigos vêm de `GET /articles` (fixtures nos mocks), sem dado fictício em componente.
+- **Skeleton:** shimmer em CSS, desativado por `prefers-reduced-motion`.
+- **Estilos base em `@layer base`:** garante que utilitários (bordas, rings) vençam as regras globais.
+
+### Desvios do Figma (Etapa 03)
+- **Busca no desktop:** o Figma só mostra o ícone de busca no header; ele abre um campo ligado ao parâmetro `q`.
+- **Dots do hero:** viraram botões reais que trocam o destaque (3 imagens).
+- **Ações no hover dos cards** (carrinho, favorito, ver): entram nas etapas 04 e 05, quando houver comportamento real para elas.
+- **Ordenação no mobile:** o Figma mobile não mostra o seletor; ele fica dentro do drawer de filtros.
+- **Drawer de filtros no mobile e barra inferior:** não há frame de filtros no Figma; o drawer reutiliza o painel do desktop. Favoritos e Scan na barra inferior aparecem desabilitados (fora do escopo).
+- **Links fora do escopo** (Mercado, Criadores, Aprenda, "Ler mais", redes sociais, itens do rodapé): aparecem como no Figma, mas desabilitados com "Em breve". O formulário de newsletter avisa que está indisponível.

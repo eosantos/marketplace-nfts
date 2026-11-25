@@ -137,6 +137,13 @@ Deve ser registrada antes de `/nfts/:id`.
 
 ---
 
+### `GET /articles`
+Artigos da seção "Diário da Cunhagem" da Home (conteúdo editorial estático).
+
+**Resposta 200**: `Article[]` — `{ id, title, excerpt, image, publishedAt, readMinutes }`
+
+---
+
 ### `GET /nfts/:id`
 Detalhe de um NFT, incluindo galeria, atributos, avaliação, royalties, contrato e edições
 (`1/1`, `1/10`, `1/50`, `ABERTA`) com disponibilidade e limite de quantidade.

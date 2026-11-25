@@ -66,6 +66,61 @@
   }
 }
 
+@layer components {
+  /* Skeleton com brilho deslizante; o brilho é desativado em prefers-reduced-motion. */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-surface);
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.07), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Dois <input type="range"> sobrepostos formam o slider de faixa de preço. */
+  .range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    pointer-events: none;
+  }
+  .range-input::-webkit-slider-runnable-track {
+    background: transparent;
+  }
+  .range-input::-moz-range-track {
+    background: transparent;
+  }
+  .range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: auto;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-surface);
+    background: var(--color-accent);
+    cursor: pointer;
+  }
+  .range-input::-moz-range-thumb {
+    pointer-events: auto;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-surface);
+    background: var(--color-accent);
+    cursor: pointer;
+  }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
