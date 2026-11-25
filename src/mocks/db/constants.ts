@@ -3,4 +3,4 @@
 
 export const MOCK_DB_SCHEMA_VERSION = 1
 
-export const MOCK_DB_STORAGE_KEY = 'kurio:mocks:db:v1'
+export const MOCK_DB_STORAGE_KEY = 'kurio:mocks:db:v2'

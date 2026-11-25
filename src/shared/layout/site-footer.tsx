@@ -30,7 +30,7 @@ const SOCIALS = [
 
 function ComingSoon({ children }: { children: string }) {
   return (
-    <span aria-disabled="true" title="Em breve" className="block cursor-not-allowed text-xs text-foreground/80">
+    <span aria-disabled="true" title="Em breve" className="block cursor-not-allowed text-xs text-foreground/80 lg:text-sm">
       {children}
     </span>
   )
@@ -40,18 +40,18 @@ function ComingSoon({ children }: { children: string }) {
 export function SiteFooter() {
   return (
     <footer className="mx-auto mt-24 hidden max-w-[1200px] md:block">
-      <div className="grid grid-cols-[1fr_1fr_1fr_1.2fr] bg-surface">
+      <div className="grid grid-cols-[1fr_1fr_1fr_1.2fr] bg-surface lg:grid-cols-[265px_265px_266px_1fr] lg:px-8 lg:py-8">
         {FEATURES.map((feature) => (
-          <section key={feature.title} className="border-r border-accent/60 p-12 pb-8">
+          <section key={feature.title} className="border-r border-accent/60 p-12 pb-8 lg:px-4 lg:py-0">
             <div className="flex h-[74px] w-[74px] items-center justify-center rounded-full bg-accent text-3xl font-bold text-on-accent" aria-hidden="true">
               {feature.letter}
             </div>
-            <h2 className="mt-4 text-base font-bold">{feature.title}</h2>
-            <p className="mt-2 text-xs leading-5 text-muted-foreground">{feature.text}</p>
+            <h2 className="mt-4 text-base font-bold lg:text-[17px]">{feature.title}</h2>
+            <p className="mt-2 text-xs leading-5 text-muted-foreground lg:max-w-[200px] lg:text-sm lg:leading-[22px]">{feature.text}</p>
           </section>
         ))}
-        <section className="p-8">
-          <h2 className="text-base font-bold leading-tight">Antecipe-se ao próximo lançamento</h2>
+        <section className="p-8 lg:px-4 lg:py-0">
+          <h2 className="text-base font-bold leading-tight lg:text-lg lg:leading-[40px]">Antecipe-se ao próximo lançamento</h2>
           <form
             className="mt-3 flex"
             onSubmit={(event) => {
@@ -67,25 +67,25 @@ export function SiteFooter() {
               Enviar
             </Button>
           </form>
-          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+          <p className="mt-3 text-xs leading-5 text-muted-foreground lg:text-[13px] lg:leading-[22px]">
             Receba lançamentos selecionados, histórias de criadores e novidades do mercado.
           </p>
         </section>
       </div>
 
-      <div className="grid grid-cols-4 items-center bg-surface-strong px-8 py-8 text-xs">
+      <div className="grid grid-cols-4 items-center bg-surface-strong px-8 py-8 text-xs lg:py-6 lg:grid-cols-[302.5px_302.5px_302.5px_1fr] lg:text-sm">
         <p className="text-sm font-bold tracking-[0.2em]">KURIO</p>
-        <p>Feito para colecionadores, criadores e cultura</p>
+        <p className="lg:max-w-[230px]">Feito para colecionadores, criadores e cultura</p>
         <p>contato@email.com</p>
         <p>+55 11 4002 8922</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-6 bg-surface px-8 py-8">
+      <div className="grid grid-cols-4 gap-6 bg-surface px-8 py-8 lg:py-6 lg:grid-cols-[302.5px_302.5px_302.5px_1fr] lg:gap-0">
         <nav aria-label="Meu perfil">
-          <h2 className="mb-3 text-base font-bold">Meu perfil</h2>
-          <ul className="grid gap-3">
+          <h2 className="mb-3 text-base font-bold lg:mb-2.5 lg:text-lg">Meu perfil</h2>
+          <ul className="grid gap-3 lg:gap-2.5">
             <li>
-              <Link to="/profile" className="block text-xs text-foreground/80 transition-colors hover:text-accent">
+              <Link to="/profile" className="block text-xs text-foreground/80 transition-colors hover:text-accent lg:text-sm">
                 Meu perfil
               </Link>
             </li>
@@ -97,8 +97,8 @@ export function SiteFooter() {
           </ul>
         </nav>
         <nav aria-label="Central de ajuda">
-          <h2 className="mb-3 text-base font-bold">Central de ajuda</h2>
-          <ul className="grid gap-3">
+          <h2 className="mb-3 text-base font-bold lg:mb-2.5 lg:text-lg">Central de ajuda</h2>
+          <ul className="grid gap-3 lg:gap-2.5">
             {HELP_LINKS.map((label) => (
               <li key={label}>
                 <ComingSoon>{label}</ComingSoon>
@@ -107,11 +107,11 @@ export function SiteFooter() {
           </ul>
         </nav>
         <nav aria-label="Coleções">
-          <h2 className="mb-3 text-base font-bold">Coleções</h2>
-          <ul className="grid gap-3">
+          <h2 className="mb-3 text-base font-bold lg:mb-2.5 lg:text-lg">Coleções</h2>
+          <ul className="grid gap-3 lg:gap-2.5">
             {COLLECTION_LINKS.map((category) => (
               <li key={category}>
-                <Link to="/" search={{ category }} className="block text-xs text-foreground/80 transition-colors hover:text-accent">
+                <Link to="/" search={{ category }} className="block text-xs text-foreground/80 transition-colors hover:text-accent lg:text-sm">
                   {category}
                 </Link>
               </li>
@@ -119,7 +119,7 @@ export function SiteFooter() {
           </ul>
         </nav>
         <div>
-          <h2 className="mb-3 text-base font-bold">Redes sociais</h2>
+          <h2 className="mb-3 text-base font-bold lg:mb-2.5 lg:text-lg">Redes sociais</h2>
           <ul className="flex flex-wrap gap-2 text-accent">
             {SOCIALS.map(({ label, Icon }) => (
               <li key={label}>
@@ -129,14 +129,14 @@ export function SiteFooter() {
               </li>
             ))}
           </ul>
-          <h2 className="mb-3 mt-8 text-base font-bold">Carteiras compatíveis</h2>
+          <h2 className="mb-3 mt-8 text-base font-bold lg:text-lg">Carteiras compatíveis</h2>
           <p className="inline-block border border-accent/60 px-2 py-1 text-[9px] font-bold text-accent">
             METAMASK · WALLETCONNECT · COINBASE
           </p>
         </div>
       </div>
 
-      <p className="pb-6 pt-4 text-center text-xs">© 2026 Kurio. Propriedade digital para todos.</p>
+      <p className="pb-6 pt-4 text-center text-xs lg:text-sm">© 2026 Kurio. Propriedade digital para todos.</p>
     </footer>
   )
 }

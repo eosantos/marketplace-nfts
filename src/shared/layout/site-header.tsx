@@ -14,7 +14,7 @@ const HOME_PATHS = ['/', '/login', '/signup', '/profile', '/wallets']
 
 function navItemClass(active: boolean): string {
   return cn(
-    'relative flex h-[68px] items-center text-sm transition-colors',
+    'relative flex h-[68px] items-center text-sm transition-colors lg:text-base',
     active
       ? 'font-bold text-accent after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-accent'
       : 'text-foreground hover:text-accent',
@@ -43,14 +43,14 @@ export function SiteHeader() {
               key={label}
               aria-disabled="true"
               title="Em breve"
-              className="flex h-[68px] cursor-not-allowed items-center text-sm text-foreground/80"
+              className="flex h-[68px] cursor-not-allowed items-center text-sm text-foreground/80 lg:text-base"
             >
               {label}
             </span>
           ))}
         </nav>
 
-        <div className="flex items-center justify-end gap-5">
+        <div className="flex items-center justify-end gap-5 lg:gap-[30px]">
           <HeaderSearch />
 
           <Link
@@ -73,7 +73,7 @@ export function SiteHeader() {
           ) : (
             <Link
               to="/login"
-              className="inline-flex h-9 items-center gap-2 rounded bg-accent px-3 text-sm font-bold text-on-accent transition-opacity hover:opacity-90"
+              className="inline-flex h-9 items-center gap-2 rounded bg-accent px-3 text-sm font-bold lg:text-base text-on-accent transition-opacity hover:opacity-90"
             >
               <LogIn className="h-4 w-4" aria-hidden="true" />
               Entrar

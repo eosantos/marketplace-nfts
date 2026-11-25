@@ -6,7 +6,7 @@ import { CATALOG_PAGE_SIZE } from '../search'
 import { NftCard } from './nft-card'
 
 const GRID_CLASS =
-  'grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 md:gap-x-8 md:gap-y-10 max-md:[&>li:nth-child(even)]:mt-10'
+  'grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 md:gap-x-8 md:gap-y-10 lg:gap-x-[34px] lg:gap-y-[60px] max-md:[&>li:nth-child(even)]:mt-10'
 
 /** Esqueleto com as mesmas dimensões dos cards (sem salto de layout ao carregar). */
 export function ResultsSkeleton() {

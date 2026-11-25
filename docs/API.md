@@ -529,7 +529,7 @@ Os eventos únicos usam marcas no banco (`scenarioFlags`); `reset` as limpa.
 ## Estado simulado
 
 O banco dos mocks é único e persistido em `localStorage` sob a chave versionada
-`kurio:mocks:db:v1`. O reset restaura integralmente o cenário selecionado por
+`kurio:mocks:db:v2`. O reset restaura integralmente o cenário selecionado por
 `VITE_MOCK_SCENARIO` (ver README para a lista canônica). Na etapa atual, o seed
 distingue `default` (catálogo completo) de `empty` (catálogo, favoritos e carrinhos
 vazios); os demais cenários mudam o comportamento dos handlers (ver a tabela de cenários).
