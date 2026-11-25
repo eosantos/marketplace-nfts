@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { NftNetworkSchema, WalletTypeSchema } from '@/shared/contracts'
+import { NftNetworkSchema } from '@/shared/contracts'
 
 const emailField = z.string().trim().min(1, 'Informe seu e-mail.').email('Informe um e-mail válido.')
 
@@ -27,21 +27,5 @@ export const checkoutFormSchema = z.object({
 
 export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>
 
-/** "Usar outra carteira?": cadastra uma carteira nova sem sair do checkout. */
-export const newWalletFormSchema = z.object({
-  nickname: z.string().trim().min(1, 'Informe um apelido.').max(40, 'Use no máximo 40 caracteres.'),
-  network: NftNetworkSchema,
-  address: z
-    .string()
-    .trim()
-    .regex(/^0x[a-fA-F0-9]{40}$/, 'Use um endereço 0x com 40 caracteres hexadecimais.'),
-  type: WalletTypeSchema,
-  ensName: z
-    .string()
-    .trim()
-    .max(60, 'Use no máximo 60 caracteres.')
-    .regex(/^[a-zA-Z0-9-]+\.eth$/, 'Use um nome ENS válido, como nome.eth.')
-    .or(z.literal('')),
-})
-
-export type NewWalletFormValues = z.infer<typeof newWalletFormSchema>
+export { walletFormSchema as newWalletFormSchema } from '@/features/wallets/schemas'
+export type { WalletFormValues as NewWalletFormValues } from '@/features/wallets/schemas'

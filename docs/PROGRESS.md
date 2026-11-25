@@ -13,7 +13,7 @@ Acompanhamento das etapas do desafio.
 | 05 | Carrinho | ✅ Concluída | Página /cart com resumo só da cotação, quantidade otimista em série, cupom, carrinho de visitante e mescla ao entrar. | `feat(cart): add cart page, server quote summary, coupon and guest cart merge` |
 | 06 | Tempo real (Socket.IO) | ✅ Concluída | `socket.io-client` atrelado à sessão e servidor simulado no MSW (`ws.link` + binding) sobre o mesmo banco do REST; ledger, avisos acessíveis e reconciliação por REST. | `feat(realtime): add socket.io realtime with msw-simulated server and rest reconciliation` |
 | 07 | Checkout e pedidos | 🚧 Em validação | Checkout com revisão e revalidação (mudanças exigem nova confirmação), carteira com conexão/recusa/desconexão, `Idempotency-Key` por tentativa com reenvio após timeout, pedido pendente/confirmado/recusado com retomada após refresh, e recibo por snapshot. | — |
-| 08 | Perfil e carteiras | ⏳ Pendente | Edição de dados, avatar, senha, carteiras | — |
+| 08 | Perfil e carteiras | ✅ Concluída | Edição de dados, avatar (upload multipart), troca de senha, carteira principal e secundárias | `/profile`, `/wallets` |
 | 09 | Testes E2E (Playwright) | ⏳ Pendente | 12 cenários do enunciado, regressão visual | — |
 | 10 | Performance (Lighthouse) | ⏳ Pendente | Auditoria início e detalhe, mobile+desktop | — |
 

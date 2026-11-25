@@ -1,12 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { ProfilePage } from '@/features/account/components/profile-page'
 import { requireAuth } from '@/features/auth/guards'
-import { RoutePlaceholder } from '@/shared/ui/route-placeholder'
+import { SiteFooter } from '@/shared/layout/site-footer'
 
 export const Route = createFileRoute('/profile')({
   beforeLoad: requireAuth,
-  component: ProfilePage,
+  component: ProfileRoutePage,
 })
 
-function ProfilePage() {
-  return <RoutePlaceholder title="Perfil do colecionador" screen="desktop-perfil.png" stage="08" />
+function ProfileRoutePage() {
+  return (
+    <>
+      <main className="mx-auto max-w-[1200px] px-5 pb-12 md:px-0 md:pb-0">
+        <ProfilePage />
+      </main>
+      <SiteFooter />
+    </>
+  )
 }
