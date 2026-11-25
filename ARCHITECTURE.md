@@ -345,3 +345,12 @@ Os desvios, estados inventados e ajustes de acessibilidade estão nas subseçõe
 ## Decisões desta etapa (Etapa 11 — acabamento)
 - **404:** `NotFoundPage` (`src/shared/layout`) com o macaco `MonkeyConfused` (`src/shared/ui`), SVG original em formas chapadas e a paleta do site (nenhuma ilustração do Figma foi copiada). A ilustração é decorativa (`aria-hidden`); o sentido está em "404", no título "Ops, algo deu errado por aqui", no texto e no endereço acessado. A página muda o título da aba, move o foco para o `h1` ao abrir (anúncio em leitores de tela) e oferece "Voltar ao início" e "Voltar à página anterior". A gota de suor anima de leve e respeita `prefers-reduced-motion`.
 - **Desvio do Figma:** não há frame de 404; o estado foi inventado seguindo tokens, tipografia e botões das demais telas.
+
+## Etapa 12 — Cobertura E2E completa
+Specs em `tests/e2e` cobrem os fluxos do desafio, em desktop (1440) e mobile (390):
+- `catalog.spec.ts`: listagem, paginação com histórico, busca, estado vazio, filtros combinados e ordenação na URL, acesso direto ao detalhe e a NFT inexistente, skeleton com `slow-random-latency`, falhas (`network-failure`, `http-5xx`) com "Tentar novamente".
+- `session.spec.ts`: cadastro (e `signup-conflict`), login inválido/válido com retomada da rota, persistência e logout, troca Alice → Bob sem vazamento, sessão expirada (diálogo, retomada e visitante), favoritos (persistência, rollback em falha, visitante).
+- `cart.spec.ts`: quantidade, remoção, cupom válido/inválido/expirado, persistência após refresh e mescla do carrinho de visitante.
+- `realtime-cart.spec.ts`: evento real do socket com o item no carrinho (aviso e resumo) e bloqueio da confirmação no checkout até aceitar os novos valores.
+- `keyboard.spec.ts` e `responsive.spec.ts`: teclado, foco no diálogo, validação de formulários e ausência de overflow horizontal em 390/768/1440.
+- Traces e vídeos são guardados em falhas (`retain-on-failure`). A justificativa da nota mobile de Performance está em `docs/lighthouse/REPORT.md`.

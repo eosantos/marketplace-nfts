@@ -42,7 +42,8 @@ export function favoriteToggleOptions(
       if (!userId) return undefined
       const key = qk.favorites(userId)
       await queryClient.cancelQueries({ queryKey: key })
-      const previous = queryClient.getQueryData<Nft[]>(key)
+      // Sem cache ainda (lista carregando): reverter para vazio; o `onSettled` reconcilia com o servidor.
+      const previous = queryClient.getQueryData<Nft[]>(key) ?? []
       queryClient.setQueryData<Nft[]>(key, (old) => applyFavorite(old ?? [], input))
       return { key, previous }
     },

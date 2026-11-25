@@ -120,7 +120,7 @@ export function SiteFooter() {
         </nav>
         <div>
           <h2 className="mb-3 text-base font-bold">Redes sociais</h2>
-          <ul className="flex gap-2 text-accent">
+          <ul className="flex flex-wrap gap-2 text-accent">
             {SOCIALS.map(({ label, Icon }) => (
               <li key={label}>
                 <button type="button" aria-disabled="true" aria-label={`${label} (em breve)`} title="Em breve" className="block cursor-not-allowed">

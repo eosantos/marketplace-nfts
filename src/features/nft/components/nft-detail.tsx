@@ -14,14 +14,14 @@ import { StarRating } from './star-rating'
 
 function DetailSkeleton() {
   return (
-    <div role="status" aria-label="Carregando NFT" className="grid gap-6 md:grid-cols-[100px_444px_1fr] md:gap-7">
+    <div role="status" aria-label="Carregando NFT" className="grid gap-6 md:grid-cols-[100px_minmax(0,1fr)] md:gap-7 lg:grid-cols-[100px_444px_minmax(0,1fr)]">
       <div className="hidden flex-col gap-4 md:flex">
         {Array.from({ length: 4 }, (_, index) => (
           <Skeleton key={index} className="aspect-square w-full" />
         ))}
       </div>
       <Skeleton className="aspect-square w-full md:h-[444px]" />
-      <div className="grid content-start gap-4">
+      <div className="grid content-start gap-4 md:col-span-2 lg:col-span-1">
         <Skeleton className="h-8 w-2/3" />
         <Skeleton className="h-6 w-1/4" />
         <Skeleton className="h-24 w-full" />
@@ -29,7 +29,7 @@ function DetailSkeleton() {
         <Skeleton className="h-10 w-full" />
       </div>
       {/* Reserva a altura de abas e relacionados: o rodapé não pula quando o conteúdo chega (CLS). */}
-      <div className="hidden gap-6 md:col-span-3 md:mt-8 md:grid">
+      <div className="hidden gap-6 md:col-span-2 lg:col-span-3 md:mt-8 md:grid">
         <Skeleton className="h-52 w-full" />
         <Skeleton className="h-[360px] w-full" />
       </div>
@@ -102,10 +102,10 @@ function NftDetailContent({ nft }: { nft: Nft }) {
 
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-[100px_444px_1fr] md:gap-7">
+      <div className="grid gap-6 md:grid-cols-[100px_minmax(0,1fr)] md:gap-7 lg:grid-cols-[100px_444px_minmax(0,1fr)]">
         <Gallery nft={nft} />
 
-        <div className="min-w-0">
+        <div className="min-w-0 md:col-span-2 lg:col-span-1">
           <div className="flex items-start justify-between gap-3">
             <h1 className="text-2xl font-bold md:text-[28px]">{nft.name}</h1>
             <p role="img" className="flex items-center gap-1 rounded-full border border-accent px-3 py-1 text-xs md:hidden" aria-label={`Nota ${nft.rating.score.toFixed(1)} de 5, ${nft.rating.count} avaliações`}>

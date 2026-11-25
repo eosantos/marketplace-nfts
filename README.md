@@ -139,6 +139,7 @@ Clique repetido, recarregar com pedido pendente e queda do socket estão coberto
 - `pnpm test:e2e` compila o app com `VITE_ENABLE_MOCKS=true`, sobe o `vite preview` (porta 4173) e roda os fluxos em dois projetos: `chromium-desktop` (1440x900) e `chromium-mobile` (390x844). `PW_DEV=1 pnpm test:e2e` usa o servidor de dev.
 - Cada teste restaura o banco simulado e o cenário por `window.__mocks.reset(...)`; nenhum teste mexe no cache ou no estado da UI.
 - Cobertura: acessibilidade com axe-core (`a11y.spec.ts`), compra completa, pagamento recusado, clique repetido, timeout após criar o pedido, preço alterado e esgotado no checkout, retomada de pedido pendente, eventos Socket.IO (atualização, duplicado/antigo, queda e reconexão), perfil, avatar, senha e carteiras.
+- Specs: `purchase`, `realtime`, `realtime-cart`, `catalog`, `session` (cadastro, login, expiração, troca de usuário, favoritos), `cart`, `keyboard`, `responsive` (overflow em 390/768/1440), `account`, `a11y`, `images`, `not-found`. Em falha, trace e vídeo ficam em `test-results/` (`npx playwright show-trace`).
 - Regressão visual (início, detalhe, carrinho, pagamento): rode `pnpm test:e2e:update` uma vez para criar as baselines em `tests/e2e/__screenshots__/` e depois `pnpm test:e2e:visual`. As baselines dependem do sistema operacional; gere-as na máquina que as comparará.
 - Relatório: `pnpm exec playwright show-report`.
 
