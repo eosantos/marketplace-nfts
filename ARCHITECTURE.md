@@ -63,9 +63,47 @@ tests/e2e/             # specs Playwright
 
 ## Contratos REST
 
-> A preencher na Etapa 01 (mocks + contratos)
+Definidos em `src/shared/contracts/index.ts` (Zod + tipos inferidos) e documentados em
+`docs/API.md`.
 
-Recursos previstos: Sessão, NFTs, Favoritos, Carrinho, Cotação, Pedidos, Perfil, Carteiras.
+- **Auth/sessão**: `POST /auth/register`, `POST /auth/login`, `GET /session`, `POST /auth/logout`.
+- **NFTs**: `GET /nfts` (busca, filtros combináveis, ordenação, paginação) e `GET /nfts/:id`.
+- **Favoritos**: `GET /favorites`, `POST /favorites`, `DELETE /favorites/:nftId`.
+- **Carrinho**: `GET /cart`, `POST /cart/items`, `PATCH /cart/items/:itemId`,
+  `DELETE /cart/items/:itemId`, `DELETE /cart`. A linha tem `id` estável e a unicidade
+  lógica é `nftId + editionType`.
+- **Cotação**: `POST /quote` (`quoteId`, `version`, subtotal, desconto, taxa e total).
+- **Pedidos**: `POST /orders` com `Idempotency-Key` e `GET /orders/:id` (recibo com snapshot).
+- **Perfil**: `GET /profile`, `PATCH /profile`, `POST /profile/password`.
+- **Carteiras**: `GET /wallets`, `POST /wallets`, `PATCH /wallets/:id`.
+
+Modelo do NFT: nome, token ID, preço (`string` ETH), preço antigo opcional, coleção,
+categoria (`Arte digital`, `Fotografia`, `Música`, `Arte 3D`, `Colecionáveis`,
+`Generativa`, `Jogos`, `Assinaturas`, `Utilidade`), rede (`Ethereum`, `Polygon`,
+`Solana`), raridade (`COMUM`, `RARO`, `ÉPICO`, `LENDÁRIO`), atributos, avaliação
+(nota/quantidade), galeria, descrição, royalties, contrato e as quatro edições
+(`1/1`, `1/10`, `1/50`, `ABERTA`) com disponibilidade e limite de quantidade.
+
+Erros: `ApiError { code, message, fieldErrors? }`, com o mapa HTTP em
+`src/shared/contracts/errors.ts`. Valores ETH são strings decimais validadas por regex
+e nunca `number`.
+
+## Banco simulado e fixtures (Etapa 01)
+
+- Banco único em `src/mocks/db`, carregado em memória e persistido em `localStorage`
+  com a chave versionada `kurio:mocks:db:v1`. `resetDb(scenario)` recria o seed de
+  forma determinística; `getDb/saveDb/mutateDb` são usados pelos handlers.
+- Seed atual: 64 NFTs (reutilizando as 4 ilustrações copiadas para
+  `public/assets/nfts`), 2 usuários com carteiras principais/secundárias, carrinhos e
+  favoritos isolados, e cupons válido/inválido/expirado.
+- Senhas dos usuários fictícios são armazenadas apenas como PBKDF2-SHA256
+  (120.000 iterações) + salt. As credenciais de demonstração ficam no README.
+- Cada NFT expõe as quatro edições; `ABERTA` usa `total: null`. `available` é a
+  disponibilidade e `quantityLimit` o limite por comprador.
+- Nomes canônicos dos cenários em `src/mocks/scenarios/names.ts` (16 cenários). Nesta
+  etapa, `default` e `empty` alteram o seed; os demais cenários serão consumidos pelo
+  pipeline REST/socket nas etapas 06/07.
+- Asset paths usam caminhos locais (`/assets/nfts/...`), sem CDN externo.
 
 ## Eventos Socket.IO
 
@@ -127,3 +165,50 @@ Nenhum desvio até a Etapa 00.
 - Vitest usa `environment: 'jsdom'` com `passWithNoTests` até existirem testes unitários
 - `.agents/skills/` é gerado/gerenciado pelo pnpm (skills dos pacotes TanStack) e ignorado pelo `.gitignore` interno; não faz parte do runtime da aplicação
 - `pnpm-workspace.yaml` é usado pelo pnpm v12 para permissões de build e skills, não define pacotes adicionais
+
+## Decisões desta etapa (Etapa 01 — tarefas 1–5)
+
+- Contratos usam `EthAmountSchema` (regex de string decimal) e caminhos de imagem
+  relativos (`/assets/...`) além de URLs absolutas.
+- `NftListResponse` expõe `items, page, pageSize, total`; `totalPages` fica a cargo da UI.
+- Abas do catálogo: `todos`, `novos`, `em-alta`; ordenação padrão `recentes`
+  (“Listados recentemente”). Faixa de preço de referência exportada como
+  `NFT_PRICE_RANGE` (`0.02`–`12.30`).
+- Seed do banco é clonado a cada reset (`structuredClone`), evitando que mutations
+  contaminem as fixtures originais.
+- Persistência é opcional: se `localStorage` falhar (modo privado/quota), o banco segue
+  em memória e o app não quebra.
+- Cenários não implementados nesta etapa carregam o seed `default` e apenas registram
+  o nome ativo; nenhuma falha é mascarável como sucesso nos handlers futuros.
+
+## Decisões desta etapa (Etapa 00b)
+
+- **Roteamento:** file-based (TanStack Router) com rotas planas. Rota inexistente usa o `notFoundComponent` da raiz (não há `404.tsx`). O guarda de rotas privadas (`beforeLoad`) entra na Etapa 02.
+- **Cliente HTTP:** um único Axios em `src/shared/api/http.ts`, `baseURL` padrão `/api` (mesma origem). O MSW intercepta `/api/*` tanto em desenvolvimento quanto no build de demonstração.
+- **MSW:** `src/mocks/browser.ts` registra `src/mocks/handlers/index.ts`. Mocks ligados por padrão; `VITE_ENABLE_MOCKS=false` desliga.
+- **Tema:** tokens de `design/tokens.md` em `@theme` (Tailwind v4) e mapeados para os nomes do shadcn/ui (`primary`/`accent` = cobre `#d08a4b`, `card`/`popover` = `surface`, `destructive` = `danger`). Fonte Roboto Mono self-hosted via `@fontsource-variable/roboto-mono` (sem CDN).
+- **Toast:** somente `sonner` (wrapper em `src/shared/ui/sonner.tsx`). O `@radix-ui/react-toast` e o `toast.tsx` foram removidos para evitar dois sistemas de notificação.
+- **Deploy:** estático na Vercel (preset Vite), com rewrite de SPA para `/index.html` em `vercel.json`. Variáveis `VITE_ENABLE_MOCKS=true` e `VITE_MOCK_SCENARIO=default` precisam existir no projeto da Vercel antes do build, porque o Vite as embute.
+
+
+## Decisões desta etapa (Etapa 01 — parte 2a)
+
+- **Serviços + handlers:** a lógica vive em `src/mocks/services` (funções puras sobre o banco, retornam `ServiceResult`), e os handlers em `src/mocks/handlers` só leem a requisição e traduzem o resultado. Isso permite testar a regra sem navegador.
+- **Rotas por tipo:** `auth` (login/cadastro/sessão), `public` (catálogo) e `private` (recursos do usuário). Os cenários de falha afetam `public` e `private`; `auth` continua funcionando para o teste poder logar.
+- **Sessão:** token Bearer opaco (`kurio_<hex>`) guardado no banco simulado, validade de 2 horas. A política de armazenamento do token no cliente é definida na Etapa 02.
+- **Latência determinística:** padrão fixo (180 ms); `slow-random-latency` usa PRNG com seed; `out-of-order` deriva o atraso do hash da URL. Nenhum `Math.random`.
+- **Carrinho:** limite por linha = `min(disponível, limite por comprador)`; esgotado responde `AVAILABILITY_CONFLICT`. Totais e preços não são calculados aqui (cotação, parte 2b).
+- **Avatar:** upload multipart validado (PNG/JPEG/WebP, 300 KB) e guardado como data URL no banco simulado, para caber no localStorage.
+- **Controle:** `/__mocks__/*` e `window.__mocks` são o único caminho para os testes mudarem cenário/dados; nada de setar estado da UI diretamente.
+- **Cenário do env:** `VITE_MOCK_SCENARIO` é aplicado na primeira execução e sempre que o valor mudar; entre mudanças, o cenário definido pelo controle persiste no refresh.
+
+## Decisões desta etapa (Etapa 01 — parte 2b)
+
+- **Cotação:** todos os valores passam por `decimal.js` e trafegam como string decimal. O resumo da UI usa os valores da API, nunca soma no cliente. Taxa de rede fixa (0.016 ETH) por cotação.
+- **Cupom:** inválido/expirado responde 400 com `fieldErrors` no campo `coupon`; a UI mantém a cotação anterior. A validade usa só o `status` do cupom.
+- **Idempotência:** chave por usuário; corpo comparado por JSON canônico; o reenvio devolve o pedido existente (200) e a divergência de corpo dá `IDEMPOTENCY_CONFLICT`. Falhas de criação não consomem a chave, então o cliente pode reenviar com a mesma chave depois de refazer a cotação.
+- **Estados do pedido:** `pending → confirmed | refused`, liquidação em ~2,5 s por timer. Como timers se perdem em refresh, `GET /orders/:id` liquida pedidos vencidos de forma preguiçosa; a reconciliação REST × Socket.IO da Etapa 06 reutiliza esse caminho.
+- **Efeitos da confirmação:** baixa de estoque e remoção do carrinho só das unidades compradas, ambos no servidor simulado (a UI apenas refaz a leitura).
+- **Eventos do banco:** `src/mocks/events.ts` é a única ponte entre os serviços e o Socket.IO simulado; os serviços nunca importam o socket, e a UI nunca é chamada por ali.
+- **Cenários únicos:** `price-changed-at-checkout` e `sold-out-at-checkout` acontecem na primeira tentativa de pedido e ficam registrados em `scenarioFlags` (limpos pelo reset), o que torna o fluxo repetível: tentativa 1 falha, a nova cotação reflete a mudança.
+- **Timeout:** em `timeout-after-order-created` a resposta é substituída por erro de rede após 20 s; o cliente do checkout (Etapa 07) deve usar um timeout menor e reenviar com a mesma `Idempotency-Key`.

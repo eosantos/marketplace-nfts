@@ -56,22 +56,36 @@ pnpm test:e2e   # testes E2E com Playwright
 pnpm lighthouse # auditoria de performance (ver docs/lighthouse/)
 ```
 
-## Cenários de mock (disponíveis a partir da Etapa 01)
+## Cenários de mock (nomes canônicos)
 
-Selecione o cenário via `VITE_MOCK_SCENARIO` no `.env` ou no painel de dev:
+Selecione o cenário via `VITE_MOCK_SCENARIO` no `.env` ou pelo painel de dev (a partir da Etapa 06):
 
-- `default` — dados completos, latência realista
-- `empty` — catálogo vazio
-- `slow` — latência variável e timeouts
-- `error` — falhas HTTP 4xx/5xx
-- `checkout-fail` — pagamento recusado
-- `checkout-timeout` — timeout durante criação do pedido (testa idempotência)
-- `price-change` — alteração de preço via Socket.IO durante o checkout
+| Cenário | Comportamento |
+|---|---|
+| `default` | Dados completos, latência realista |
+| `empty` | Catálogo, favoritos e carrinhos vazios |
+| `slow-random-latency` | Latência variável entre requisições |
+| `out-of-order` | Respostas fora de ordem |
+| `network-failure` | Falhas de conexão |
+| `http-4xx` | Respostas HTTP 4xx |
+| `http-5xx` | Respostas HTTP 5xx |
+| `session-expired` | Sessão expirada durante a navegação |
+| `signup-conflict` | Conflito de cadastro (`EMAIL_TAKEN`) |
+| `coupon-invalid` | Cupom inválido |
+| `coupon-expired` | Cupom expirado |
+| `price-changed-at-checkout` | Preço alterado durante o checkout |
+| `sold-out-at-checkout` | Edição esgotada durante a compra |
+| `timeout-after-order-created` | Timeout após criar o pedido (recuperação por idempotência) |
+| `payment-confirmed` | Pagamento confirmado |
+| `payment-refused` | Pagamento recusado |
 
-Para resetar o estado dos mocks:
+O banco simulado usa a chave versionada `kurio:mocks:db:v1` no localStorage. O reset restaura o cenário selecionado:
+
 ```bash
-# Recarregar a página com ?reset=1 ou usar o painel de dev (Etapa 01)
+# Via painel de dev ou endpoint /__mocks__/reset (ao concluir os handlers da Etapa 01)
+# Recarregar com ?reset=1 também limpa o estado persistido.
 ```
+
 
 ## Estrutura do projeto
 

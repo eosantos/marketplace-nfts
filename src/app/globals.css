@@ -4,40 +4,46 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* ---- Typography ---- */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  /* ---- Tipografia: Roboto Mono self-hosted (@fontsource-variable/roboto-mono) ---- */
+  --font-sans: 'Roboto Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* ---- Design tokens (to be refined with design/tokens.md in Step 03) ---- */
-  --color-background: oklch(0.1 0.01 240);
-  --color-foreground: oklch(0.98 0 0);
+  /* ---- Tokens KURIO (design/tokens.md; valores estimados, conferir no Figma) ---- */
+  --color-background: #140e0c;
+  --color-foreground: #f3e9da;
+  --color-surface: #231815;
+  --color-surface-strong: #3a2413;
+  --color-border: #4a2f1e;
+  --color-accent: #d08a4b;
+  --color-accent-strong: #e08a3c;
+  --color-on-accent: #1a100a;
+  --color-muted-foreground: #c9a67c;
+  --color-danger: #e0714a;
 
-  --color-card: oklch(0.14 0.01 240);
-  --color-card-foreground: oklch(0.98 0 0);
+  /* ---- Mapeamento para os componentes shadcn/ui ---- */
+  --color-card: #231815;
+  --color-card-foreground: #f3e9da;
+  --color-popover: #231815;
+  --color-popover-foreground: #f3e9da;
+  --color-primary: #d08a4b;
+  --color-primary-foreground: #1a100a;
+  --color-secondary: #3a2413;
+  --color-secondary-foreground: #f3e9da;
+  --color-muted: #231815;
+  --color-accent-foreground: #1a100a;
+  --color-destructive: #e0714a;
+  --color-destructive-foreground: #f3e9da;
+  --color-input: #4a2f1e;
+  --color-ring: #d08a4b;
 
-  --color-primary: oklch(0.72 0.17 290);
-  --color-primary-foreground: oklch(0.98 0 0);
-
-  --color-secondary: oklch(0.2 0.02 240);
-  --color-secondary-foreground: oklch(0.98 0 0);
-
-  --color-muted: oklch(0.2 0.02 240);
-  --color-muted-foreground: oklch(0.65 0.01 240);
-
-  --color-accent: oklch(0.72 0.17 290);
-  --color-accent-foreground: oklch(0.98 0 0);
-
-  --color-destructive: oklch(0.6 0.22 25);
-  --color-destructive-foreground: oklch(0.98 0 0);
-
-  --color-border: oklch(0.25 0.02 240);
-  --color-input: oklch(0.25 0.02 240);
-  --color-ring: oklch(0.72 0.17 290);
-
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
   --radius-xl: 1rem;
-  --radius: 0.5rem;
+  --radius: 0.25rem;
+}
+
+html {
+  color-scheme: dark;
 }
 
 /* Base styles */
