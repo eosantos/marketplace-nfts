@@ -11,8 +11,8 @@ Acompanhamento das etapas do desafio.
 | 03 | Catálogo (Início) | ✅ Concluída | Home completa com URL como estado, filtros, skeleton, paginação, mobile e rodapé. | `feat(catalog): add home page with url-driven catalog, filters and mobile layout` |
 | 04 | Detalhe do NFT | ✅ Concluída | Detalhe com galeria, edições, quantidade com limite, abas, relacionados e barra mobile; favoritos otimistas com rollback; ações de hover nos cards. | `feat(nft): add nft detail page, optimistic favorites and card actions` |
 | 05 | Carrinho | ✅ Concluída | Página /cart com resumo só da cotação, quantidade otimista em série, cupom, carrinho de visitante e mescla ao entrar. | `feat(cart): add cart page, server quote summary, coupon and guest cart merge` |
-| 06 | Tempo real (Socket.IO) | 🚧 Em validação | `socket.io-client` atrelado à sessão e servidor simulado no MSW (`ws.link` + binding) com hub sobre o mesmo banco do REST; `nft.updated` e `order.updated`; ledger de duplicados/antigos; avisos acessíveis; reconexão com reconciliação por REST. | — |
-| 07 | Checkout e confirmação | ⏳ Pendente | Pagamento, revisão, idempotência, recibo | — |
+| 06 | Tempo real (Socket.IO) | ✅ Concluída | `socket.io-client` atrelado à sessão e servidor simulado no MSW (`ws.link` + binding) sobre o mesmo banco do REST; ledger, avisos acessíveis e reconciliação por REST. | `feat(realtime): add socket.io realtime with msw-simulated server and rest reconciliation` |
+| 07 | Checkout e pedidos | 🚧 Em validação | Checkout com revisão e revalidação (mudanças exigem nova confirmação), carteira com conexão/recusa/desconexão, `Idempotency-Key` por tentativa com reenvio após timeout, pedido pendente/confirmado/recusado com retomada após refresh, e recibo por snapshot. | — |
 | 08 | Perfil e carteiras | ⏳ Pendente | Edição de dados, avatar, senha, carteiras | — |
 | 09 | Testes E2E (Playwright) | ⏳ Pendente | 12 cenários do enunciado, regressão visual | — |
 | 10 | Performance (Lighthouse) | ⏳ Pendente | Auditoria início e detalhe, mobile+desktop | — |
@@ -123,3 +123,14 @@ Concluído (aguardando validação e commit):
 - Controle de testes: `/__mocks__/emit` (com `duplicate` e `stale`), `/__mocks__/socket` e `/__mocks__/socket/drop`; `window.__mocks.emitNft`, `dropSocket`, `socketState`.
 - Testes: ledger, hub, aplicação de eventos e gerenciador completo contra o hub real (31 casos).
 - Verificação da camada de rede (WebSocket real + binding + socket.io-client) fica com o navegador e com os testes E2E da Etapa 09.
+
+## Etapa 07 — Checkout e pedidos
+
+Concluído (aguardando validação e commit):
+- `/checkout`: formulário do colecionador, seleção/conexão de carteira e rede, revisão e confirmação. A confirmação revalida a cotação; mudanças mostram o diff e exigem nova confirmação; cotação desatualizada por evento bloqueia o botão.
+- Idempotência: uma `Idempotency-Key` por tentativa, guardada com o corpo; reenvio após timeout/rede/5xx com a mesma chave devolve o mesmo pedido; clique repetido protegido.
+- Pedido pendente, confirmado e recusado, com retomada após refresh e atualização por `order.updated` (e polling de segurança só enquanto pendente).
+- `/order/$orderId`: recibo reproduz o snapshot e só aparece para pedido confirmado; pendente e recusado têm tela própria.
+- Mocks: cenário `wallet-refused`, flag `connected` em `GET /wallets`, e pedido exige carteira conectada (reenvio idempotente não exige).
+- Testes: `checkout.test.ts` (15: diff de cotação, persistência, envio com recuperação, formulários) e 3 casos novos nos mocks (conexão obrigatória, recusa, estado na lista).
+- Verificação visual e o fluxo completo no navegador ficam com o desenvolvedor e com os testes E2E da Etapa 09.
