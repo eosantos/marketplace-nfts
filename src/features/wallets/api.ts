@@ -5,6 +5,7 @@ import {
   type Wallet,
   type WalletConnection,
   type WalletCreateInput,
+  type WalletUpdateInput,
 } from '@/shared/contracts'
 import { http } from '@/shared/api/http'
 
@@ -26,4 +27,12 @@ export async function connectWalletRequest(walletId: string): Promise<WalletConn
 export async function disconnectWalletRequest(walletId: string): Promise<WalletConnection> {
   const response = await http.post<unknown>(`/wallets/${encodeURIComponent(walletId)}/disconnect`)
   return WalletConnectionSchema.parse(response.data)
+}
+
+export async function updateWalletRequest(
+  walletId: string,
+  input: WalletUpdateInput,
+): Promise<Wallet> {
+  const response = await http.patch<unknown>(`/wallets/${encodeURIComponent(walletId)}`, input)
+  return WalletSchema.parse(response.data)
 }
