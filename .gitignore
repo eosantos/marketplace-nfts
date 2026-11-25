@@ -21,6 +21,9 @@ lighthouse-tmp/
 .DS_Store
 Thumbs.db
 
+# TypeScript build info
+tsconfig.tsbuildinfo
+
 # Editor
 .vscode/settings.json
 .idea/

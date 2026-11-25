@@ -1,8 +1,8 @@
-// MSW browser setup — to be expanded in Step 01 (mocks)
-// Placeholder so the app bootstraps without errors when VITE_ENABLE_MOCKS=true
+// MSW browser setup — inicializado em main.tsx quando VITE_ENABLE_MOCKS !== 'false'.
+// Handlers de negócio serão adicionados a partir da Etapa 01.
+
+import { startMocks as start } from './browser-impl'
 
 export async function startMocks() {
-  const { setupWorker } = await import('msw/browser')
-  const worker = setupWorker()
-  await worker.start({ onUnhandledRequest: 'bypass' })
+  await start()
 }

@@ -19,11 +19,12 @@ Decisões de arquitetura, contratos, estratégias de cache e desvios do Figma.
 | tailwindcss | ^4.0.0 | Estilização utilitária |
 | @tailwindcss/vite | ^4.0.0 | Plugin Vite para Tailwind v4 |
 | tw-animate-css | ^1.4.0 | Animações dos componentes shadcn/ui (Tailwind v4) |
+| @fontsource-variable/roboto-mono | ^5.3.0 | Fonte monospace self-hosted (sem CDN) |
 | shadcn/ui (Radix + CVA) | — | Componentes acessíveis adaptados ao design |
 | class-variance-authority | ^0.7.1 | Variantes de componentes |
 | clsx + tailwind-merge | ^2.x | Utilitário `cn()` |
 | lucide-react | ^0.468.0 | Ícones SVG |
-| sonner | ^1.7.1 | Toasts/notificações |
+| sonner | ^1.7.1 | Toasts/notificações (único sistema de toast; @radix-ui/react-toast removido) |
 | msw | ^2.15.0 | Mocking na camada de rede (REST + Socket.IO) |
 | @mswjs/socket.io-binding | ^0.2.0 | Binding Socket.IO para MSW |
 | vite | ^6.0.5 | Build tool e dev server |
@@ -111,19 +112,19 @@ Princípios já definidos:
 
 > A preencher conforme as telas forem implementadas (Etapas 03–08)
 
-Nenhum desvio até a Etapa 00.
+Nenhum desvio até a Etapa 00b.
 
-## Decisões desta etapa (Etapa 00)
+## Decisões desta etapa (Etapa 00b)
 
-- Tailwind v4 com `@tailwindcss/vite` (sem `tailwind.config.js` — config via CSS)
-- shadcn/ui sem CLI (componentes criados manualmente para evitar dependência de rede no CI)
-- `tw-animate-css` importado em `globals.css` para as animações `data-[state]` dos componentes shadcn/ui no Tailwind v4
-- `@mswjs/socket.io-binding` v0.2.0 (versão mais recente; v0.1.x não publicada)
-- ESLint v9 flat config (sem `.eslintrc`)
-- Playwright webServer aponta para `pnpm dev` (reutiliza servidor existente se já rodando)
-- `routeTree.gen.ts` é gerado pelo plugin; o arquivo atual foi regenerado no build
-- MSW fica ativo por padrão (`VITE_ENABLE_MOCKS` só desativa com `"false"`), garantindo `pnpm dev` com mocks e build de demonstração funcional
-- `.gitignore` ignora `.env*`, exceto `.env.example`
-- Vitest usa `environment: 'jsdom'` com `passWithNoTests` até existirem testes unitários
-- `.agents/skills/` é gerado/gerenciado pelo pnpm (skills dos pacotes TanStack) e ignorado pelo `.gitignore` interno; não faz parte do runtime da aplicação
-- `pnpm-workspace.yaml` é usado pelo pnpm v12 para permissões de build e skills, não define pacotes adicionais
+- Rotas esqueleto (TanStack Router) para todas as telas do enunciado, mais 404; placeholders sem lógica de negócio
+- Providers: QueryClientProvider + Router + MSW condicionado a `VITE_ENABLE_MOCKS` (ativo por padrão)
+- Cliente Axios único em `src/shared/api/http.ts`; handler de teste `GET /api/health` em `src/mocks/handlers.ts`
+- Tokens do design aplicados em `globals.css` (cores `#140e0c`/`#231815`/`#4a2f1e`/`#d08a4b`, tipografia Roboto Mono self-hosted via `@fontsource-variable/roboto-mono`)
+- **Toast:** mantido apenas `sonner`; `@radix-ui/react-toast` removido para evitar dois sistemas de toast sobrepostos. Sonner é mais simples, acessível (aria-live) e já estava na lista de dependências do prompt.
+- `vercel.json` para deploy SPA com fallback `/index.html`; variáveis `VITE_ENABLE_MOCKS=true` e `VITE_MOCK_SCENARIO=default` devem ser definidas na Vercel antes do build
+- `.gitignore` já ignora `tsconfig.tsbuildinfo`? Não — adicionado abaixo
+
+## Gitignore pendente
+
+- `tsconfig.tsbuildinfo` (artefato de `tsc -b`) ainda não está ignorado; adicionar antes do próximo commit
+
