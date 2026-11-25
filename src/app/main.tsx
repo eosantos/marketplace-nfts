@@ -5,13 +5,15 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import '@fontsource-variable/roboto-mono'
 // routeTree.gen.ts é gerado pelo @tanstack/router-plugin
 import { routeTree } from '../routeTree.gen'
-import { setupAuth } from '@/features/auth/lifecycle'
+import { onAuthenticated, setupAuth } from '@/features/auth/lifecycle'
+import { mergeGuestCart } from '@/features/cart/merge-guest-cart'
 import { queryClient } from '@/shared/api/query-client'
 import { Toaster } from '@/shared/ui/sonner'
 import './globals.css'
 
 // Injeta o token Bearer e o tratamento de 401 no cliente HTTP.
 setupAuth()
+onAuthenticated(mergeGuestCart)
 
 const router = createRouter({
   routeTree,

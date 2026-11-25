@@ -1,19 +1,16 @@
 import { useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
-import { useSession } from '@/features/auth/hooks'
-import { currentHref, loginUrlFor, setPendingAction } from '@/features/auth/pending-action'
-import { useAddToCart } from '@/features/cart/hooks'
+import { useCartAdd } from '@/features/cart/hooks'
 import type { Nft, NftEditionType } from '@/shared/contracts'
 import { maxQuantity, pickDefaultEdition } from './editions'
 
 /**
  * Estado e ações de compra do detalhe (edição, quantidade, limite, adicionar/comprar).
- * Visitantes são levados ao login e a ação é retomada quando voltam (ação pendente).
+ * Conta logada adiciona pela API; visitante, no carrinho local (mesclado ao entrar).
  */
 export function useNftPurchase(nft: Nft) {
   const router = useRouter()
-  const { user } = useSession()
-  const addToCart = useAddToCart()
+  const cart = useCartAdd()
 
   const [editionType, setEditionType] = useState<NftEditionType>(() => pickDefaultEdition(nft.editions))
   const [quantity, setQuantity] = useState(1)
@@ -45,18 +42,8 @@ export function useNftPurchase(nft: Nft) {
   /** `buyNow` adiciona e segue para o carrinho; sem ele só adiciona. */
   const submit = (buyNow: boolean) => {
     if (max === 0) return
-    const item = { nftId: nft.id, editionType, quantity }
-
-    if (!user) {
-      setPendingAction({ type: 'add-to-cart', ...item, buyNow })
-      router.history.push(loginUrlFor(currentHref()))
-      return
-    }
-
-    addToCart.mutate(item, {
-      onSuccess: () => {
-        if (buyNow) router.history.push('/cart')
-      },
+    cart.add(nft, { nftId: nft.id, editionType, quantity }, () => {
+      if (buyNow) router.history.push('/cart')
     })
   }
 
@@ -67,7 +54,7 @@ export function useNftPurchase(nft: Nft) {
     max,
     limitHit,
     soldOut: max === 0,
-    isPending: addToCart.isPending,
+    isPending: cart.isPending,
     selectEdition,
     increment,
     decrement,
