@@ -1,7 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { requireAuth } from '@/features/auth/guards'
 import { RoutePlaceholder } from '@/shared/ui/route-placeholder'
 
 export const Route = createFileRoute('/order/$orderId')({
+  beforeLoad: requireAuth,
   component: OrderConfirmationPage,
 })
 

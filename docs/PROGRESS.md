@@ -7,7 +7,7 @@ Acompanhamento das etapas do desafio.
 | 00 | Ambiente e dependências | ✅ Concluída | Scaffold Vite+React+TS, todas as deps instaladas, Tailwind v4 + tw-animate-css, shadcn/ui (button, input, label, dialog, sheet, select, checkbox, skeleton, toast, form), MSW SW gerado, Playwright Chromium instalado, ESLint/Prettier/Vitest (jsdom) /Playwright configurados, README, ARCHITECTURE e PROGRESS criados. packageManager fixado (pnpm@12.23.0). Auditoria: pnpm install --frozen-lockfile, typecheck, lint, build validados; mocks ativos por padrão | `chore(setup): bootstrap vite react ts project with full dependency set` |
 | 00b | Esqueleto, tema e deploy | ✅ Concluída | Rotas esqueleto + `notFoundComponent`, cliente Axios único, MSW com `GET /api/health`, tema KURIO (Roboto Mono self-hosted), toast único (`sonner`), `vercel.json`. Reconstruída após perda de trabalho não commitado. | `feat(setup): restore route skeleton, msw bootstrap and kurio theme` |
 | 01 | Mocks e contratos | ✅ Concluída (aguardando merge na main) | Contratos Zod, banco simulado, fixtures, serviços e handlers REST (auth, catálogo/facets, favoritos, carrinho, perfil, carteiras, cotação e pedidos), 16 cenários determinísticos, canal `/__mocks__` e `window.__mocks`, barramento de eventos do banco. | `feat(mocks): ...` (3 commits) |
-| 02 | Autenticação | ⏳ Pendente | Login, cadastro, sessão, proteção de rotas | — |
+| 02 | Autenticação | 🚧 Em validação | Login e cadastro (modal no desktop, tela cheia no mobile), sessão persistida, Bearer no Axios, 401 → diálogo de sessão expirada com retomada, redirect seguro, rotas privadas, isolamento de cache entre usuários, header com menu do usuário. | — |
 | 03 | Catálogo (Início) | ⏳ Pendente | Busca, filtros, ordenação, paginação, URL como estado | — |
 | 04 | Detalhe do NFT | ⏳ Pendente | Galeria, favoritos, quantidade, compra | — |
 | 05 | Carrinho | ⏳ Pendente | Itens, cupom, persistência, sincronização | — |
@@ -66,3 +66,19 @@ Decisões:
 - A validade do cupom depende só do `status`, para a demonstração não expirar com o calendário.
 - Falhas de criação de pedido (409/422) não consomem a `Idempotency-Key`.
 - O estoque só baixa na confirmação (pedido pendente não reserva).
+
+## Etapa 02 — Autenticação e sessão
+
+Concluído (aguardando validação e commit):
+- Telas `/login` e `/signup` conforme o Figma: modal com abas e barra cobre no desktop, tela cheia com logo e link de troca no mobile; foco preso, Esc fecha, foco inicial no primeiro campo.
+- Formulários com react-hook-form + zod; erros da API associados ao campo (`aria-describedby`, `aria-invalid`, `role="alert"`); botão de mostrar/ocultar senha; estado de envio.
+- Sessão em `localStorage` com sincronização entre abas, interceptor do Axios (Bearer + 401), diálogo de sessão expirada, `safeRedirect` e guardas de rota.
+- `SiteHeader` (desktop) com contador do carrinho e menu do usuário (perfil, carteiras, sair); itens fora do escopo ficam desabilitados com "Em breve".
+- Ícones em `src/shared/icons` gerados dos SVGs do Figma (`currentColor` nos monocromáticos). **Genérico a trocar:** `CoinbaseWalletIcon`.
+- Cobre exato do Figma (`#D28A4C`) aplicado ao tema.
+- Testes: `redirect`, `session-store`, `http` (interceptores e `parseApiError`) e `lifecycle` (isolamento de cache e 401).
+
+Decisões e desvios do Figma:
+- "Entrar com Google/Facebook" e "Esqueceu a senha?" seguem o visual, mas avisam que estão indisponíveis (fora do escopo, sem simular sucesso).
+- A Home ainda não existe: o fundo do modal é a página vazia com header até a Etapa 03.
+- No mobile não há header global; cada tela terá a própria barra (Etapa 03 em diante).

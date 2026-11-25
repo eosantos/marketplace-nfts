@@ -1,10 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { RoutePlaceholder } from '@/shared/ui/route-placeholder'
+import { z } from 'zod'
+import { AuthScreen } from '@/features/auth/components/auth-screen'
+import { redirectIfAuthenticated } from '@/features/auth/guards'
 
 export const Route = createFileRoute('/login')({
+  // ?redirect=/caminho: para onde voltar depois de entrar (validado por safeRedirect).
+  validateSearch: z.object({ redirect: z.string().optional() }),
+  beforeLoad: redirectIfAuthenticated,
   component: LoginPage,
 })
 
 function LoginPage() {
-  return <RoutePlaceholder title="Entrar" screen="desktop-login.png e mobile-login.png" stage="02" />
+  const { redirect: redirectTo } = Route.useSearch()
+  return <AuthScreen mode="login" redirectTo={redirectTo} />
 }
