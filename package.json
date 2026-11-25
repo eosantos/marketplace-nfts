@@ -16,8 +16,11 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:e2e": "playwright test",
-    "lighthouse": "echo 'Lighthouse audit: run after pnpm build && pnpm preview. See docs/lighthouse for reports.'"
+    "test:e2e": "playwright test --grep-invert \"regressão visual\"",
+    "lighthouse": "echo 'Lighthouse audit: run after pnpm build && pnpm preview. See docs/lighthouse for reports.'",
+    "test:e2e:visual": "playwright test visual.spec.ts",
+    "test:e2e:update": "playwright test visual.spec.ts --update-snapshots",
+    "test:e2e:all": "playwright test"
   },
   "dependencies": {
     "@fontsource-variable/roboto-mono": "^5.3.0",
