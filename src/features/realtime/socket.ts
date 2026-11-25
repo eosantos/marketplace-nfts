@@ -1,12 +1,18 @@
-import { io } from 'socket.io-client'
 import { REALTIME_PATH } from '@/shared/contracts'
 import type { SocketLike } from './manager'
 
 /**
  * Cliente socket.io real. Só WebSocket (o servidor simulado do MSW não fala polling), mesma
  * origem da página e reconexão rápida e determinística (sem jitter) para os testes E2E.
+ *
+ * IMPORTANTE: o `engine.io-client` guarda `globalThis.WebSocket` no momento em que é importado.
+ * Se ele fosse importado no carregamento da página, guardaria o WebSocket NATIVO (o MSW só troca o
+ * global depois de iniciar) e a conexão escaparia do servidor simulado, ficando pendurada até o
+ * timeout. Por isso o import é dinâmico e só acontece quando o gerenciador vai conectar.
  */
-export function createSocketIoClient(): SocketLike {
+export async function createSocketIoClient(): Promise<SocketLike> {
+  const { io } = await import('socket.io-client')
+
   const socket = io(window.location.origin, {
     path: REALTIME_PATH,
     transports: ['websocket'],
