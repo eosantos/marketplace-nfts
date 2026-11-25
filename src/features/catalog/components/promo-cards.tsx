@@ -8,7 +8,7 @@ const ctaClass =
 /** Dois cards de chamada com atalhos reais para o catálogo filtrado. */
 export function PromoCards() {
   return (
-    <section aria-label="Atalhos" className="mt-16 grid gap-6 md:mt-24 md:grid-cols-2 lg:gap-[30px]">
+    <section id="criadores" aria-label="Atalhos" className="mt-16 scroll-mt-6 grid gap-6 md:mt-24 md:grid-cols-2 lg:gap-[30px]">
       <article className="grid grid-cols-[170px_1fr] overflow-hidden rounded-lg bg-surface lg:min-h-[250px] lg:grid-cols-[287px_1fr]">
         <SkeletonImage
           src="/assets/nfts/ape-green.webp"

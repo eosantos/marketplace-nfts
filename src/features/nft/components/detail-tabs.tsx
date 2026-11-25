@@ -20,13 +20,13 @@ export function DetailTabs({ nft }: { nft: Nft }) {
 
   const tabClass = (id: TabId) =>
     cn(
-      'border-b-2 pb-2 text-sm transition-colors',
+      'border-b-2 pb-2 text-sm transition-colors lg:text-[17px]',
       tab === id ? 'border-accent font-bold text-accent' : 'border-transparent hover:text-accent',
     )
 
   return (
-    <section aria-label="Informações do NFT" className="mt-16 hidden md:block">
-      <div role="tablist" aria-label="Seções do NFT" className="flex gap-8 border-b border-border">
+    <section aria-label="Informações do NFT" className="mt-16 hidden md:block lg:mt-[88px]">
+      <div role="tablist" aria-label="Seções do NFT" className="flex gap-8 border-b border-border lg:gap-10">
         <button type="button" role="tab" id="tab-details" aria-selected={tab === 'details'} aria-controls="panel-details" className={tabClass('details')} onClick={() => { setTab('details') }}>
           Detalhes do NFT
         </button>

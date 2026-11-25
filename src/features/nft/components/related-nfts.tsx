@@ -20,12 +20,12 @@ export function RelatedNfts({ nft }: { nft: Nft }) {
   if (!query.isPending && items.length === 0 && page === 1) return null
 
   return (
-    <section aria-labelledby="related-title" className="mt-16 hidden md:block">
+    <section aria-labelledby="related-title" className="mt-16 hidden md:block lg:mt-[110px]">
       <h2 id="related-title" className="border-b border-border pb-3 text-base font-bold text-accent">
         Mais desta coleção
       </h2>
 
-      <ul className="mt-6 grid grid-cols-5 gap-6" aria-busy={query.isPlaceholderData}>
+      <ul className="mt-6 grid grid-cols-5 gap-6 lg:mt-8" aria-busy={query.isPlaceholderData}>
         {query.isPending
           ? Array.from({ length: VISIBLE }, (_, index) => (
               <li key={index}>

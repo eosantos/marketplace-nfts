@@ -9,7 +9,7 @@ export function Journal() {
   const { data: articles, isPending, isError } = useArticles()
 
   return (
-    <section aria-labelledby="journal-title" className="mt-20">
+    <section id="diario" aria-labelledby="journal-title" className="mt-20 scroll-mt-6">
       <h2 id="journal-title" className="text-center text-2xl font-bold lg:text-[28px]">
         Diário da Cunhagem
       </h2>

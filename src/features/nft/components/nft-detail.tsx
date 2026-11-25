@@ -66,7 +66,7 @@ function ShareLinks({ nft }: { nft: Nft }) {
   const linkClass = 'text-foreground transition-colors hover:text-accent'
 
   return (
-    <p className="mt-6 hidden items-center gap-3 text-sm font-bold md:flex">
+    <p className="mt-6 hidden items-center gap-3 text-sm font-bold md:flex lg:mt-2 lg:text-[15px]">
       Compartilhar este NFT:
       <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
@@ -118,7 +118,7 @@ function NftDetailContent({ nft }: { nft: Nft }) {
             <StarRating rating={nft.rating} />
           </div>
 
-          <h2 className="mt-4 hidden text-sm font-bold md:block">Sobre este NFT:</h2>
+          <h2 className="mt-4 hidden text-sm font-bold md:block lg:text-[15px]">Sobre este NFT:</h2>
           <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground md:mt-1 md:line-clamp-none">
             {nft.description}
           </p>
@@ -129,7 +129,7 @@ function NftDetailContent({ nft }: { nft: Nft }) {
 
           <DesktopPurchaseRow nft={nft} purchase={purchase} />
 
-          <dl className="mt-6 grid gap-2 text-sm text-muted-foreground">
+          <dl className="mt-6 grid gap-2 text-sm text-muted-foreground lg:mt-5 lg:leading-6">
             <div>
               <dt className="inline">ID do token: </dt>
               <dd className="inline">{nft.tokenId}</dd>
