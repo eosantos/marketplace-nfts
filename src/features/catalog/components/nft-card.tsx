@@ -1,4 +1,7 @@
 import { Link } from '@tanstack/react-router'
+import { Search } from 'lucide-react'
+import { QuickAddButton } from '@/features/cart/components/quick-add-button'
+import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 import type { Nft } from '@/shared/contracts'
 
 interface NftCardProps {
@@ -7,9 +10,13 @@ interface NftCardProps {
   priority?: boolean
 }
 
+/**
+ * Card do catálogo. As ações (favoritar, carrinho, ver) ficam FORA do link, sobrepostas à imagem:
+ * no desktop aparecem no hover/foco; no mobile só o coração, sempre visível (como no Figma).
+ */
 export function NftCard({ nft, priority = false }: NftCardProps) {
   return (
-    <article>
+    <article className="group relative">
       <Link to="/nft/$nftId" params={{ nftId: nft.id }} className="block">
         <div className="relative aspect-[258/300] bg-surface p-4 pb-3">
           {nft.rarity !== 'COMUM' ? (
@@ -36,6 +43,22 @@ export function NftCard({ nft, priority = false }: NftCardProps) {
           ) : null}
         </p>
       </Link>
+
+      <div className="pointer-events-none absolute inset-x-0 top-0 aspect-[258/300]">
+        <FavoriteButton nft={nft} variant="round" className="pointer-events-auto absolute right-3 top-3 md:hidden" />
+        <div className="pointer-events-auto absolute inset-x-0 bottom-3 hidden justify-center gap-2 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100 md:flex">
+          <QuickAddButton nft={nft} />
+          <FavoriteButton nft={nft} variant="card" />
+          <Link
+            to="/nft/$nftId"
+            params={{ nftId: nft.id }}
+            aria-label={`Ver detalhes de ${nft.name}`}
+            className="flex h-9 w-9 items-center justify-center rounded bg-surface/90 text-foreground transition-colors hover:text-accent"
+          >
+            <Search className="h-5 w-5" aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
     </article>
   )
 }

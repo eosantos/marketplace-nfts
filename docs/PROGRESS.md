@@ -8,8 +8,8 @@ Acompanhamento das etapas do desafio.
 | 00b | Esqueleto, tema e deploy | ✅ Concluída | Rotas esqueleto + `notFoundComponent`, cliente Axios único, MSW com `GET /api/health`, tema KURIO (Roboto Mono self-hosted), toast único (`sonner`), `vercel.json`. Reconstruída após perda de trabalho não commitado. | `feat(setup): restore route skeleton, msw bootstrap and kurio theme` |
 | 01 | Mocks e contratos | ✅ Concluída (aguardando merge na main) | Contratos Zod, banco simulado, fixtures, serviços e handlers REST (auth, catálogo/facets, favoritos, carrinho, perfil, carteiras, cotação e pedidos), 16 cenários determinísticos, canal `/__mocks__` e `window.__mocks`, barramento de eventos do banco. | `feat(mocks): ...` (3 commits) |
 | 02 | Autenticação | ✅ Concluída | Login e cadastro (modal no desktop, tela cheia no mobile), sessão persistida, Bearer no Axios, 401 → diálogo de sessão expirada com retomada, redirect seguro, rotas privadas, isolamento de cache, header com menu do usuário. | `feat(auth): add login, signup, session handling and private routes` |
-| 03 | Catálogo (Início) | 🚧 Em validação | Home completa (hero, sidebar de filtros, grade, abas, ordenação, paginação, destaque, promos, Diário da Cunhagem, rodapé), busca no header, drawer de filtros e barra inferior no mobile. URL como estado, skeleton com shimmer, estados de erro/vazio. | — |
-| 04 | Detalhe do NFT | ⏳ Pendente | Galeria, favoritos, quantidade, compra | — |
+| 03 | Catálogo (Início) | ✅ Concluída | Home completa com URL como estado, filtros, skeleton, paginação, mobile e rodapé. | `feat(catalog): add home page with url-driven catalog, filters and mobile layout` |
+| 04 | Detalhe do NFT | 🚧 Em validação | Detalhe com galeria e zoom, edições, quantidade com limite, comprar/adicionar, abas, relacionados e barra de compra mobile; favoritos otimistas com rollback; ações de hover nos cards; ação pendente do visitante. | — |
 | 05 | Carrinho | ⏳ Pendente | Itens, cupom, persistência, sincronização | — |
 | 06 | Tempo real (Socket.IO) | ⏳ Pendente | nft.updated, order.updated, reconexão | — |
 | 07 | Checkout e confirmação | ⏳ Pendente | Pagamento, revisão, idempotência, recibo | — |
@@ -93,3 +93,13 @@ Concluído (aguardando validação e commit):
 - Testes: `search.test.ts` (fallback da URL, parâmetros de API, janela de paginação, conversões de preço).
 
 Pendente de refino: valores exatos do Figma (espaçamentos, tipografia) quando a cópia editável do arquivo estiver disponível.
+
+## Etapa 04 — Detalhe do NFT e favoritos
+
+Concluído (aguardando validação e commit):
+- `/nft/$nftId` com skeleton, 404 amigável, erro com retry e acesso direto; galeria com miniaturas e zoom; edições (rádios nativos), quantidade com limite e mensagens acessíveis; COMPRAR e Favoritar; abas; Mais desta coleção; barra de compra fixa no mobile.
+- Favoritos com atualização otimista, rollback e toast (`aria-live`), coerentes entre catálogo, detalhe e relacionados.
+- Ações dos cards (favoritar, adicionar ao carrinho, ver) fora do link, em hover/foco no desktop e coração fixo no mobile.
+- Visitante: a ação (favoritar/comprar) é guardada, o login volta para a página e a ação é executada uma vez.
+- Testes: `editions` (regras de edição/limite e plurais), `pending-action`, e `favorites` (otimista + rollback com a mutation real).
+- Bug encontrado e corrigido por teste: plural "disponíveis".
