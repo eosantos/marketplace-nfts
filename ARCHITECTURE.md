@@ -238,3 +238,21 @@ Nenhum desvio até a Etapa 00.
 - **Ordenação no mobile:** o Figma mobile não mostra o seletor; ele fica dentro do drawer de filtros.
 - **Drawer de filtros no mobile e barra inferior:** não há frame de filtros no Figma; o drawer reutiliza o painel do desktop. Favoritos e Scan na barra inferior aparecem desabilitados (fora do escopo).
 - **Links fora do escopo** (Mercado, Criadores, Aprenda, "Ler mais", redes sociais, itens do rodapé): aparecem como no Figma, mas desabilitados com "Em breve". O formulário de newsletter avisa que está indisponível.
+
+## Decisões desta etapa (Etapa 04 — detalhe e favoritos)
+
+- **Atualização otimista dos favoritos:** `favoriteToggleOptions` (`src/features/favorites/mutation.ts`) cancela buscas em andamento, atualiza o cache na hora (`onMutate`), reverte para a lista anterior se o servidor falhar (`onError`, com toast em região `aria-live`) e reconcilia com o servidor em `onSettled`. A lógica fica fora do hook de React para ser testada com a mutation real e o Axios simulado (sucesso, falha e remoção).
+- **Estado coerente entre telas:** o conjunto de favoritos vem de uma única query (`['favorites', userId]`); cards do catálogo, "Mais desta coleção" e o detalhe leem o mesmo cache, então favoritar em uma tela reflete nas outras.
+- **Visitante e ação pendente:** favoritar ou comprar sem sessão salva a intenção em `sessionStorage` (`kurio:pending-action`, validada por zod, consumida uma única vez) e leva ao login com `?redirect=` da página atual. O `PendingActionRunner`, montado na raiz, executa a ação quando o usuário volta autenticado (para "Comprar", segue para o carrinho).
+- **Edição e quantidade:** edição padrão 1/50 (como no Figma) se houver estoque, senão a primeira com estoque. O máximo por compra é `min(disponível, limite por comprador)`. Edições esgotadas ficam desabilitadas e anunciadas como "esgotada"; ao tentar passar do limite, uma mensagem `role="status"` explica o motivo. O servidor valida de novo e devolve `AVAILABILITY_CONFLICT`, mostrado em toast.
+- **Edições como rádios nativos:** teclado (setas) e leitor de tela de graça, sem ARIA manual.
+- **Adição rápida no card:** adiciona 1 unidade da edição aberta (ou da primeira com estoque). As ações do card ficam fora do `<a>` (sem controle interativo dentro de link); no desktop aparecem em hover/foco, no mobile só o coração.
+- **Dinheiro:** preço sempre em string; o total da barra mobile usa `decimal.js`.
+- **404 e erro:** NFT inexistente mostra um estado amigável com link para o catálogo; falha de rede/5xx mostra retry.
+
+### Desvios do Figma (Etapa 04)
+- **Aba "Avaliações de colecionadores":** existe só a nota média e a contagem; os comentários individuais estão fora do escopo (mensagem "em breve").
+- **Textos de Rede/Contrato/Direitos autorais:** o Figma troca os rótulos; aqui cada rótulo mostra o dado correspondente (rede, endereço do contrato abreviado, royalties).
+- **"Mais desta coleção":** carrossel com pontos que paginam a coleção (até 3 páginas) em vez de deslizar.
+- **"COMPRAR":** adiciona ao carrinho e segue para `/cart` (o checkout depende da cotação do carrinho). O ícone de carrinho do mobile só adiciona.
+- **Compartilhar:** LinkedIn, e-mail e Twitter abrem os links de compartilhamento reais.
