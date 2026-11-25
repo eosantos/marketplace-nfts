@@ -2,6 +2,8 @@
 
 Acompanhamento das etapas do desafio.
 
+**URL pública:** https://marketplace-nfts-ten.vercel.app/
+
 | Etapa | Título | Status | Resumo | Commit |
 |---|---|---|---|---|
 | 00 | Ambiente e dependências | ✅ Concluída | Scaffold Vite+React+TS, todas as deps instaladas, Tailwind v4 + tw-animate-css, shadcn/ui (button, input, label, dialog, sheet, select, checkbox, skeleton, toast, form), MSW SW gerado, Playwright Chromium instalado, ESLint/Prettier/Vitest (jsdom) /Playwright configurados, README, ARCHITECTURE e PROGRESS criados. packageManager fixado (pnpm@12.23.0). Auditoria: pnpm install --frozen-lockfile, typecheck, lint, build validados; mocks ativos por padrão | `chore(setup): bootstrap vite react ts project with full dependency set` |
@@ -12,10 +14,10 @@ Acompanhamento das etapas do desafio.
 | 04 | Detalhe do NFT | ✅ Concluída | Detalhe com galeria, edições, quantidade com limite, abas, relacionados e barra mobile; favoritos otimistas com rollback; ações de hover nos cards. | `feat(nft): add nft detail page, optimistic favorites and card actions` |
 | 05 | Carrinho | ✅ Concluída | Página /cart com resumo só da cotação, quantidade otimista em série, cupom, carrinho de visitante e mescla ao entrar. | `feat(cart): add cart page, server quote summary, coupon and guest cart merge` |
 | 06 | Tempo real (Socket.IO) | ✅ Concluída | `socket.io-client` atrelado à sessão e servidor simulado no MSW (`ws.link` + binding) sobre o mesmo banco do REST; ledger, avisos acessíveis e reconciliação por REST. | `feat(realtime): add socket.io realtime with msw-simulated server and rest reconciliation` |
-| 07 | Checkout e pedidos | 🚧 Em validação | Checkout com revisão e revalidação (mudanças exigem nova confirmação), carteira com conexão/recusa/desconexão, `Idempotency-Key` por tentativa com reenvio após timeout, pedido pendente/confirmado/recusado com retomada após refresh, e recibo por snapshot. | — |
-| 08 | Perfil e carteiras | ✅ Concluída | Edição de dados, avatar (upload multipart), troca de senha, carteira principal e secundárias | `/profile`, `/wallets` |
-| 09 | Testes E2E (Playwright) | 🔄 Em validação | Fluxos de compra, tempo real, conta e carteiras; regressão visual | `tests/e2e/` |
-| 10 | Performance (Lighthouse) | ⏳ Pendente | Auditoria início e detalhe, mobile+desktop | — |
+| 07 | Checkout e pedidos | ✅ Concluída | Checkout com revisão e revalidação (mudanças exigem nova confirmação), carteira com conexão/recusa/desconexão, `Idempotency-Key` por tentativa com reenvio após timeout, pedido pendente/confirmado/recusado com retomada após refresh, e recibo por snapshot. | `feat(checkout): add checkout, idempotent orders and receipt` |
+| 08 | Perfil e carteiras | ✅ Concluída | Edição de dados, avatar (upload multipart), troca de senha, carteira principal e secundárias | `feat(profile): add profile, avatar, password and wallets management` |
+| 09 | Testes E2E (Playwright) | ✅ Concluída | Fluxos de compra e falha, tempo real, conta e carteiras, axe-core e regressão visual (desktop 1440 e mobile 390) | `test(e2e): add playwright flows for purchase, realtime, account and visual baselines` |
+| 10 | Performance (Lighthouse) e deploy | ✅ Concluída | Code splitting, entrada paralela com o MSW, imagens WebP, `pnpm lighthouse` (mediana de 3, `docs/lighthouse/`) e deploy na Vercel | `perf(build): split routes and vendors, add lighthouse script and vercel config` |
 
 ## Etapa 01 — detalhamento (tarefas 1–5)
 

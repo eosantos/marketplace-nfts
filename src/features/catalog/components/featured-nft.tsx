@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Skeleton } from '@/shared/ui/skeleton'
 import { useFeaturedNft } from '../hooks'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 /** Faixa "NFT em destaque / Oferta limitada" abaixo dos filtros. */
 export function FeaturedNft() {
@@ -18,7 +19,7 @@ export function FeaturedNft() {
         <p className="mt-1 text-center text-lg font-bold">OFERTA LIMITADA</p>
       </div>
       <Link to="/nft/$nftId" params={{ nftId: nft.id }} className="block">
-        <img
+        <SkeletonImage
           src={nft.image}
           alt={`${nft.name}, da coleção ${nft.collection}`}
           width={310}

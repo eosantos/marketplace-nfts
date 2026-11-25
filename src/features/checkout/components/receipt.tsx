@@ -4,6 +4,7 @@ import { padEth } from '@/features/cart/format'
 import { shortAddress } from '@/features/nft/editions'
 import type { Order } from '@/shared/contracts'
 import { ThankYouIllustration } from '@/shared/icons'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 const EXPLORER_NAMES = { Ethereum: 'Etherscan', Polygon: 'Polygonscan', Solana: 'Solscan' } as const
 
@@ -78,7 +79,7 @@ export function Receipt({ order }: { order: Order }) {
           {snapshot.items.map((item) => (
             <li key={`${item.nftId}-${item.editionType}`} className="grid grid-cols-[1fr_auto] items-center gap-x-3 sm:grid-cols-[1fr_70px_90px]">
               <div className="flex min-w-0 items-center gap-3">
-                <img src={item.nftImage} alt="" width={64} height={64} loading="lazy" decoding="async" className="h-16 w-16 rounded-lg object-cover" />
+                <SkeletonImage src={item.nftImage} alt="" width={64} height={64} loading="lazy" decoding="async" className="h-16 w-16 rounded-lg object-cover" />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-bold">{item.nftName}</p>
                   <p className="text-xs text-muted-foreground">

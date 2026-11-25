@@ -8,6 +8,7 @@ import { Skeleton } from '@/shared/ui/skeleton'
 import { Stepper } from '@/shared/ui/stepper'
 import { padEth } from '../format'
 import { useCartLineActions, type CartLine } from '../hooks'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 interface CartRowProps {
   line: CartLine
@@ -41,7 +42,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
     >
       <div className="flex items-center gap-4 max-md:contents">
         {data ? (
-          <img
+          <SkeletonImage
             src={data.image}
             alt={`${data.name}, da coleção ${data.collection}`}
             width={70}

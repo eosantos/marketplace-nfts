@@ -7,6 +7,7 @@ export function StarRating({ rating, className }: { rating: NftRating; className
 
   return (
     <p
+      role="img"
       className={cn('flex items-center gap-1 text-xs', className)}
       aria-label={`Nota ${rating.score.toFixed(1)} de 5, ${rating.count} avaliações de colecionadores`}
     >

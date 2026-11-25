@@ -5,6 +5,7 @@ import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 import type { Nft } from '@/shared/contracts'
 import { cn } from '@/shared/lib/utils'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/shared/ui/dialog'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 /** Miniaturas (desktop) + imagem principal com zoom. Renderiza duas células da grade do detalhe. */
 export function Gallery({ nft }: { nft: Nft }) {
@@ -30,13 +31,13 @@ export function Gallery({ nft }: { nft: Nft }) {
               position === index ? 'border-accent' : 'border-transparent hover:border-border',
             )}
           >
-            <img src={source} alt="" width={100} height={100} decoding="async" className="aspect-square w-full object-cover" />
+            <SkeletonImage src={source} alt="" width={100} height={100} decoding="async" className="aspect-square w-full object-cover" />
           </button>
         ))}
       </div>
 
       <div className="relative bg-surface p-0 md:self-start md:p-5">
-        <img
+        <SkeletonImage
           src={image}
           alt={`${nft.name}, da coleção ${nft.collection}`}
           width={404}
@@ -71,7 +72,7 @@ export function Gallery({ nft }: { nft: Nft }) {
           <DialogContent className="max-w-2xl border-border bg-surface p-3">
             <DialogTitle className="sr-only">{nft.name}</DialogTitle>
             <DialogDescription className="sr-only">Imagem ampliada de {nft.name}.</DialogDescription>
-            <img src={image} alt={nft.name} className="max-h-[80vh] w-full rounded-xl object-contain" />
+            <SkeletonImage src={image} alt={nft.name} className="max-h-[80vh] w-full rounded-xl object-contain" />
           </DialogContent>
         </Dialog>
       </div>

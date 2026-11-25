@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { cn } from '@/shared/lib/utils'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 // Imagens da vitrine (assets do Figma). Os dados dos NFTs vêm sempre da API.
 const SLIDES = [
-  { src: '/assets/nfts/ape-green.png', alt: 'Macaco de óculos e jaqueta verde em destaque' },
-  { src: '/assets/nfts/orangutan-gold.png', alt: 'Orangutango dourado com fones de ouvido em destaque' },
-  { src: '/assets/nfts/gorilla-purple.png', alt: 'Gorila de chapéu e moletom roxo em destaque' },
+  { src: '/assets/nfts/ape-green.webp', alt: 'Macaco de óculos e jaqueta verde em destaque' },
+  { src: '/assets/nfts/orangutan-gold.webp', alt: 'Orangutango dourado com fones de ouvido em destaque' },
+  { src: '/assets/nfts/gorilla-purple.webp', alt: 'Gorila de chapéu e moletom roxo em destaque' },
 ] as const
 
 export function Hero() {
@@ -42,7 +43,7 @@ export function Hero() {
           </a>
         </div>
 
-        <img
+        <SkeletonImage
           src={slide.src}
           alt={slide.alt}
           width={450}
@@ -54,7 +55,7 @@ export function Hero() {
       </div>
 
       <div className="relative hidden md:block">
-        <img
+        <SkeletonImage
           key={slide.src}
           src={slide.src}
           alt={slide.alt}

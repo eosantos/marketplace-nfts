@@ -3,6 +3,7 @@ import { Search } from 'lucide-react'
 import { QuickAddButton } from '@/features/cart/components/quick-add-button'
 import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 import type { Nft } from '@/shared/contracts'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 interface NftCardProps {
   nft: Nft
@@ -24,7 +25,7 @@ export function NftCard({ nft, priority = false }: NftCardProps) {
               {nft.rarity}
             </span>
           ) : null}
-          <img
+          <SkeletonImage
             src={nft.image}
             alt={`${nft.name}, da coleção ${nft.collection}`}
             width={258}

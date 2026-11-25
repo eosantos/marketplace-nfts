@@ -1,0 +1,122 @@
+[
+  {
+    "page": "/",
+    "preset": "mobile",
+    "runs": 3,
+    "scores": {
+      "performance": 87,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 92
+    },
+    "metrics": {
+      "fcp": 2427.88825,
+      "lcp": 3638.6659,
+      "tbt": 17.5,
+      "cls": 0,
+      "si": 2427.88825
+    },
+    "performanceRuns": [
+      87,
+      87,
+      87
+    ],
+    "report": "inicio-mobile.html",
+    "env": {
+      "version": "12.8.2",
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/159.0.0.0 Safari/537.36",
+      "form": "mobile",
+      "throttling": "simulate"
+    }
+  },
+  {
+    "page": "/nft/nft_002",
+    "preset": "mobile",
+    "runs": 3,
+    "scores": {
+      "performance": 87,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 92
+    },
+    "metrics": {
+      "fcp": 2497.751375,
+      "lcp": 3554.0005999999994,
+      "tbt": 4.5,
+      "cls": 0,
+      "si": 2497.751375
+    },
+    "performanceRuns": [
+      87,
+      87,
+      88
+    ],
+    "report": "nft-nft-002-mobile.html",
+    "env": {
+      "version": "12.8.2",
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/159.0.0.0 Safari/537.36",
+      "form": "mobile",
+      "throttling": "simulate"
+    }
+  },
+  {
+    "page": "/",
+    "preset": "desktop",
+    "runs": 3,
+    "scores": {
+      "performance": 99,
+      "accessibility": 96,
+      "best-practices": 100,
+      "seo": 92
+    },
+    "metrics": {
+      "fcp": 560.224475,
+      "lcp": 740.4100000000001,
+      "tbt": 0,
+      "cls": 0.0001516154054383968,
+      "si": 560.224475
+    },
+    "performanceRuns": [
+      99,
+      99,
+      100
+    ],
+    "report": "inicio-desktop.html",
+    "env": {
+      "version": "12.8.2",
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/159.0.0.0 Safari/537.36",
+      "form": "desktop",
+      "throttling": "simulate"
+    }
+  },
+  {
+    "page": "/nft/nft_002",
+    "preset": "desktop",
+    "runs": 3,
+    "scores": {
+      "performance": 99,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 92
+    },
+    "metrics": {
+      "fcp": 561.0428,
+      "lcp": 777.6107000000001,
+      "tbt": 0,
+      "cls": 0,
+      "si": 561.0428
+    },
+    "performanceRuns": [
+      99,
+      99,
+      99
+    ],
+    "report": "nft-nft-002-desktop.html",
+    "env": {
+      "version": "12.8.2",
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/159.0.0.0 Safari/537.36",
+      "form": "desktop",
+      "throttling": "simulate"
+    }
+  }
+]
