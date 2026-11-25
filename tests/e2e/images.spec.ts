@@ -1,23 +1,16 @@
 import { expect, test } from '@playwright/test'
 import { resetApp } from './helpers'
 
-test('imagens do catálogo mostram shimmer até carregar e depois o removem', async ({ page }) => {
+// O shimmer só existe enquanto a imagem carrega (o servidor é local, então é rápido). O estado
+// "carregando" é coberto pelo teste unitário de SkeletonImage; aqui garantimos o fim do ciclo.
+test('imagens do catálogo carregam e perdem o shimmer', async ({ page }) => {
   await resetApp(page)
+  await page.goto('/')
 
-  // Segura as imagens dos NFTs para observar o estado de carregamento.
-  let release!: () => void
-  const gate = new Promise<void>((resolve) => {
-    release = resolve
-  })
-  await page.route('**/assets/nfts/*.webp', async (route) => {
-    await gate
-    await route.continue()
-  })
-  await page.reload({ waitUntil: 'commit' })
-
-  const image = page.locator('article img').first()
-  await expect(image).toHaveClass(/img-skeleton/)
-
-  release()
-  await expect(image).not.toHaveClass(/img-skeleton/)
+  const card = page.locator('article img[width="258"]').first()
+  await expect(card).toBeVisible()
+  await expect
+    .poll(() => card.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0))
+    .toBe(true)
+  await expect(card).not.toHaveClass(/img-skeleton/)
 })

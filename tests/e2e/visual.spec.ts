@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import { buyNow, login, NFT_ID, resetApp } from './helpers'
 
 // Baselines em tests/e2e/__screenshots__ (gerar com `pnpm test:e2e:update`).
-// Regressão visual das telas do Figma: início, detalhe, carrinho e pagamento.
+// Regressão visual das telas do Figma: início, detalhe, carrinho e pagamento (+ 404).
 test.describe('regressão visual', () => {
   test.beforeEach(async ({ page }) => {
     await resetApp(page)
@@ -37,5 +37,11 @@ test.describe('regressão visual', () => {
     await expect(page.getByTestId('checkout-total')).toBeVisible()
     await page.waitForLoadState('networkidle')
     await expect(page).toHaveScreenshot('pagamento.png', { fullPage: true })
+  })
+
+  test('404', async ({ page }) => {
+    await page.goto('/rota-inexistente')
+    await expect(page.getByRole('heading', { name: 'Ops, algo deu errado por aqui' })).toBeVisible()
+    await expect(page).toHaveScreenshot('404.png')
   })
 })
