@@ -7,6 +7,7 @@ import '@fontsource-variable/roboto-mono'
 import { routeTree } from '../routeTree.gen'
 import { onAuthenticated, setupAuth } from '@/features/auth/lifecycle'
 import { mergeGuestCart } from '@/features/cart/merge-guest-cart'
+import { setupRealtime } from '@/features/realtime/setup'
 import { queryClient } from '@/shared/api/query-client'
 import { Toaster } from '@/shared/ui/sonner'
 import './globals.css'
@@ -32,6 +33,9 @@ async function bootstrap() {
     const { startMocks } = await import('../mocks/browser')
     await startMocks()
   }
+
+  // Depois dos mocks: o servidor Socket.IO simulado precisa existir antes da primeira conexão.
+  setupRealtime()
 
   const root = document.getElementById('root')!
   createRoot(root).render(

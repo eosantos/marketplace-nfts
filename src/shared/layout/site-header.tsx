@@ -4,6 +4,7 @@ import { useSession } from '@/features/auth/hooks'
 import { HeaderSearch } from '@/features/catalog/components/header-search'
 import { useCartCount } from '@/features/cart/use-cart-count'
 import { cn } from '@/shared/lib/utils'
+import { RealtimeStatusDot } from './realtime-status'
 import { UserMenu } from './user-menu'
 
 // Seções fora do escopo do desafio: aparecem como no Figma, mas não navegam.
@@ -64,6 +65,8 @@ export function SiteHeader() {
               </span>
             ) : null}
           </Link>
+
+          {user ? <RealtimeStatusDot /> : null}
 
           {user ? (
             <UserMenu user={user} />

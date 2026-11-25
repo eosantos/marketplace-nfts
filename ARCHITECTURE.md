@@ -107,14 +107,14 @@ e nunca `number`.
 
 ## Eventos Socket.IO
 
-> A preencher na Etapa 06 (tempo real)
+Envelope (`SocketEvent`): `{ id, type, resource, resourceId, version, userId?, payload }`.
 
-Eventos previstos: `nft.updated`, `order.updated`.
+| Evento | Destinatários | `version` | `payload` |
+|---|---|---|---|
+| `nft.updated` | todas as conexões autenticadas | contador por NFT | `{ id, name, price, oldPrice?, editions[], updatedAt }` |
+| `order.updated` | só o dono do pedido | 1 = `pending`, 2 = terminal | `{ orderId, status, txRef?, txExplorerUrl?, updatedAt }` |
 
-Envelope: `{ id, type, resource, resourceId, version, userId?, payload }`.
-
-Transporte MSW: `@mswjs/socket.io-binding` intercepta as conexões do `socket.io-client`
-e as roteia para handlers no service worker. Limitação: apenas navegador (sem SSE real).
+Eventos de aplicação do cliente para o servidor: `authenticate { token }`. Respostas: `authenticated { userId }` e `auth_error { message }`.
 
 ## Política de sessão
 
@@ -142,7 +142,7 @@ Ver "Decisões desta etapa (Etapa 05 — carrinho)" no fim deste documento.
 
 ## Reconciliação REST ↔ Socket.IO
 
-> A preencher na Etapa 06 (tempo real)
+Ver "Decisões desta etapa (Etapa 06 — tempo real)" no fim deste documento: o REST é a fonte de verdade; o socket é um atalho que mantém os caches frescos. Eventos duplicados e antigos são descartados pelo `EventLedger`; depois de uma queda, o cliente reconcilia relendo pelo REST as consultas ativas.
 
 ## Dinheiro (ETH)
 
@@ -273,3 +273,17 @@ Nenhum desvio até a Etapa 00.
 - **Estado do cupom aplicado e erros de cupom/estoque:** não existem no Figma; seguem o padrão visual (borda cobre, texto de erro em `danger`).
 - **Mobile:** o resumo fica no fluxo, ao fim da lista (com cantos superiores arredondados), em vez de fixo na base.
 - **"Colecionadores também viram":** visível só no desktop, como carrossel por pontos (mais bem avaliados fora do carrinho).
+
+## Decisões desta etapa (Etapa 06 — tempo real)
+
+- **Wire:** `socket.io-client` (só WebSocket, `path: '/realtime/'`, mesma origem) conversa com um servidor simulado no MSW via `ws.link` + `@mswjs/socket.io-binding` (`toSocketIo`). Os eventos passam pelo cliente real; nada chama setter ou cache diretamente.
+- **Limitações do binding (lidas no código instalado, v0.2.0):** só simula o handshake Engine.IO/Socket.IO; não decodifica o `auth` do pacote CONNECT, não suporta namespaces, rooms nem ack e **não envia ping**. Por isso: (1) a autenticação é um evento da aplicação (`authenticate` com o token, respondido por `authenticated` ou `auth_error`); (2) o servidor simulado envia o ping `2` do protocolo v4 a cada 20 s, senão o cliente derrubaria a conexão por `pingTimeout` (30 s); (3) usamos um `path` próprio (`/realtime/`), porque o padrão `*/realtime` casa só ele e não intercepta o WebSocket do HMR do Vite (um `ws.link('*')` quebraria o dev server).
+- **Uma fonte de verdade:** os serviços do banco simulado emitem no barramento `src/mocks/events.ts`; o `RealtimeHub` (`src/mocks/socket/hub.ts`, sem dependência do MSW) lê o MESMO banco do REST e monta o envelope `{ id, type, resource, resourceId, version, userId?, payload }`. A cola com o MSW (`handler.ts`) é fina.
+- **Escopo por usuário:** só conexões autenticadas recebem eventos. `nft.updated` vai a todas; `order.updated` só ao dono (envelope com `userId`). O cliente ainda descarta evento cujo `userId` não seja o seu (defesa em profundidade).
+- **Versões:** `nft` incrementa por recurso a cada emissão; `order` usa 1 para `pending` e 2 para estados terminais, então um evento atrasado nunca regride um pedido.
+- **Dedupe no cliente (`EventLedger`):** ignora `id` já visto (com descarte dos mais antigos) e `version <= última aplicada` do recurso. Cobre duplicado e fora de ordem; a defesa de pedido terminal também existe no cache.
+- **Aplicação nos caches:** `nft.updated` atualiza detalhe, todas as listas (catálogo, relacionados, sugestões, destaque) e favoritos, marca as listas como obsoletas para a próxima visita e, se o NFT está no carrinho, refaz a cotação e cria avisos (preço mudou, linha não atendível). `order.updated` atualiza o pedido em cache e, ao terminar, refaz carrinho e cotação e limpa avisos antigos.
+- **Reconexão e reconciliação:** o `socket.io-client` reconecta sozinho (500 ms a 2 s, sem jitter). Eventos emitidos durante a queda se perdem; ao reautenticar depois de uma queda, o cliente invalida (só as consultas ativas) catálogo, carrinho, cotação, favoritos e pedidos para relê-los pelo REST. A primeira conexão não reconcilia.
+- **Ciclo de vida:** conecta quando há token, autentica a cada conexão, desconecta no logout, na expiração e na troca de usuário (`onClientReset`) e esquece o ledger. `auth_error` desconecta sem insistir (o REST trata o 401).
+- **Acessibilidade:** região `aria-live` global (`RealtimeAnnouncer`) anuncia mudanças relevantes (preço, esgotado, pedido confirmado/recusado) e o carrinho mostra os avisos em `role="status"`. Um ponto discreto no header indica conectado, conectando ou reconectando.
+- **Controle de testes:** `POST /__mocks__/emit` e `window.__mocks.emitNft` alteram o NFT NO BANCO e emitem pelo servidor simulado (com `duplicate` e `stale` opcionais); `POST /__mocks__/socket/drop` e `window.__mocks.dropSocket` derrubam as conexões.

@@ -21,6 +21,10 @@ export function dismissCartAlert(queryClient: QueryClient, userId: string, id: s
   queryClient.setQueryData<CartAlert[]>(alertsKey(userId), (old) => (old ?? []).filter((item) => item.id !== id))
 }
 
+export function clearCartAlerts(queryClient: QueryClient, userId: string): void {
+  queryClient.setQueryData<CartAlert[]>(alertsKey(userId), [])
+}
+
 export function useCartAlerts() {
   const queryClient = useQueryClient()
   const { user } = useSession()

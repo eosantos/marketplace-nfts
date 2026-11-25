@@ -2,6 +2,7 @@ import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { SessionExpiredDialog } from '@/features/auth/components/session-expired-dialog'
 import { PendingActionRunner } from '@/shared/layout/pending-action-runner'
+import { RealtimeAnnouncer } from '@/shared/layout/realtime-announcer'
 import { SiteHeader } from '@/shared/layout/site-header'
 
 function NotFoundPage() {
@@ -26,6 +27,7 @@ function RootLayout() {
       <Outlet />
       <SessionExpiredDialog />
       <PendingActionRunner />
+      <RealtimeAnnouncer />
       {import.meta.env.DEV && <TanStackRouterDevtools />}
     </>
   )

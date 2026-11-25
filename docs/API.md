@@ -489,9 +489,12 @@ Fora de `/api`, sem latência nem falhas de cenário. Usado pelos testes E2E e p
 | `GET /__mocks__/state` | — | Cenário ativo e contagens do banco |
 | `POST /__mocks__/reset` | `{ scenario?: string }` | Restaura integralmente o cenário (padrão `default`) |
 | `POST /__mocks__/scenario` | `{ scenario: string }` | Troca o cenário mantendo os dados |
+| `POST /__mocks__/emit` | `{ nftId, price?, available?: { edition, value }, duplicate?, stale? }` | Altera o NFT no banco e emite `nft.updated` pelo Socket.IO simulado; `duplicate` reenvia o mesmo evento, `stale` envia depois um evento antigo (versão menor, preço errado) |
+| `GET /__mocks__/socket` | — | Conexões abertas e autenticadas |
+| `POST /__mocks__/socket/drop` | — | Derruba as conexões Socket.IO (os clientes reconectam e reconciliam) |
 
 Com os mocks ativos, o mesmo controle existe em `window.__mocks`:
-`reset(scenario?)`, `setScenario(scenario)` e `getState()`.
+`reset(scenario?)`, `setScenario(scenario)`, `getState()`, `emitNft(opções)`, `dropSocket()` e `socketState()`.
 
 ## Cenários implementados
 

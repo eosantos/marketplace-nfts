@@ -72,9 +72,9 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         </div>
       </div>
 
-      <p className="text-sm font-bold text-accent-strong max-md:col-start-2 max-md:row-start-2">
+      <div className="text-sm font-bold text-accent-strong max-md:col-start-2 max-md:row-start-2">
         {unitPrice ? `${padEth(unitPrice)} ETH` : <Skeleton className="h-4 w-16" />}
-      </p>
+      </div>
 
       <div className="max-md:col-start-3 max-md:row-start-2">
         <Stepper
@@ -91,12 +91,9 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         />
       </div>
 
-      <p
-        className="text-sm font-bold text-accent-strong max-md:hidden"
-        aria-busy={quoteLoading && !quoteItem}
-      >
+      <div className="text-sm font-bold text-accent-strong max-md:hidden" aria-busy={quoteLoading && !quoteItem}>
         {quoteItem ? `${padEth(quoteItem.subtotal)} ETH` : quoteLoading ? <Skeleton className="h-4 w-16" /> : '—'}
-      </p>
+      </div>
 
       <button
         type="button"

@@ -609,3 +609,36 @@ export const ArticleSchema = z.object({
 })
 
 export type Article = z.infer<typeof ArticleSchema>
+
+// ============================================================================
+// Payloads dos eventos Socket.IO (dentro do envelope `SocketEvent.payload`)
+// ============================================================================
+
+/** `nft.updated`: estado atual de preço e disponibilidade (lista, detalhe e carrinho se atualizam com ele). */
+export const NftUpdatedPayloadSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: EthAmountSchema,
+  oldPrice: EthAmountSchema.optional(),
+  editions: z.array(NftEditionSchema).min(1),
+  updatedAt: IsoDateSchema,
+})
+
+export type NftUpdatedPayload = z.infer<typeof NftUpdatedPayloadSchema>
+
+/** `order.updated`: novo estado do pedido (somente o dono recebe). */
+export const OrderUpdatedPayloadSchema = z.object({
+  orderId: z.string(),
+  status: OrderStatusSchema,
+  txRef: z.string().optional(),
+  txExplorerUrl: z.string().url().optional(),
+  updatedAt: IsoDateSchema,
+})
+
+export type OrderUpdatedPayload = z.infer<typeof OrderUpdatedPayloadSchema>
+
+/**
+ * Caminho do Socket.IO. É próprio (não `/socket.io/`) para o servidor simulado casar só este
+ * WebSocket e nunca interceptar o do HMR do Vite.
+ */
+export const REALTIME_PATH = '/realtime/'
