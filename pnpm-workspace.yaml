@@ -1,0 +1,10 @@
+allowBuilds:
+  esbuild: true
+  msw: true
+permissions:
+  '@tanstack/react-router':
+    build: true
+    skills: true
+  '@tanstack/router-plugin':
+    build: true
+    skills: true
