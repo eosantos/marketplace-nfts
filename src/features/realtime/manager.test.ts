@@ -88,7 +88,7 @@ function setup(token: string | null = 'tok_alice') {
     getToken: () => state.token,
     createSocket: () => {
       socket = new FakeSocket(hub)
-      return socket
+      return Promise.resolve(socket)
     },
   })
   return { hub, queryClient, invalidated, state, manager, socket: () => socket }
@@ -226,6 +226,35 @@ describe('RealtimeManager', () => {
     await wait(5)
     expect(ctx.manager.getStatus()).toBe('disconnected')
     expect(ctx.hub.stats().authenticated).toBe(0)
+  })
+
+  it('loads the client on demand and drops a connection when the user leaves before it loads', async () => {
+    const hub = new RealtimeHub()
+    const queryClient = new QueryClient()
+    let release: (socket: SocketLike) => void = () => undefined
+    let created = 0
+    const manager = new RealtimeManager({
+      queryClient,
+      getToken: () => 'tok_alice',
+      createSocket: () => {
+        created += 1
+        return new Promise<SocketLike>((resolve) => {
+          release = resolve
+        })
+      },
+    })
+
+    manager.syncWithSession()
+    manager.syncWithSession() // não cria um segundo cliente enquanto o primeiro carrega
+    expect(created).toBe(1)
+    expect(manager.getStatus()).toBe('connecting')
+
+    manager.disconnect() // logout antes de o cliente terminar de carregar
+    release(new FakeSocket(hub))
+    await wait(5)
+
+    expect(manager.getStatus()).toBe('disconnected')
+    expect(hub.stats().connected).toBe(0)
   })
 
   it('notifies status subscribers', async () => {

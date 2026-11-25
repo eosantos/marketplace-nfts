@@ -476,6 +476,8 @@ para secundárias.
 Conexão e desconexão simuladas da carteira (o checkout consome este estado).
 
 **Resposta 200** (`WalletConnection`): `{ walletId: string, connected: boolean, network: string, address: string }`
+
+`GET /wallets` passa a incluir `connected: boolean` em cada carteira (estado da conexão simulada). `POST /orders` exige a carteira do pedido **conectada** (`FORBIDDEN`: "Conecte a carteira antes de confirmar a compra"); o reenvio idempotente de um pedido já criado não exige.
 **Erros**: `NOT_FOUND`, `FORBIDDEN`, `UNAUTHENTICATED`, `SESSION_EXPIRED`, `TRANSIENT`
 
 ---
@@ -517,6 +519,7 @@ Cenários de cotação e pedidos (parte 2b):
 |---------|--------|
 | `payment-confirmed` | Pedido confirmado após ~2,5 s (mesmo comportamento do `default`) |
 | `payment-refused` | Pedido recusado após ~2,5 s; estoque e carrinho intactos |
+| `wallet-refused` | `POST /wallets/:id/connect` responde `FORBIDDEN` ("Conexão recusada na carteira"); desconectar continua possível |
 | `price-changed-at-checkout` | Na **primeira** tentativa de pedido, o preço dos NFTs da cotação sobe 0.10 ETH no banco e a criação responde `PRICE_CHANGED`; uma nova cotação já traz o preço novo |
 | `sold-out-at-checkout` | Na **primeira** tentativa de pedido, a edição do 1º item esgota e a criação responde `AVAILABILITY_CONFLICT`; novas cotações com ela também falham |
 | `timeout-after-order-created` | O pedido é criado, mas a resposta só chega como erro de rede após 20 s (o cliente deve usar timeout menor). Reenviar a mesma `Idempotency-Key` devolve o mesmo pedido |

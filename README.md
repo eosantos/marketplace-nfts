@@ -78,6 +78,7 @@ Selecione o cenário via `VITE_MOCK_SCENARIO` no `.env` ou pelo painel de dev (a
 | `timeout-after-order-created` | Timeout após criar o pedido (recuperação por idempotência) |
 | `payment-confirmed` | Pagamento confirmado |
 | `payment-refused` | Pagamento recusado |
+| `wallet-refused` | Recusa da conexão da carteira (conectar falha; desconectar continua possível) |
 
 O banco simulado usa a chave versionada `kurio:mocks:db:v1` no localStorage. O reset restaura o cenário selecionado:
 

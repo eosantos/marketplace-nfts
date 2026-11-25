@@ -125,7 +125,7 @@ export function CartPage() {
       <AlertsBanner />
 
       {cart.isLoading ? (
-        <div role="status" aria-label="Carregando carrinho" className="grid gap-6 md:grid-cols-[1fr_332px] md:gap-12">
+        <div role="status" aria-label="Carregando carrinho" className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_332px] md:gap-12">
           <div className="grid gap-3">
             {Array.from({ length: 3 }, (_, index) => (
               <Skeleton key={index} className="h-[94px] w-full" />
@@ -141,7 +141,7 @@ export function CartPage() {
       ) : cart.lines.length === 0 ? (
         <EmptyCart />
       ) : (
-        <div className="grid items-start gap-6 md:grid-cols-[1fr_332px] md:gap-12">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_332px] md:gap-12">
           <section aria-label="Itens do carrinho">
             <div className="hidden grid-cols-[1fr_110px_120px_110px_36px] gap-x-4 border-b border-border px-3 pb-3 text-sm font-bold md:grid">
               <span>NFTs</span>

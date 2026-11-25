@@ -266,6 +266,13 @@ describe('wallets', () => {
     expect(error.code).toBe('VALIDATION_ERROR')
   })
 
+  it('exposes the connection state in the list', () => {
+    expect(unwrap(listWallets('user_alice')).every((wallet) => wallet.connected === false)).toBe(true)
+    unwrap(setWalletConnection('user_alice', 'wallet_alice_primary', true))
+    const primary = unwrap(listWallets('user_alice')).find((wallet) => wallet.id === 'wallet_alice_primary')
+    expect(primary?.connected).toBe(true)
+  })
+
   it('connects and disconnects a wallet', () => {
     expect(unwrap(setWalletConnection('user_alice', 'wallet_alice_primary', true)).connected).toBe(true)
     expect(unwrap(setWalletConnection('user_alice', 'wallet_alice_primary', false)).connected).toBe(false)

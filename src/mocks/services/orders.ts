@@ -91,6 +91,9 @@ export function createOrder(
     const wallet = db.wallets.find((candidate) => candidate.id === data.walletId)
     if (!wallet) return fail('NOT_FOUND', 'Carteira não encontrada.')
     if (wallet.userId !== userId) return fail('FORBIDDEN', 'Esta carteira pertence a outro usuário.')
+    if (db.walletConnections?.[wallet.id] !== true) {
+      return fail('FORBIDDEN', 'Conecte a carteira antes de confirmar a compra.')
+    }
 
     const quote = db.quotes.find(
       (candidate) => candidate.quoteId === data.quoteId && candidate.userId === userId,

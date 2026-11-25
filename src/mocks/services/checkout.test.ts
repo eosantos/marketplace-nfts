@@ -10,9 +10,12 @@ import { getCart } from './cart'
 import { getNft } from './catalog'
 import { createOrder, getOrder, settleOrder } from './orders'
 import { createQuote } from './quote'
+import { setWalletConnection } from './wallets'
 
 beforeEach(() => {
   resetDb('default')
+  setWalletConnection('user_alice', 'wallet_alice_primary', true)
+  setWalletConnection('user_bob', 'wallet_bob_primary', true)
 })
 
 function unwrap<T>(result: ServiceResult<T>): T {
@@ -230,6 +233,38 @@ describe('orders: creation and idempotency', () => {
       db.nfts[1].price = '9.99'
     })
     expect(failure(createOrder('user_alice', 'k', orderInput(quote))).code).toBe('PRICE_CHANGED')
+  })
+})
+
+describe('orders: wallet connection', () => {
+  it('requires a connected wallet and lets a replay through even after disconnecting', () => {
+    const quote = quoteFor('user_alice', ONE_EDITION)
+    const input = orderInput(quote)
+
+    setWalletConnection('user_alice', 'wallet_alice_primary', false)
+    const blocked = failure(createOrder('user_alice', 'key-1', input))
+    expect(blocked.code).toBe('FORBIDDEN')
+    expect(blocked.message).toContain('Conecte a carteira')
+    expect(getDb().orders).toHaveLength(0)
+
+    setWalletConnection('user_alice', 'wallet_alice_primary', true)
+    const created = unwrap(createOrder('user_alice', 'key-1', input))
+    expect(created.created).toBe(true)
+
+    // O reenvio idempotente devolve o mesmo pedido mesmo que a carteira tenha sido desconectada.
+    setWalletConnection('user_alice', 'wallet_alice_primary', false)
+    const replay = unwrap(createOrder('user_alice', 'key-1', input))
+    expect(replay.created).toBe(false)
+    expect(replay.order.id).toBe(created.order.id)
+  })
+
+  it('refuses to connect in the wallet-refused scenario but still allows disconnecting', () => {
+    use('wallet-refused')
+    const refused = failure(setWalletConnection('user_alice', 'wallet_alice_primary', true))
+    expect(refused.code).toBe('FORBIDDEN')
+    expect(refused.message).toContain('recusada')
+
+    expect(unwrap(setWalletConnection('user_alice', 'wallet_alice_primary', false)).connected).toBe(false)
   })
 })
 

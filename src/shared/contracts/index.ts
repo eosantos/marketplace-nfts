@@ -500,6 +500,8 @@ export const WalletSchema = z.object({
   type: WalletTypeSchema,
   ensName: EnsNameSchema.optional(), // nome ENS
   isPrimary: z.boolean(), // principal ou secundária
+  /** Conexão simulada (POST /wallets/:id/connect). Só vem em GET /wallets. */
+  connected: z.boolean().optional(),
   createdAt: IsoDateSchema,
   updatedAt: IsoDateSchema,
 })

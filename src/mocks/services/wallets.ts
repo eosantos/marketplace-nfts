@@ -4,7 +4,7 @@ import {
   type Wallet,
   type WalletConnection,
 } from '@/shared/contracts'
-import { getDb, mutateDb } from '../db'
+import { getActiveScenario, getDb, mutateDb } from '../db'
 import { nextSequence } from '../db/sequences'
 import type { MockDb } from '../db/types'
 import { fail, ok, validationFail, type ServiceResult } from '../http/result'
@@ -35,8 +35,10 @@ function demoteOthers(db: MockDb, userId: string, keepId: string): void {
 }
 
 export function listWallets(userId: string): ServiceResult<Wallet[]> {
-  const wallets = getDb()
-    .wallets.filter((wallet) => wallet.userId === userId)
+  const db = getDb()
+  const wallets = db.wallets
+    .filter((wallet) => wallet.userId === userId)
+    .map((wallet): Wallet => ({ ...wallet, connected: db.walletConnections?.[wallet.id] === true }))
     .sort(
       (a, b) =>
         Number(b.isPrimary) - Number(a.isPrimary) || a.createdAt.localeCompare(b.createdAt),
@@ -124,6 +126,10 @@ export function setWalletConnection(
     const wallet = db.wallets.find((candidate) => candidate.id === walletId)
     if (!wallet) return fail('NOT_FOUND', 'Carteira não encontrada.')
     if (wallet.userId !== userId) return fail('FORBIDDEN', 'Esta carteira pertence a outro usuário.')
+    // Cenário wallet-refused: o usuário recusa a conexão na carteira (desconectar continua possível).
+    if (connected && getActiveScenario() === 'wallet-refused') {
+      return fail('FORBIDDEN', 'Conexão recusada na carteira. Tente novamente ou escolha outra carteira.')
+    }
 
     db.walletConnections = { ...(db.walletConnections ?? {}), [walletId]: connected }
     return ok({ walletId, connected, network: wallet.network, address: wallet.address })

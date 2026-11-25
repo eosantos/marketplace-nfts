@@ -1,6 +1,6 @@
 // Nomes canônicos dos cenários de mock.
-// As respostas determinísticas são implementadas nas etapas 06/07; aqui ficam
-// os identificadores usados pelo banco, pelo env e pelos handlers futuros.
+// O comportamento de cada cenário vive em src/mocks/scenarios/behavior.ts e nos serviços;
+// aqui ficam os identificadores usados pelo banco, pelo env e pelos handlers.
 
 import { z } from 'zod'
 
@@ -21,6 +21,7 @@ export const MOCK_SCENARIOS = [
   'timeout-after-order-created',
   'payment-confirmed',
   'payment-refused',
+  'wallet-refused',
 ] as const
 
 export type MockScenario = (typeof MOCK_SCENARIOS)[number]
