@@ -7,10 +7,11 @@ import { healthHandlers } from './health'
 import { nftHandlers } from './nfts'
 import { orderHandlers } from './orders'
 import { profileHandlers } from './profile'
+import { socketHandlers } from '../socket/handler'
 import { quoteHandlers } from './quote'
 import { walletHandlers } from './wallets'
 
-// O servidor Socket.IO simulado entra na Etapa 06 (assina os eventos de src/mocks/events.ts).
+// socketHandlers: servidor Socket.IO simulado, assina os eventos de src/mocks/events.ts.
 export const handlers = [
   ...healthHandlers,
   ...controlHandlers,
@@ -23,4 +24,5 @@ export const handlers = [
   ...walletHandlers,
   ...quoteHandlers,
   ...orderHandlers,
+  ...socketHandlers,
 ]

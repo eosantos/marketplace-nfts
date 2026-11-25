@@ -120,7 +120,7 @@ export function CartPage() {
         </Link>{' '}
         / <span aria-hidden="true">Mercado</span> / <span aria-current="page">Carrinho</span>
       </nav>
-      <h1 className="sr-only md:not-sr-only md:sr-only">Carrinho de NFTs</h1>
+      <h1 className="sr-only hidden md:block">Carrinho de NFTs</h1>
 
       <AlertsBanner />
 
@@ -156,7 +156,7 @@ export function CartPage() {
                   key={line.key}
                   line={line}
                   quoteItem={quoteItems.get(`${line.nftId}|${line.editionType}`)}
-                  quoteLoading={quote.isPending}
+                  quoteLoading={quote.isLoading}
                 />
               ))}
             </ul>

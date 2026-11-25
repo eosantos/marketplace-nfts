@@ -10,8 +10,8 @@ Acompanhamento das etapas do desafio.
 | 02 | Autenticação | ✅ Concluída | Login e cadastro (modal no desktop, tela cheia no mobile), sessão persistida, Bearer no Axios, 401 → diálogo de sessão expirada com retomada, redirect seguro, rotas privadas, isolamento de cache, header com menu do usuário. | `feat(auth): add login, signup, session handling and private routes` |
 | 03 | Catálogo (Início) | ✅ Concluída | Home completa com URL como estado, filtros, skeleton, paginação, mobile e rodapé. | `feat(catalog): add home page with url-driven catalog, filters and mobile layout` |
 | 04 | Detalhe do NFT | ✅ Concluída | Detalhe com galeria, edições, quantidade com limite, abas, relacionados e barra mobile; favoritos otimistas com rollback; ações de hover nos cards. | `feat(nft): add nft detail page, optimistic favorites and card actions` |
-| 05 | Carrinho | 🚧 Em validação | Página /cart com linhas, quantidade otimista em série, remoção, resumo só da cotação do servidor, cupom, estado vazio, mobile e sugestões; carrinho de visitante em localStorage mesclado ao entrar; ponto de integração para avisos do tempo real. | — |
-| 06 | Tempo real (Socket.IO) | ⏳ Pendente | nft.updated, order.updated, reconexão | — |
+| 05 | Carrinho | ✅ Concluída | Página /cart com resumo só da cotação, quantidade otimista em série, cupom, carrinho de visitante e mescla ao entrar. | `feat(cart): add cart page, server quote summary, coupon and guest cart merge` |
+| 06 | Tempo real (Socket.IO) | 🚧 Em validação | `socket.io-client` atrelado à sessão e servidor simulado no MSW (`ws.link` + binding) com hub sobre o mesmo banco do REST; `nft.updated` e `order.updated`; ledger de duplicados/antigos; avisos acessíveis; reconexão com reconciliação por REST. | — |
 | 07 | Checkout e confirmação | ⏳ Pendente | Pagamento, revisão, idempotência, recibo | — |
 | 08 | Perfil e carteiras | ⏳ Pendente | Edição de dados, avatar, senha, carteiras | — |
 | 09 | Testes E2E (Playwright) | ⏳ Pendente | 12 cenários do enunciado, regressão visual | — |
@@ -113,3 +113,13 @@ Concluído (aguardando validação e commit):
 - Banner de avisos do carrinho alimentado por cache (a Etapa 06 chama `pushCartAlert`).
 - Ajuste da Etapa 04: o painel da imagem do detalhe não estica mais (`self-start`).
 - Testes: `cart.test.ts` (15 casos: regras do visitante, plano de mescla, assinatura da cotação, cupom por usuário, alertas, mutations otimistas e mescla ponta a ponta com servidor simulado).
+
+## Etapa 06 — Tempo real (Socket.IO)
+
+Concluído (aguardando validação e commit):
+- Servidor simulado: `RealtimeHub` (sem MSW) + cola com `ws.link('*/realtime')` e `toSocketIo`; autenticação por evento, ping do protocolo v4 a cada 20 s (o binding não envia), escopo por usuário e versões.
+- Cliente: `RealtimeManager` (conecta com sessão, autentica a cada conexão, desconecta no logout/expiração), `EventLedger`, aplicação nos caches (detalhe, listas, favoritos, carrinho, pedido) e reconciliação por REST depois de reconectar.
+- Avisos acessíveis (`aria-live`), banner do carrinho e indicador de conexão no header.
+- Controle de testes: `/__mocks__/emit` (com `duplicate` e `stale`), `/__mocks__/socket` e `/__mocks__/socket/drop`; `window.__mocks.emitNft`, `dropSocket`, `socketState`.
+- Testes: ledger, hub, aplicação de eventos e gerenciador completo contra o hub real (31 casos).
+- Verificação da camada de rede (WebSocket real + binding + socket.io-client) fica com o navegador e com os testes E2E da Etapa 09.

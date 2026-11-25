@@ -1,6 +1,7 @@
 import { setupWorker } from 'msw/browser'
 import { installWindowControl, resetMocks } from './control'
 import { handlers } from './handlers'
+import { installRealtimeHub } from './socket/handler'
 
 export const worker = setupWorker(...handlers)
 
@@ -27,6 +28,7 @@ function applyEnvScenario(): void {
 export async function startMocks() {
   applyEnvScenario()
   installWindowControl()
+  installRealtimeHub()
   await worker.start({
     onUnhandledRequest: 'bypass',
     serviceWorker: { url: '/mockServiceWorker.js' },

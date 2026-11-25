@@ -3,7 +3,9 @@
 
 import { getDb, mutateDb, resetDb } from './db'
 import { reseedLatency } from './scenarios/latency'
+import { realtimeHub } from './socket/hub'
 import { MockScenarioSchema, type MockScenario } from './scenarios/names'
+import type { EthAmount, NftEditionType } from '@/shared/contracts'
 
 export interface MockState {
   scenario: MockScenario
@@ -46,10 +48,57 @@ export function setMockScenario(scenario: string): MockState {
   return getMockState()
 }
 
+export interface EmitNftOptions {
+  nftId: string
+  /** Novo preço (string decimal). */
+  price?: EthAmount
+  /** Nova disponibilidade de uma edição. */
+  available?: { edition: NftEditionType; value: number }
+  duplicate?: boolean
+  stale?: boolean
+}
+
+/**
+ * Altera o NFT NO BANCO e emite o evento pelo servidor Socket.IO simulado: REST e socket sempre
+ * concordam. `duplicate` reenvia o mesmo evento; `stale` envia em seguida um evento antigo.
+ */
+export function emitNftChange(options: EmitNftOptions): MockState {
+  mutateDb((db) => {
+    const nft = db.nfts.find((candidate) => candidate.id === options.nftId)
+    if (!nft) throw new Error(`NFT não encontrado: ${options.nftId}`)
+
+    if (options.price) nft.price = options.price
+    if (options.available) {
+      const edition = nft.editions.find((candidate) => candidate.type === options.available?.edition)
+      if (!edition) throw new Error(`Edição não encontrada: ${options.available.edition}`)
+      edition.available = options.available.value
+    }
+    nft.updatedAt = new Date().toISOString()
+  })
+
+  realtimeHub.emitNft(options.nftId, {
+    ...(options.duplicate ? { duplicate: true } : {}),
+    ...(options.stale ? { stale: true } : {}),
+  })
+  return getMockState()
+}
+
+/** Derruba as conexões Socket.IO (os clientes reconectam e reconciliam). Retorna quantas caíram. */
+export function dropSocketConnections(): number {
+  return realtimeHub.dropAll()
+}
+
+export function getSocketState(): { connected: number; authenticated: number } {
+  return realtimeHub.stats()
+}
+
 export interface MocksControl {
   reset: (scenario?: string) => MockState
   setScenario: (scenario: string) => MockState
   getState: () => MockState
+  emitNft: (options: EmitNftOptions) => MockState
+  dropSocket: () => number
+  socketState: () => { connected: number; authenticated: number }
 }
 
 declare global {
@@ -64,5 +113,8 @@ export function installWindowControl(): void {
     reset: resetMocks,
     setScenario: setMockScenario,
     getState: getMockState,
+    emitNft: emitNftChange,
+    dropSocket: dropSocketConnections,
+    socketState: getSocketState,
   }
 }
