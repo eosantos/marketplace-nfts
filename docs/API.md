@@ -12,7 +12,7 @@ Todos os endpoints retornam `application/json`. Erros seguem o contrato `ApiErro
 Valores monetários (ETH) trafegam **sempre como string decimal** — nunca `number`.
 Datas são strings ISO 8601 (`2026-07-29T12:00:00.000Z`).
 
-Base URL: `VITE_API_BASE_URL` (ignorada quando `VITE_ENABLE_MOCKS=true`; o MSW intercepta).
+Base URL: `VITE_API_BASE_URL` (padrão `/api`, mesma origem). Com `VITE_ENABLE_MOCKS=true` o MSW intercepta `/api/*`. Os caminhos deste documento são relativos a essa base (ex.: `GET /nfts` = `GET /api/nfts`). Verificação de saúde dos mocks: `GET /health` -> `{ "status": "ok", "mocks": true }`.
 
 Autenticação: `Authorization: Bearer <session.token>` nos recursos privados.
 Criação de pedido: header obrigatório `Idempotency-Key`.

@@ -180,3 +180,12 @@ Nenhum desvio até a Etapa 00.
   em memória e o app não quebra.
 - Cenários não implementados nesta etapa carregam o seed `default` e apenas registram
   o nome ativo; nenhuma falha é mascarável como sucesso nos handlers futuros.
+
+## Decisões desta etapa (Etapa 00b)
+
+- **Roteamento:** file-based (TanStack Router) com rotas planas. Rota inexistente usa o `notFoundComponent` da raiz (não há `404.tsx`). O guarda de rotas privadas (`beforeLoad`) entra na Etapa 02.
+- **Cliente HTTP:** um único Axios em `src/shared/api/http.ts`, `baseURL` padrão `/api` (mesma origem). O MSW intercepta `/api/*` tanto em desenvolvimento quanto no build de demonstração.
+- **MSW:** `src/mocks/browser.ts` registra `src/mocks/handlers/index.ts`. Mocks ligados por padrão; `VITE_ENABLE_MOCKS=false` desliga.
+- **Tema:** tokens de `design/tokens.md` em `@theme` (Tailwind v4) e mapeados para os nomes do shadcn/ui (`primary`/`accent` = cobre `#d08a4b`, `card`/`popover` = `surface`, `destructive` = `danger`). Fonte Roboto Mono self-hosted via `@fontsource-variable/roboto-mono` (sem CDN).
+- **Toast:** somente `sonner` (wrapper em `src/shared/ui/sonner.tsx`). O `@radix-ui/react-toast` e o `toast.tsx` foram removidos para evitar dois sistemas de notificação.
+- **Deploy:** estático na Vercel (preset Vite), com rewrite de SPA para `/index.html` em `vercel.json`. Variáveis `VITE_ENABLE_MOCKS=true` e `VITE_MOCK_SCENARIO=default` precisam existir no projeto da Vercel antes do build, porque o Vite as embute.
