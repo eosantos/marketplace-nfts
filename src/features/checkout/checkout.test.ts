@@ -19,7 +19,7 @@ import { isRetryable, submitOrder, type SubmitDeps } from './submit'
 const item = (nftId: string, unitPrice: string, quantity = 1, editionType: Quote['items'][number]['editionType'] = 'ABERTA') => ({
   nftId,
   nftName: `NFT ${nftId}`,
-  nftImage: '/assets/nfts/ape-green.png',
+  nftImage: '/assets/nfts/ape-green.webp',
   editionType,
   quantity,
   unitPrice,

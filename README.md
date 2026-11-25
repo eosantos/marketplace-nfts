@@ -84,7 +84,7 @@ Selecione o cenário via `VITE_MOCK_SCENARIO` no `.env` ou pelo painel de dev (a
 | `payment-refused` | Pagamento recusado |
 | `wallet-refused` | Recusa da conexão da carteira (conectar falha; desconectar continua possível) |
 
-O banco simulado usa a chave versionada `kurio:mocks:db:v1` no localStorage. O `VITE_MOCK_SCENARIO` só é reaplicado quando o valor muda; um cenário escolhido em tempo de execução sobrevive ao refresh.
+O banco simulado usa a chave versionada `kurio:mocks:db:v2` no localStorage. O `VITE_MOCK_SCENARIO` só é reaplicado quando o valor muda; um cenário escolhido em tempo de execução sobrevive ao refresh.
 
 ### Selecionar e resetar cenários em tempo de execução
 No console do navegador (mocks ligados), `window.__mocks` expõe:

@@ -25,7 +25,7 @@ Concluído:
 - Contratos Zod + tipos inferidos em `src/shared/contracts` (NFT com edições/disponibilidade, carteira, perfil, carrinho, cotação, pedido com snapshot, envelope Socket.IO, `ApiError`).
 - Códigos de erro com mapeamento HTTP em `src/shared/contracts/errors.ts`.
 - `docs/API.md` com método, rota, params, corpos, respostas e erros dos recursos mínimos.
-- Banco simulado único em `src/mocks/db` (memória + localStorage `kurio:mocks:db:v1`), com `resetDb(scenario)`, `getDb`, `saveDb`, `mutateDb` e seed determinístico.
+- Banco simulado único em `src/mocks/db` (memória + localStorage `kurio:mocks:db:v2`), com `resetDb(scenario)`, `getDb`, `saveDb`, `mutateDb` e seed determinístico.
 - Fixtures: 64 NFTs reutilizando as 4 imagens em `public/assets/nfts`, 2 usuários com carteiras/carrinhos/favoritos isolados e cupons válido/inválido/expirado.
 - Nomes canônicos de cenários em `src/mocks/scenarios/names.ts`, refletidos em `.env.example` e `README.md`.
 - Teste unitário de fixtures/banco (`src/mocks/db/db.test.ts`).

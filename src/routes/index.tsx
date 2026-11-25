@@ -28,7 +28,7 @@ function HomePage() {
         <MobileSearchBar search={search} />
         <Hero />
 
-        <div id="catalogo" className="mt-10 grid scroll-mt-6 gap-8 md:mt-14 md:grid-cols-[310px_1fr]">
+        <div id="catalogo" className="mt-10 grid scroll-mt-6 gap-8 md:mt-14 md:grid-cols-[310px_1fr] lg:mt-24 lg:gap-12">
           <aside aria-label="Filtros" className="hidden content-start gap-6 md:grid">
             <FiltersPanel search={search} />
             <FeaturedNft />
@@ -38,7 +38,7 @@ function HomePage() {
             <h2 id="catalog-title" className="sr-only">
               Catálogo de NFTs
             </h2>
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-3 md:border-b md:border-border">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3 md:mb-7">
               <CatalogTabs active={search.tab} />
               <div className="hidden md:block">
                 <SortSelect value={search.orderBy} />
