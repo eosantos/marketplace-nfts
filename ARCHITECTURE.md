@@ -63,9 +63,47 @@ tests/e2e/             # specs Playwright
 
 ## Contratos REST
 
-> A preencher na Etapa 01 (mocks + contratos)
+Definidos em `src/shared/contracts/index.ts` (Zod + tipos inferidos) e documentados em
+`docs/API.md`.
 
-Recursos previstos: Sessão, NFTs, Favoritos, Carrinho, Cotação, Pedidos, Perfil, Carteiras.
+- **Auth/sessão**: `POST /auth/register`, `POST /auth/login`, `GET /session`, `POST /auth/logout`.
+- **NFTs**: `GET /nfts` (busca, filtros combináveis, ordenação, paginação) e `GET /nfts/:id`.
+- **Favoritos**: `GET /favorites`, `POST /favorites`, `DELETE /favorites/:nftId`.
+- **Carrinho**: `GET /cart`, `POST /cart/items`, `PATCH /cart/items/:itemId`,
+  `DELETE /cart/items/:itemId`, `DELETE /cart`. A linha tem `id` estável e a unicidade
+  lógica é `nftId + editionType`.
+- **Cotação**: `POST /quote` (`quoteId`, `version`, subtotal, desconto, taxa e total).
+- **Pedidos**: `POST /orders` com `Idempotency-Key` e `GET /orders/:id` (recibo com snapshot).
+- **Perfil**: `GET /profile`, `PATCH /profile`, `POST /profile/password`.
+- **Carteiras**: `GET /wallets`, `POST /wallets`, `PATCH /wallets/:id`.
+
+Modelo do NFT: nome, token ID, preço (`string` ETH), preço antigo opcional, coleção,
+categoria (`Arte digital`, `Fotografia`, `Música`, `Arte 3D`, `Colecionáveis`,
+`Generativa`, `Jogos`, `Assinaturas`, `Utilidade`), rede (`Ethereum`, `Polygon`,
+`Solana`), raridade (`COMUM`, `RARO`, `ÉPICO`, `LENDÁRIO`), atributos, avaliação
+(nota/quantidade), galeria, descrição, royalties, contrato e as quatro edições
+(`1/1`, `1/10`, `1/50`, `ABERTA`) com disponibilidade e limite de quantidade.
+
+Erros: `ApiError { code, message, fieldErrors? }`, com o mapa HTTP em
+`src/shared/contracts/errors.ts`. Valores ETH são strings decimais validadas por regex
+e nunca `number`.
+
+## Banco simulado e fixtures (Etapa 01)
+
+- Banco único em `src/mocks/db`, carregado em memória e persistido em `localStorage`
+  com a chave versionada `kurio:mocks:db:v1`. `resetDb(scenario)` recria o seed de
+  forma determinística; `getDb/saveDb/mutateDb` são usados pelos handlers.
+- Seed atual: 64 NFTs (reutilizando as 4 ilustrações copiadas para
+  `public/assets/nfts`), 2 usuários com carteiras principais/secundárias, carrinhos e
+  favoritos isolados, e cupons válido/inválido/expirado.
+- Senhas dos usuários fictícios são armazenadas apenas como PBKDF2-SHA256
+  (120.000 iterações) + salt. As credenciais de demonstração ficam no README.
+- Cada NFT expõe as quatro edições; `ABERTA` usa `total: null`. `available` é a
+  disponibilidade e `quantityLimit` o limite por comprador.
+- Nomes canônicos dos cenários em `src/mocks/scenarios/names.ts` (16 cenários). Nesta
+  etapa, `default` e `empty` alteram o seed; os demais cenários serão consumidos pelo
+  pipeline REST/socket nas etapas 06/07.
+- Asset paths usam caminhos locais (`/assets/nfts/...`), sem CDN externo.
 
 ## Eventos Socket.IO
 
@@ -127,3 +165,18 @@ Nenhum desvio até a Etapa 00.
 - Vitest usa `environment: 'jsdom'` com `passWithNoTests` até existirem testes unitários
 - `.agents/skills/` é gerado/gerenciado pelo pnpm (skills dos pacotes TanStack) e ignorado pelo `.gitignore` interno; não faz parte do runtime da aplicação
 - `pnpm-workspace.yaml` é usado pelo pnpm v12 para permissões de build e skills, não define pacotes adicionais
+
+## Decisões desta etapa (Etapa 01 — tarefas 1–5)
+
+- Contratos usam `EthAmountSchema` (regex de string decimal) e caminhos de imagem
+  relativos (`/assets/...`) além de URLs absolutas.
+- `NftListResponse` expõe `items, page, pageSize, total`; `totalPages` fica a cargo da UI.
+- Abas do catálogo: `todos`, `novos`, `em-alta`; ordenação padrão `recentes`
+  (“Listados recentemente”). Faixa de preço de referência exportada como
+  `NFT_PRICE_RANGE` (`0.02`–`12.30`).
+- Seed do banco é clonado a cada reset (`structuredClone`), evitando que mutations
+  contaminem as fixtures originais.
+- Persistência é opcional: se `localStorage` falhar (modo privado/quota), o banco segue
+  em memória e o app não quebra.
+- Cenários não implementados nesta etapa carregam o seed `default` e apenas registram
+  o nome ativo; nenhuma falha é mascarável como sucesso nos handlers futuros.
