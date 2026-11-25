@@ -201,3 +201,14 @@ Nenhum desvio até a Etapa 00.
 - **Avatar:** upload multipart validado (PNG/JPEG/WebP, 300 KB) e guardado como data URL no banco simulado, para caber no localStorage.
 - **Controle:** `/__mocks__/*` e `window.__mocks` são o único caminho para os testes mudarem cenário/dados; nada de setar estado da UI diretamente.
 - **Cenário do env:** `VITE_MOCK_SCENARIO` é aplicado na primeira execução e sempre que o valor mudar; entre mudanças, o cenário definido pelo controle persiste no refresh.
+
+## Decisões desta etapa (Etapa 01 — parte 2b)
+
+- **Cotação:** todos os valores passam por `decimal.js` e trafegam como string decimal. O resumo da UI usa os valores da API, nunca soma no cliente. Taxa de rede fixa (0.016 ETH) por cotação.
+- **Cupom:** inválido/expirado responde 400 com `fieldErrors` no campo `coupon`; a UI mantém a cotação anterior. A validade usa só o `status` do cupom.
+- **Idempotência:** chave por usuário; corpo comparado por JSON canônico; o reenvio devolve o pedido existente (200) e a divergência de corpo dá `IDEMPOTENCY_CONFLICT`. Falhas de criação não consomem a chave, então o cliente pode reenviar com a mesma chave depois de refazer a cotação.
+- **Estados do pedido:** `pending → confirmed | refused`, liquidação em ~2,5 s por timer. Como timers se perdem em refresh, `GET /orders/:id` liquida pedidos vencidos de forma preguiçosa; a reconciliação REST × Socket.IO da Etapa 06 reutiliza esse caminho.
+- **Efeitos da confirmação:** baixa de estoque e remoção do carrinho só das unidades compradas, ambos no servidor simulado (a UI apenas refaz a leitura).
+- **Eventos do banco:** `src/mocks/events.ts` é a única ponte entre os serviços e o Socket.IO simulado; os serviços nunca importam o socket, e a UI nunca é chamada por ali.
+- **Cenários únicos:** `price-changed-at-checkout` e `sold-out-at-checkout` acontecem na primeira tentativa de pedido e ficam registrados em `scenarioFlags` (limpos pelo reset), o que torna o fluxo repetível: tentativa 1 falha, a nova cotação reflete a mudança.
+- **Timeout:** em `timeout-after-order-created` a resposta é substituída por erro de rede após 20 s; o cliente do checkout (Etapa 07) deve usar um timeout menor e reenviar com a mesma `Idempotency-Key`.

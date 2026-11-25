@@ -4,10 +4,12 @@ import { controlHandlers } from './control'
 import { favoritesHandlers } from './favorites'
 import { healthHandlers } from './health'
 import { nftHandlers } from './nfts'
+import { orderHandlers } from './orders'
 import { profileHandlers } from './profile'
+import { quoteHandlers } from './quote'
 import { walletHandlers } from './wallets'
 
-// Cotação, pedidos e Socket.IO entram na parte 2b e nas etapas 06/07.
+// O servidor Socket.IO simulado entra na Etapa 06 (assina os eventos de src/mocks/events.ts).
 export const handlers = [
   ...healthHandlers,
   ...controlHandlers,
@@ -17,4 +19,6 @@ export const handlers = [
   ...cartHandlers,
   ...profileHandlers,
   ...walletHandlers,
+  ...quoteHandlers,
+  ...orderHandlers,
 ]

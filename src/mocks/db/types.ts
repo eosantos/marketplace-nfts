@@ -31,6 +31,12 @@ export interface MockIdempotencyRecord {
   createdAt: string
 }
 
+export interface MockOrderSettlement {
+  /** Instante (epoch ms) a partir do qual o pedido pendente pode ser liquidado. */
+  at: number
+  outcome: 'confirmed' | 'refused'
+}
+
 export interface MockSequences {
   order: number
   quote: number
@@ -57,4 +63,8 @@ export interface MockDb {
   sequences: MockSequences
   /** Estado de conexão simulada por carteira (walletId -> conectada). */
   walletConnections?: Record<string, boolean>
+  /** Marcas de eventos únicos por cenário (ex.: preço já alterado no checkout). */
+  scenarioFlags?: Record<string, boolean>
+  /** Liquidação programada dos pedidos pendentes (orderId -> resultado e instante). */
+  orderSettlements?: Record<string, MockOrderSettlement>
 }

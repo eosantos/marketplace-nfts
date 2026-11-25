@@ -1,7 +1,7 @@
 # docs/API.md — Contratos REST do Marketplace NFTs
 
 > Contrato dos endpoints. Handlers implementados: sessão, NFTs, favoritos, carrinho, perfil e carteiras
-> (Etapa 01, parte 2a). Cotação e pedidos entram na parte 2b.
+> e, na parte 2b, cotação e pedidos.
 
 Todos os endpoints retornam `application/json`. Erros seguem o contrato `ApiError`:
 
@@ -268,6 +268,15 @@ disponibilidade e limite de quantidade. Cada cotação recebe `quoteId` e `versi
 **Erros**: `VALIDATION_ERROR`, `NOT_FOUND`, `AVAILABILITY_CONFLICT`, `COUPON_INVALID`,
 `COUPON_EXPIRED`, `TRANSIENT`
 
+Regras do mock:
+- Taxa de rede fixa de `0.016` ETH por cotação; a cotação expira em 10 minutos.
+- Linhas repetidas (mesmo `nftId` + `editionType`) são somadas antes de validar estoque.
+- Cupom inválido ou expirado responde **HTTP 400** com `fieldErrors: [{ field: "coupon", ... }]`
+  e nenhuma cotação é criada (o cliente mantém a cotação anterior). A validade do cupom usa só o
+  `status` do cupom, não a data do calendário. Percentual e valor fixo nunca passam do subtotal.
+- Cupons de demonstração: `KURIO10` (10%), `KURIO25` (0.25 ETH), `KURIO-VENCIDO` (expirado), `KURIO-INVALIDO`.
+- `quoteId` (`quote_N`) e `version` (N) são incrementais.
+
 ---
 
 ## Pedidos
@@ -293,6 +302,20 @@ Cria um pedido idempotente a partir de uma cotação válida.
 **Resposta 201**: `Order` com `status: 'pending'` e `snapshot` imutável.
 Reenvio da mesma `Idempotency-Key` com o mesmo corpo retorna o mesmo pedido (sem duplicar).
 Mesma chave com corpo diferente → `IDEMPOTENCY_CONFLICT`.
+
+Regras do mock:
+- Criação responde **201**; o reenvio idempotente responde **200** com o mesmo pedido. A chave vale por
+  usuário. Tentativas que falham (409, 422...) não consomem a chave.
+- Corpos são comparados por JSON canônico (a ordem das chaves não importa).
+- Antes de criar, revalida a cotação (dono, versão, expiração) e o estado atual: preço diferente do da
+  cotação → `PRICE_CHANGED`; estoque ou limite insuficiente → `AVAILABILITY_CONFLICT`.
+- O pedido nasce `pending` e é liquidado após ~2,5 s (`confirmed`, ou `refused` no cenário
+  `payment-refused`). `GET /orders/:id` também liquida de forma preguiçosa pedidos vencidos
+  (refresh, aba fechada). **Estados terminais nunca regridem.**
+- Na confirmação: `txRef` (0x + 64 hex) e `txExplorerUrl` (Etherscan, Polygonscan ou Solscan conforme a
+  rede), baixa de estoque da edição e remoção do carrinho **somente** das unidades compradas. Pedido
+  recusado não altera estoque nem carrinho.
+- O `snapshot` é imutável: mudanças posteriores no catálogo não alteram o recibo.
 
 **Erros**: `VALIDATION_ERROR`, `UNAUTHENTICATED`, `SESSION_EXPIRED`, `NOT_FOUND`,
 `AVAILABILITY_CONFLICT`, `PRICE_CHANGED`, `COUPON_INVALID`, `COUPON_EXPIRED`,
@@ -463,7 +486,7 @@ Fora de `/api`, sem latência nem falhas de cenário. Usado pelos testes E2E e p
 Com os mocks ativos, o mesmo controle existe em `window.__mocks`:
 `reset(scenario?)`, `setScenario(scenario)` e `getState()`.
 
-## Cenários implementados na parte 2a
+## Cenários implementados
 
 | Cenário | Efeito |
 |---------|--------|
@@ -478,8 +501,17 @@ Com os mocks ativos, o mesmo controle existe em `window.__mocks`:
 | `signup-conflict` | `POST /auth/register` responde `EMAIL_TAKEN` |
 | `coupon-invalid` / `coupon-expired` | Impõem o status do cupom (consumidos pela cotação, parte 2b) |
 
-Os cenários `price-changed-at-checkout`, `sold-out-at-checkout`, `timeout-after-order-created`,
-`payment-confirmed` e `payment-refused` entram na parte 2b (cotação e pedidos).
+Cenários de cotação e pedidos (parte 2b):
+
+| Cenário | Efeito |
+|---------|--------|
+| `payment-confirmed` | Pedido confirmado após ~2,5 s (mesmo comportamento do `default`) |
+| `payment-refused` | Pedido recusado após ~2,5 s; estoque e carrinho intactos |
+| `price-changed-at-checkout` | Na **primeira** tentativa de pedido, o preço dos NFTs da cotação sobe 0.10 ETH no banco e a criação responde `PRICE_CHANGED`; uma nova cotação já traz o preço novo |
+| `sold-out-at-checkout` | Na **primeira** tentativa de pedido, a edição do 1º item esgota e a criação responde `AVAILABILITY_CONFLICT`; novas cotações com ela também falham |
+| `timeout-after-order-created` | O pedido é criado, mas a resposta só chega como erro de rede após 20 s (o cliente deve usar timeout menor). Reenviar a mesma `Idempotency-Key` devolve o mesmo pedido |
+
+Os eventos únicos usam marcas no banco (`scenarioFlags`); `reset` as limpa.
 
 ## Estado simulado
 
@@ -487,7 +519,7 @@ O banco dos mocks é único e persistido em `localStorage` sob a chave versionad
 `kurio:mocks:db:v1`. O reset restaura integralmente o cenário selecionado por
 `VITE_MOCK_SCENARIO` (ver README para a lista canônica). Na etapa atual, o seed
 distingue `default` (catálogo completo) de `empty` (catálogo, favoritos e carrinhos
-vazios); as respostas específicas dos demais cenários são aplicadas nas etapas 06/07.
+vazios); os demais cenários mudam o comportamento dos handlers (ver a tabela de cenários).
 
 Fixtures atuais: 64 NFTs, 2 usuários, carteiras principais/secundárias, carrinhos e
 favoritos independentes por usuário, e cupons válidos, inválidos e expirados.
