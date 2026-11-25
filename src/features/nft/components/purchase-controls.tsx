@@ -107,7 +107,7 @@ export function DesktopPurchaseRow({ nft, purchase }: { nft: Nft; purchase: NftP
 
 /** Barra fixa de compra do mobile: quantidade, preço total, "Comprar NFT" e carrinho. */
 export function MobilePurchaseBar({ nft, purchase }: { nft: Nft; purchase: NftPurchase }) {
-  const total = new Decimal(nft.price).times(purchase.soldOut ? 1 : purchase.quantity).toFixed()
+  const total = new Decimal(nft.price).times(purchase.soldOut ? 1 : purchase.quantity).toFixed(2)
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 grid gap-3 rounded-t-3xl bg-surface p-4 md:hidden">

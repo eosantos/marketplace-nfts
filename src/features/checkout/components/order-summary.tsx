@@ -3,6 +3,7 @@ import type { Quote } from '@/shared/contracts'
 import { cn } from '@/shared/lib/utils'
 import { Skeleton } from '@/shared/ui/skeleton'
 import { padEth } from '@/features/cart/format'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 interface OrderSummaryProps {
   quote: Quote | undefined
@@ -33,7 +34,7 @@ export function OrderSummary({ quote, loading, refreshing, coupon }: OrderSummar
           <ul className="mt-3 grid gap-2">
             {quote.items.map((item) => (
               <li key={`${item.nftId}-${item.editionType}`} className="flex min-w-0 items-center gap-3 bg-surface p-2">
-                <img src={item.nftImage} alt="" width={64} height={64} loading="lazy" decoding="async" className="h-16 w-16 rounded-lg object-cover" />
+                <SkeletonImage src={item.nftImage} alt="" width={64} height={64} loading="lazy" decoding="async" className="h-16 w-16 rounded-lg object-cover" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold">{item.nftName}</p>
                   <p className="text-xs text-muted-foreground">

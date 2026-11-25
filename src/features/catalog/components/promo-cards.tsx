@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 const ctaClass =
   'mt-4 inline-flex h-9 items-center gap-2 self-end rounded bg-accent px-4 text-xs font-bold text-on-accent transition-opacity hover:opacity-90'
@@ -9,8 +10,8 @@ export function PromoCards() {
   return (
     <section aria-label="Atalhos" className="mt-16 grid gap-6 md:grid-cols-2">
       <article className="grid grid-cols-[170px_1fr] bg-surface">
-        <img
-          src="/assets/nfts/ape-green.png"
+        <SkeletonImage
+          src="/assets/nfts/ape-green.webp"
           alt=""
           width={200}
           height={175}
@@ -31,8 +32,8 @@ export function PromoCards() {
       </article>
 
       <article className="grid grid-cols-[170px_1fr] bg-surface">
-        <img
-          src="/assets/nfts/gorilla-black.png"
+        <SkeletonImage
+          src="/assets/nfts/gorilla-black.webp"
           alt=""
           width={200}
           height={175}

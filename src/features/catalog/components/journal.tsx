@@ -1,5 +1,6 @@
 import { Skeleton } from '@/shared/ui/skeleton'
 import { useArticles } from '../hooks'
+import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
 const dateFormat = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', timeZone: 'UTC' })
 
@@ -31,7 +32,7 @@ export function Journal() {
             : articles.map((article) => (
                 <li key={article.id}>
                   <article className="h-full bg-surface">
-                    <img
+                    <SkeletonImage
                       src={article.image}
                       alt=""
                       width={240}

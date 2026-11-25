@@ -28,6 +28,11 @@ function DetailSkeleton() {
         <Skeleton className="h-8 w-1/2" />
         <Skeleton className="h-10 w-full" />
       </div>
+      {/* Reserva a altura de abas e relacionados: o rodapé não pula quando o conteúdo chega (CLS). */}
+      <div className="hidden gap-6 md:col-span-3 md:mt-8 md:grid">
+        <Skeleton className="h-52 w-full" />
+        <Skeleton className="h-[360px] w-full" />
+      </div>
     </div>
   )
 }
@@ -103,7 +108,7 @@ function NftDetailContent({ nft }: { nft: Nft }) {
         <div className="min-w-0">
           <div className="flex items-start justify-between gap-3">
             <h1 className="text-2xl font-bold md:text-[28px]">{nft.name}</h1>
-            <p className="flex items-center gap-1 rounded-full border border-accent px-3 py-1 text-xs md:hidden" aria-label={`Nota ${nft.rating.score.toFixed(1)} de 5, ${nft.rating.count} avaliações`}>
+            <p role="img" className="flex items-center gap-1 rounded-full border border-accent px-3 py-1 text-xs md:hidden" aria-label={`Nota ${nft.rating.score.toFixed(1)} de 5, ${nft.rating.count} avaliações`}>
               <span aria-hidden="true">★ {nft.rating.score.toFixed(1)} ({nft.rating.count})</span>
             </p>
           </div>

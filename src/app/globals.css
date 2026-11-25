@@ -87,6 +87,27 @@
     }
   }
 
+  /* Shimmer de <img> enquanto carrega (ver SkeletonImage): vive no próprio elemento, sem wrapper. */
+  .img-skeleton {
+    background-color: var(--color-surface);
+    background-image: linear-gradient(90deg, transparent 25%, rgb(255 255 255 / 0.07) 50%, transparent 75%);
+    background-size: 300% 100%;
+    animation: img-shimmer 1.4s infinite linear;
+  }
+  @keyframes img-shimmer {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .img-skeleton {
+      animation: none;
+    }
+  }
+
   /* Dois <input type="range"> sobrepostos formam o slider de faixa de preço. */
   .range-input {
     -webkit-appearance: none;

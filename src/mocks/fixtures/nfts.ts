@@ -5,10 +5,10 @@ import { Decimal } from 'decimal.js'
 import type { Nft, NftCategory, NftEdition, NftNetwork, NftRarity } from '@/shared/contracts'
 
 export const NFT_IMAGE_PATHS = [
-  '/assets/nfts/ape-green.png',
-  '/assets/nfts/gorilla-purple.png',
-  '/assets/nfts/gorilla-black.png',
-  '/assets/nfts/orangutan-gold.png',
+  '/assets/nfts/ape-green.webp',
+  '/assets/nfts/gorilla-purple.webp',
+  '/assets/nfts/gorilla-black.webp',
+  '/assets/nfts/orangutan-gold.webp',
 ] as const
 
 export type NftImagePath = (typeof NFT_IMAGE_PATHS)[number]
@@ -20,14 +20,14 @@ interface CollectionSeed {
 }
 
 const COLLECTIONS: CollectionSeed[] = [
-  { name: 'Kurio Apes', image: '/assets/nfts/ape-green.png', network: 'Ethereum' },
-  { name: 'Sage Nomads', image: '/assets/nfts/gorilla-purple.png', network: 'Polygon' },
-  { name: 'Neon Vessels', image: '/assets/nfts/gorilla-black.png', network: 'Solana' },
-  { name: 'Cosmic Blooms', image: '/assets/nfts/gorilla-purple.png', network: 'Ethereum' },
-  { name: 'Ivory Barons', image: '/assets/nfts/gorilla-black.png', network: 'Polygon' },
-  { name: 'Golden Beats', image: '/assets/nfts/orangutan-gold.png', network: 'Solana' },
-  { name: 'Golden Signals', image: '/assets/nfts/orangutan-gold.png', network: 'Ethereum' },
-  { name: 'Emerald Editions', image: '/assets/nfts/ape-green.png', network: 'Polygon' },
+  { name: 'Kurio Apes', image: '/assets/nfts/ape-green.webp', network: 'Ethereum' },
+  { name: 'Sage Nomads', image: '/assets/nfts/gorilla-purple.webp', network: 'Polygon' },
+  { name: 'Neon Vessels', image: '/assets/nfts/gorilla-black.webp', network: 'Solana' },
+  { name: 'Cosmic Blooms', image: '/assets/nfts/gorilla-purple.webp', network: 'Ethereum' },
+  { name: 'Ivory Barons', image: '/assets/nfts/gorilla-black.webp', network: 'Polygon' },
+  { name: 'Golden Beats', image: '/assets/nfts/orangutan-gold.webp', network: 'Solana' },
+  { name: 'Golden Signals', image: '/assets/nfts/orangutan-gold.webp', network: 'Ethereum' },
+  { name: 'Emerald Editions', image: '/assets/nfts/ape-green.webp', network: 'Polygon' },
 ]
 
 const CATEGORIES: NftCategory[] = [

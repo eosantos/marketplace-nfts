@@ -18,15 +18,16 @@ export function MobileTabBar() {
       <Link to="/" aria-label="Início" className={`${itemClass} !text-accent`}>
         <Home className="h-6 w-6" aria-hidden="true" />
       </Link>
-      <span aria-disabled="true" aria-label="Favoritos (em breve)" className={`${itemClass} cursor-not-allowed`}>
+      <span aria-disabled="true" className={`${itemClass} cursor-not-allowed`}>
         <Heart className="h-6 w-6" aria-hidden="true" />
+        <span className="sr-only">Favoritos (em breve)</span>
       </span>
       <span
         aria-disabled="true"
-        aria-label="Escanear (em breve)"
         className="mx-auto -mt-8 flex h-14 w-14 cursor-not-allowed items-center justify-center rounded-full bg-accent text-on-accent shadow-lg"
       >
         <ScanLine className="h-7 w-7" aria-hidden="true" />
+        <span className="sr-only">Escanear (em breve)</span>
       </span>
       <Link
         to="/cart"

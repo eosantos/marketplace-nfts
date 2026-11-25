@@ -154,9 +154,7 @@ Ver "Decisões desta etapa (Etapa 06 — tempo real)" no fim deste documento: o 
 
 ## Desvios do Figma
 
-> A preencher conforme as telas forem implementadas (Etapas 03–08)
-
-Nenhum desvio até a Etapa 00.
+Os desvios, estados inventados e ajustes de acessibilidade estão nas subseções "Desvios do Figma" de cada etapa (03, 04, 05, 07 e 08), ao fim deste documento.
 
 ## Decisões desta etapa (Etapa 00)
 
@@ -332,3 +330,14 @@ Nenhum desvio até a Etapa 00.
 - Asserções de "um único pedido" leem `getState().orders` do banco simulado, não a interface.
 - Seletores por papel/rótulo acessível (`getByRole`, `getByLabel`); `data-testid` só em totais e no input de avatar.
 - Regressão visual separada do conjunto padrão (`test:e2e` a ignora) porque as baselines dependem do sistema; `animations: 'disabled'`, `reducedMotion: 'reduce'` e tolerância de 2%.
+
+## Decisões desta etapa (Etapa 10 — performance e deploy)
+- **Code splitting:** `autoCodeSplitting` do TanStack Router separa o componente de cada rota em chunk próprio (o `beforeLoad` permanece no principal para o guard de login); `manualChunks` isola react, router, query, formulários/zod e UI em chunks de vendor, que ficam em cache entre deploys. MSW (`mocks/browser`) e `socket.io-client` seguem em `import()` dinâmico.
+- **Custo conhecido dos mocks:** o app só renderiza depois de o MSW iniciar (o servidor simulado precisa existir antes da primeira chamada). Isso é parte da entrega e não foi removido para melhorar a nota; o impacto aparece em FCP/LCP no relatório.
+- **Lighthouse:** `scripts/lighthouse.mjs` mede início e detalhe em mobile e desktop, mediana de 3, sem alterar imagens, fontes ou funcionalidades. Resultados e justificativas em `docs/lighthouse/REPORT.md`.
+- **Preço no mobile:** a barra de compra passou a exibir duas casas (`3.50 ETH`), igual ao desktop.
+- **Deploy:** SPA com fallback para `index.html`, exceto `/assets/*` e `/mockServiceWorker.js`; este recebe `Content-Type` JavaScript, `no-cache` e `Service-Worker-Allowed: /`. Os assets com hash são `immutable`.
+- **Primeira medição e correções:** a mediana inicial deu Performance 85/86 no mobile (meta 90), A11y 94 no detalhe desktop (meta 95) e CLS 0.161 no detalhe desktop. Causas: PNGs de 108–351 KB (Lighthouse estimou 624 KiB de economia em formatos modernos); `aria-label` em `<p>`/`<span>` sem `role` (`aria-prohibited-attr`); pontos de paginação de 12 px (`target-size`); e rodapé que pulava porque o skeleton do detalhe era mais baixo que o conteúdo. Correções: ilustrações em WebP (qualidade 90, de 351 KB para 35 KB no maior), `role="img"` nas notas, texto `sr-only` nos itens "em breve", alvos de 24 px nos pontos e skeleton com a altura reservada. Os PNGs originais permanecem em `public/assets/nfts/` para bancos simulados já salvos no localStorage.
+- **Custo conhecido que permanece:** a renderização espera o MSW iniciar, o que pesa em FCP/LCP no perfil mobile com CPU 4x. Foi mantido para não simplificar a entrega.
+- **Segunda medição:** A11y 100 (início desktop 96), CLS 0 e desktop 99; o mobile ficou em 85/86 (FCP 2,9 s, LCP 3,5–3,7 s). A cadeia de rede mostrou o chunk do MSW (116 KB) sendo pedido só depois de o `index.js` executar. Por isso `src/app/main.tsx` virou uma entrada mínima que baixa em paralelo `mocks/browser` e `app.tsx`, e só então inicia o MSW e renderiza. O MSW continua antes da primeira renderização por necessidade funcional (o primeiro request já precisa ser interceptado).
+- **Identidade e imagens:** favicon SVG (monograma "K" no tom de destaque) com fallback PNG 32 px e `apple-touch-icon`, o que também elimina o 404 de `/favicon.ico` no console. `SkeletonImage` (`src/shared/ui`) aplica o shimmer no próprio `<img>` enquanto carrega, sem wrapper, sem esconder a imagem (o LCP não é atrasado) e sem alterar dimensões (sem CLS); volta sozinho quando o `src` muda e para em caso de erro. Respeita `prefers-reduced-motion`.
