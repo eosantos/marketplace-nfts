@@ -52,7 +52,7 @@ export function OrderSummary({ quote, loading, refreshing, coupon }: OrderSummar
             ) : (
               <>
                 Tem um código promocional?{' '}
-                <Link to="/cart" className="text-accent underline-offset-4 hover:underline">
+                <Link to="/cart" className="text-accent underline underline-offset-4 hover:no-underline">
                   Aplique no carrinho
                 </Link>
               </>

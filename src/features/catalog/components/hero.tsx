@@ -65,7 +65,7 @@ export function Hero() {
           decoding="async"
           className="aspect-square w-full rounded-2xl object-cover"
         />
-        <div role="group" aria-label="Destaques" className="absolute -left-24 bottom-6 flex gap-2">
+        <div role="group" aria-label="Destaques" className="absolute -left-24 bottom-3 flex">
           {SLIDES.map((item, position) => (
             <button
               key={item.src}
@@ -75,11 +75,17 @@ export function Hero() {
               onClick={() => {
                 setIndex(position)
               }}
-              className={cn(
-                'h-2 w-2 rounded-full bg-accent transition-opacity',
-                position === index ? 'opacity-100' : 'opacity-40 hover:opacity-70',
-              )}
-            />
+              // Alvo de toque de 24 px; o ponto visível continua com 8 px.
+              className="group flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'h-2 w-2 rounded-full bg-accent transition-opacity',
+                  position === index ? 'opacity-100' : 'opacity-40 group-hover:opacity-70',
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

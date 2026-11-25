@@ -20,7 +20,7 @@ export function NotFoundPage() {
   }, [])
 
   return (
-    <main className="mx-auto flex min-h-[70vh] max-w-[1200px] flex-col items-center justify-center gap-4 px-6 py-12 text-center">
+    <main className="mx-auto flex min-h-[70vh] max-w-[1200px] flex-col items-center justify-center gap-4 px-6 pb-28 pt-12 text-center md:pb-12">
       <MonkeyConfused className="max-w-[220px] md:max-w-[260px]" />
       <p className="text-5xl font-bold tracking-[0.2em] text-accent md:text-6xl" aria-label="Erro 404">
         404

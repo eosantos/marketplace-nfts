@@ -44,7 +44,7 @@ export function AlsoViewed({ excludeIds }: { excludeIds: ReadonlySet<string> }) 
             ))}
       </ul>
       {dots > 1 ? (
-        <div role="group" aria-label="Páginas de sugestões" className="mt-6 flex justify-center gap-2">
+        <div role="group" aria-label="Páginas de sugestões" className="mt-6 flex justify-center">
           {Array.from({ length: dots }, (_, position) => (
             <button
               key={position}
@@ -54,8 +54,14 @@ export function AlsoViewed({ excludeIds }: { excludeIds: ReadonlySet<string> }) 
               onClick={() => {
                 setPage(position + 1)
               }}
-              className={cn('h-3 w-3 rounded-full border border-accent', page === position + 1 ? 'bg-accent' : 'bg-transparent')}
-            />
+              // Alvo de toque de 24 px; o ponto visível continua com 12 px.
+              className="flex h-6 w-6 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <span
+                aria-hidden="true"
+                className={cn('h-3 w-3 rounded-full border border-accent', page === position + 1 ? 'bg-accent' : 'bg-transparent')}
+              />
+            </button>
           ))}
         </div>
       ) : null}

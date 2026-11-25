@@ -102,14 +102,14 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             {isLogin ? (
               <>
                 Novo na Kurio?{' '}
-                <Link to="/signup" search={{ redirect: redirectTo }} className="text-accent underline-offset-4 hover:underline">
+                <Link to="/signup" search={{ redirect: redirectTo }} className="text-accent underline underline-offset-4 hover:no-underline">
                   Crie uma conta
                 </Link>
               </>
             ) : (
               <>
                 Já tem uma conta?{' '}
-                <Link to="/login" search={{ redirect: redirectTo }} className="text-accent underline-offset-4 hover:underline">
+                <Link to="/login" search={{ redirect: redirectTo }} className="text-accent underline underline-offset-4 hover:no-underline">
                   Entre
                 </Link>
               </>
