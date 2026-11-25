@@ -309,3 +309,19 @@ Nenhum desvio até a Etapa 00.
 - **Resumo:** mostra a edição de cada item no lugar do ID do token (a cotação não traz o token).
 - **Cupom:** aplica-se no carrinho; o checkout mostra o cupom ativo e leva de volta ao carrinho para trocar.
 - **Passo de revisão e as telas de mudança, recusa, pendente, recuperação e falha de envio:** não existem no Figma; seguem o mesmo sistema visual.
+
+## Decisões desta etapa (Etapa 08 — perfil e carteiras)
+- **Rotas privadas** `/profile` e `/wallets` compartilham `AccountLayout` (menu "Meu perfil" no desktop; abas + botão sair no mobile). Só "Dados do perfil" e "Carteiras" estão no escopo; Atividade, Lista de interesse, Ofertas, Arquivos baixados e Suporte ficam `aria-disabled` com o rótulo "Em breve", sem simular sucesso.
+- **Perfil**: `PATCH /profile` (displayName, userName, profileName). Avatar por `POST /profile/avatar` (multipart, campo `avatar`); remoção por `PATCH {avatar:null}`. O cliente pré-valida tipo e 300 KB, mas a mensagem do campo `avatar` devolvida pela API prevalece.
+- **Cache coerente**: a resposta da API é gravada em `qk.profile(userId)` **e** no usuário da query `session`, de onde o header lê nome e avatar; não há estado paralelo.
+- **Senha**: confirmação validada no cliente; `currentPassword`/`newPassword` mostram o erro da API no campo. No sucesso a API revoga as demais sessões e a atual continua válida (aviso no toast).
+- **Carteiras**: um único `WalletForm` cria/edita principal e secundárias. "Tornar principal" usa `PATCH isPrimary:true` (o servidor rebaixa a anterior) e a lista é recarregada. Rebaixar a única principal é recusado pela API (`isPrimary`). Endereço duplicado aparece no campo `address`. O schema do formulário (`wallets/schemas.ts`) é compartilhado com o checkout.
+- Estados de carregamento (skeleton), erro com "Tentar novamente" e botão desabilitado durante o envio.
+
+### Desvios do Figma (Etapa 08)
+- Não há frames mobile: derivados do desktop (coluna única, menu em abas, botões em largura total, campos `h-10`).
+- E-mail é somente leitura em `/profile`: a API não permite alterá-lo (`PATCH /profile` não aceita `email`).
+- O Figma repete campos de outra tela (carteira em `/profile`; nome/perfil/e-mail/indicação em `/wallets`). Foram mantidos só os que a API suporta em cada tela.
+- "Nome ENS" é um único campo (`nome.eth`) em vez de select `.eth` + input.
+- "Carteira secundária" lista as existentes (com "Tornar principal"); o radio "Igual à carteira principal / Adicionar" só aparece enquanto não há secundária.
+- Itens do menu fora do escopo ficam desabilitados com "Em breve".
