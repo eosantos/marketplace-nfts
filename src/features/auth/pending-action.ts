@@ -1,20 +1,12 @@
 import { z } from 'zod'
-import { NftEditionTypeSchema } from '@/shared/contracts'
 
-// Ação que o visitante tentou fazer antes de entrar (favoritar, comprar). Fica em sessionStorage
-// e é executada uma única vez quando ele volta autenticado (PendingActionRunner).
+// Ação que o visitante tentou fazer antes de entrar (favoritar). Fica em sessionStorage e é
+// executada uma única vez quando ele volta autenticado (PendingActionRunner).
+// Comprar como visitante usa o carrinho local (features/cart/guest-cart).
 const PENDING_KEY = 'kurio:pending-action'
 
 export const PendingActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('favorite'), nftId: z.string() }),
-  z.object({
-    type: z.literal('add-to-cart'),
-    nftId: z.string(),
-    editionType: NftEditionTypeSchema,
-    quantity: z.number().int().min(1),
-    /** "Comprar": depois de adicionar, segue para o carrinho. */
-    buyNow: z.boolean(),
-  }),
 ])
 
 export type PendingAction = z.infer<typeof PendingActionSchema>

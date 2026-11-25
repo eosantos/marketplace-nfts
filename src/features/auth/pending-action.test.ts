@@ -12,17 +12,6 @@ describe('pending action', () => {
     expect(takePendingAction()).toBeNull()
   })
 
-  it('keeps the add-to-cart payload', () => {
-    setPendingAction({ type: 'add-to-cart', nftId: 'nft_002', editionType: '1/10', quantity: 2, buyNow: true })
-    expect(takePendingAction()).toEqual({
-      type: 'add-to-cart',
-      nftId: 'nft_002',
-      editionType: '1/10',
-      quantity: 2,
-      buyNow: true,
-    })
-  })
-
   it('discards invalid or tampered data', () => {
     window.sessionStorage.setItem('kurio:pending-action', '{"type":"drop-database"}')
     expect(takePendingAction()).toBeNull()
@@ -30,10 +19,8 @@ describe('pending action', () => {
     window.sessionStorage.setItem('kurio:pending-action', 'não é json')
     expect(takePendingAction()).toBeNull()
 
-    window.sessionStorage.setItem(
-      'kurio:pending-action',
-      JSON.stringify({ type: 'add-to-cart', nftId: 'x', editionType: '9/99', quantity: 0, buyNow: false }),
-    )
+    // Ações antigas (ex.: add-to-cart) não são mais aceitas.
+    window.sessionStorage.setItem('kurio:pending-action', JSON.stringify({ type: 'add-to-cart', nftId: 'x' }))
     expect(takePendingAction()).toBeNull()
   })
 

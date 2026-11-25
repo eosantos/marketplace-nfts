@@ -35,7 +35,7 @@ export function Gallery({ nft }: { nft: Nft }) {
         ))}
       </div>
 
-      <div className="relative bg-surface p-0 md:p-5">
+      <div className="relative bg-surface p-0 md:self-start md:p-5">
         <img
           src={image}
           alt={`${nft.name}, da coleção ${nft.collection}`}

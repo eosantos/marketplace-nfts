@@ -9,8 +9,8 @@ Acompanhamento das etapas do desafio.
 | 01 | Mocks e contratos | ✅ Concluída (aguardando merge na main) | Contratos Zod, banco simulado, fixtures, serviços e handlers REST (auth, catálogo/facets, favoritos, carrinho, perfil, carteiras, cotação e pedidos), 16 cenários determinísticos, canal `/__mocks__` e `window.__mocks`, barramento de eventos do banco. | `feat(mocks): ...` (3 commits) |
 | 02 | Autenticação | ✅ Concluída | Login e cadastro (modal no desktop, tela cheia no mobile), sessão persistida, Bearer no Axios, 401 → diálogo de sessão expirada com retomada, redirect seguro, rotas privadas, isolamento de cache, header com menu do usuário. | `feat(auth): add login, signup, session handling and private routes` |
 | 03 | Catálogo (Início) | ✅ Concluída | Home completa com URL como estado, filtros, skeleton, paginação, mobile e rodapé. | `feat(catalog): add home page with url-driven catalog, filters and mobile layout` |
-| 04 | Detalhe do NFT | 🚧 Em validação | Detalhe com galeria e zoom, edições, quantidade com limite, comprar/adicionar, abas, relacionados e barra de compra mobile; favoritos otimistas com rollback; ações de hover nos cards; ação pendente do visitante. | — |
-| 05 | Carrinho | ⏳ Pendente | Itens, cupom, persistência, sincronização | — |
+| 04 | Detalhe do NFT | ✅ Concluída | Detalhe com galeria, edições, quantidade com limite, abas, relacionados e barra mobile; favoritos otimistas com rollback; ações de hover nos cards. | `feat(nft): add nft detail page, optimistic favorites and card actions` |
+| 05 | Carrinho | 🚧 Em validação | Página /cart com linhas, quantidade otimista em série, remoção, resumo só da cotação do servidor, cupom, estado vazio, mobile e sugestões; carrinho de visitante em localStorage mesclado ao entrar; ponto de integração para avisos do tempo real. | — |
 | 06 | Tempo real (Socket.IO) | ⏳ Pendente | nft.updated, order.updated, reconexão | — |
 | 07 | Checkout e confirmação | ⏳ Pendente | Pagamento, revisão, idempotência, recibo | — |
 | 08 | Perfil e carteiras | ⏳ Pendente | Edição de dados, avatar, senha, carteiras | — |
@@ -103,3 +103,13 @@ Concluído (aguardando validação e commit):
 - Visitante: a ação (favoritar/comprar) é guardada, o login volta para a página e a ação é executada uma vez.
 - Testes: `editions` (regras de edição/limite e plurais), `pending-action`, e `favorites` (otimista + rollback com a mutation real).
 - Bug encontrado e corrigido por teste: plural "disponíveis".
+
+## Etapa 05 — Carrinho e cotação
+
+Concluído (aguardando validação e commit):
+- `/cart` conforme o Figma (desktop e mobile): linhas com quantidade limitada pela edição, remoção, resumo (subtotal, desconto, taxa, total) vindo só de `POST /quote`, cupom com erro no campo, estado vazio, erros de disponibilidade e "Colecionadores também viram".
+- Quantidade otimista, em série por linha e sem piscar com toques rápidos; falha reverte com o motivo do servidor.
+- Carrinho de visitante (localStorage) com os mesmos limites; mescla ao entrar sem duplicar e respeitando estoque; contador do header para os dois casos.
+- Banner de avisos do carrinho alimentado por cache (a Etapa 06 chama `pushCartAlert`).
+- Ajuste da Etapa 04: o painel da imagem do detalhe não estica mais (`self-start`).
+- Testes: `cart.test.ts` (15 casos: regras do visitante, plano de mescla, assinatura da cotação, cupom por usuário, alertas, mutations otimistas e mescla ponta a ponta com servidor simulado).

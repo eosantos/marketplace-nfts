@@ -7,12 +7,21 @@ import { clearSession, getToken, setSession } from './session-store'
 
 let lastUserId: string | null = null
 const resetCallbacks = new Set<() => void>()
+const authCallbacks = new Set<(auth: AuthResponse) => void | Promise<void>>()
 
 /** Registra uma limpeza extra no logout/troca de usuário (ex.: desconectar o Socket.IO na Etapa 06). */
 export function onClientReset(callback: () => void): () => void {
   resetCallbacks.add(callback)
   return () => {
     resetCallbacks.delete(callback)
+  }
+}
+
+/** Registra uma ação a executar depois de cada login/cadastro (ex.: mesclar o carrinho de visitante). */
+export function onAuthenticated(callback: (auth: AuthResponse) => void | Promise<void>): () => void {
+  authCallbacks.add(callback)
+  return () => {
+    authCallbacks.delete(callback)
   }
 }
 
@@ -23,6 +32,7 @@ export function completeAuth(auth: AuthResponse): void {
   setSession(auth.session)
   queryClient.setQueryData(qk.session, auth)
   closeSessionExpired()
+  for (const callback of authCallbacks) void callback(auth)
 }
 
 /** Zera tudo o que é privado: token, cache e integrações registradas. */

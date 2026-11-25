@@ -129,7 +129,7 @@ e as roteia para handlers no service worker. Limitação: apenas navegador (sem 
 
 ## Estado do carrinho
 
-> A preencher na Etapa 05 (carrinho)
+Ver "Decisões desta etapa (Etapa 05 — carrinho)" no fim deste documento.
 
 ## Estratégia de cache (TanStack Query)
 
@@ -256,3 +256,20 @@ Nenhum desvio até a Etapa 00.
 - **"Mais desta coleção":** carrossel com pontos que paginam a coleção (até 3 páginas) em vez de deslizar.
 - **"COMPRAR":** adiciona ao carrinho e segue para `/cart` (o checkout depende da cotação do carrinho). O ícone de carrinho do mobile só adiciona.
 - **Compartilhar:** LinkedIn, e-mail e Twitter abrem os links de compartilhamento reais.
+
+## Decisões desta etapa (Etapa 05 — carrinho)
+
+- **Estado do carrinho:** conta logada usa o carrinho da API (`['cart', userId]`); visitante usa um carrinho local (`kurio:guest-cart`, localStorage, sincronizado entre abas). Os dois passam pela mesma `CartLine` na UI. Visitante pode montar o carrinho, mas a cotação e o checkout exigem login, e o botão vira "Entrar e finalizar".
+- **Mescla ao entrar:** `onAuthenticated(mergeGuestCart)` roda depois de cada login/cadastro. O plano (`planGuestMerge`, função pura) soma NFT + edição sem duplicar linhas e sem passar de `min(disponível, limite por comprador)`, descontando o que a conta já tem. Itens que não cabem são ajustados ou ignorados e o usuário é avisado por toast. Se a mescla falhar, o carrinho de visitante é mantido para a próxima tentativa.
+- **Totais só do servidor:** subtotal, desconto, taxa de rede e total vêm de `POST /quote`; o cliente nunca soma valores. Enquanto o resumo recarrega, `keepPreviousData` mantém os valores anteriores esmaecidos, sem salto de layout; o primeiro carregamento usa skeleton com as mesmas dimensões.
+- **Quantidade sem corrida:** a mutation de quantidade é otimista (a tela muda na hora), roda em série por linha (`scope`) e só reconcilia com o servidor quando é a última do carrinho em andamento (`isMutating`), então toques rápidos não fazem o valor piscar. Falha reverte e mostra o motivo do servidor (ex.: limite por comprador).
+- **Cupom:** validado com uma cotação real antes de ser guardado; inválido/expirado mostra o erro no campo, e o cupom aceito fica por usuário em `sessionStorage` (`kurio:coupon:<userId>`), para o checkout pedir a mesma cotação. Cupom que passa a falhar depois (ex.: expirou) aparece no resumo com a ação "Remover cupom".
+- **Disponibilidade:** `AVAILABILITY_CONFLICT` na cotação bloqueia o botão de finalizar e indica os itens; a linha acima do estoque mostra um alerta para ajustar a quantidade.
+- **Ponto de integração do tempo real:** `pushCartAlert` (em `features/cart/alerts.ts`) grava avisos no cache; o banner no topo do carrinho só lê. A Etapa 06 chama `pushCartAlert` a partir dos eventos `nft.updated` e invalida `['quote', userId]`.
+- **Compra de visitante:** deixou de forçar login (a ação pendente agora só cobre favoritar). Adicionar ao carrinho vai para o carrinho local; "Comprar" segue para `/cart`.
+
+### Desvios do Figma (Etapa 05)
+- **Coluna "Edições":** no Figma ela mostra a quantidade; a edição escolhida (1/10, 1/50...) aparece no subtítulo da linha, porque a mesma NFT pode estar em edições diferentes.
+- **Estado do cupom aplicado e erros de cupom/estoque:** não existem no Figma; seguem o padrão visual (borda cobre, texto de erro em `danger`).
+- **Mobile:** o resumo fica no fluxo, ao fim da lista (com cantos superiores arredondados), em vez de fixo na base.
+- **"Colecionadores também viram":** visível só no desktop, como carrossel por pontos (mais bem avaliados fora do carrinho).
