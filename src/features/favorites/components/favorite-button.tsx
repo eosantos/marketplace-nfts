@@ -45,7 +45,7 @@ export function FavoriteButton({ nft, variant, className }: FavoriteButtonProps)
         aria-pressed={favorite}
         onClick={onClick}
         className={cn(
-          'inline-flex h-10 items-center gap-2 rounded border border-accent px-4 text-xs font-bold text-accent transition-colors hover:bg-accent/10',
+          'inline-flex h-10 items-center gap-2 rounded border border-accent px-4 text-xs font-bold text-accent transition-colors hover:bg-accent/10 lg:w-[130px] lg:justify-center lg:px-0 lg:text-sm',
           className,
         )}
       >

@@ -7,8 +7,11 @@ import { cn } from '@/shared/lib/utils'
 import { RealtimeStatusDot } from './realtime-status'
 import { UserMenu } from './user-menu'
 
-// Seções fora do escopo do desafio: aparecem como no Figma, mas não navegam.
-const OUT_OF_SCOPE_NAV = ['Mercado', 'Criadores', 'Aprenda'] as const
+// Seções sem página própria no desafio: levam a trechos da home (navegação genérica).
+const SECTION_NAV = [
+  { label: 'Criadores', hash: 'criadores' },
+  { label: 'Aprenda', hash: 'diario' },
+] as const
 
 const HOME_PATHS = ['/', '/login', '/signup', '/profile', '/wallets']
 
@@ -26,6 +29,8 @@ export function SiteHeader() {
   const { user } = useSession()
   const cartCount = useCartCount()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
+  // O detalhe do NFT pertence ao "Mercado" (como no Figma): ele aparece ativo e leva ao catálogo.
+  const marketActive = pathname.startsWith('/nft/')
 
   return (
     <header className="hidden md:block">
@@ -38,15 +43,18 @@ export function SiteHeader() {
           <Link to="/" className={navItemClass(HOME_PATHS.includes(pathname))}>
             Início
           </Link>
-          {OUT_OF_SCOPE_NAV.map((label) => (
-            <span
-              key={label}
-              aria-disabled="true"
-              title="Em breve"
-              className="flex h-[68px] cursor-not-allowed items-center text-sm text-foreground/80 lg:text-base"
-            >
+          <Link
+            to="/"
+            hash="catalogo"
+            aria-current={marketActive ? 'page' : undefined}
+            className={navItemClass(marketActive)}
+          >
+            Mercado
+          </Link>
+          {SECTION_NAV.map(({ label, hash }) => (
+            <Link key={label} to="/" hash={hash} className={navItemClass(false)}>
               {label}
-            </span>
+            </Link>
           ))}
         </nav>
 

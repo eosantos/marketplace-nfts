@@ -9,7 +9,7 @@ import type { NftPurchase } from '../use-nft-purchase'
 export function EditionPicker({ nft, purchase }: { nft: Nft; purchase: NftPurchase }) {
   return (
     <fieldset>
-      <legend className="mb-2 text-sm font-bold">Edição:</legend>
+      <legend className="mb-2 text-sm font-bold lg:text-[15px]">Edição:</legend>
       <div className="flex flex-wrap gap-2">
         {nft.editions.map((edition) => {
           const soldOut = edition.available <= 0
@@ -28,7 +28,7 @@ export function EditionPicker({ nft, purchase }: { nft: Nft; purchase: NftPurcha
               />
               <span
                 className={cn(
-                  'block rounded-full border px-3 py-1 text-xs transition-colors',
+                  'block rounded-full border px-3 py-1 text-xs transition-colors lg:px-2',
                   'peer-checked:border-accent peer-checked:text-accent peer-focus-visible:ring-2 peer-focus-visible:ring-ring',
                   soldOut ? 'border-border text-muted-foreground/60 line-through' : 'border-border hover:border-accent',
                 )}
@@ -59,11 +59,11 @@ export function QuantityStepper({ purchase }: { purchase: NftPurchase }) {
         aria-label="Diminuir quantidade"
         disabled={purchase.quantity <= 1 || purchase.soldOut}
         onClick={purchase.decrement}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40 lg:h-8 lg:w-8"
       >
         <Minus className="h-5 w-5" aria-hidden="true" />
       </button>
-      <output aria-live="polite" className="w-6 text-center text-sm">
+      <output aria-live="polite" className="w-6 text-center text-sm lg:text-lg">
         {purchase.soldOut ? 0 : purchase.quantity}
       </output>
       <button
@@ -73,7 +73,7 @@ export function QuantityStepper({ purchase }: { purchase: NftPurchase }) {
         disabled={purchase.soldOut}
         onClick={purchase.increment}
         className={cn(
-          'flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40',
+          'flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40 lg:h-8 lg:w-8',
           atMax && !purchase.soldOut && 'opacity-60',
         )}
       >
@@ -95,7 +95,7 @@ export function DesktopPurchaseRow({ nft, purchase }: { nft: Nft; purchase: NftP
           onClick={() => {
             purchase.submit(true)
           }}
-          className="h-10 rounded bg-accent px-8 text-xs font-bold uppercase text-on-accent transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-10 rounded bg-accent px-8 text-xs font-bold uppercase lg:w-[130px] lg:px-0 lg:text-sm text-on-accent transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {purchase.isPending ? 'Adicionando...' : 'Comprar'}
         </button>

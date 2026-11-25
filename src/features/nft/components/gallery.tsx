@@ -64,7 +64,7 @@ export function Gallery({ nft }: { nft: Nft }) {
             <button
               type="button"
               aria-label="Ampliar imagem"
-              className="absolute right-8 top-8 hidden h-8 w-8 items-center justify-center rounded-full bg-surface/90 text-foreground transition-colors hover:text-accent md:flex"
+              className="absolute right-8 top-8 hidden lg:right-3 lg:top-3 h-8 w-8 items-center justify-center rounded-full bg-surface/90 text-foreground transition-colors hover:text-accent md:flex"
             >
               <ZoomIn className="h-4 w-4" aria-hidden="true" />
             </button>

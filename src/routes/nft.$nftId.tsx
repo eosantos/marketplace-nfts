@@ -12,7 +12,7 @@ function NftDetailPage() {
   return (
     <>
       <main className="mx-auto max-w-[1200px] px-5 pb-48 md:px-0 md:pb-0">
-        <nav aria-label="Trilha" className="hidden py-6 text-xs font-bold md:block">
+        <nav aria-label="Trilha" className="hidden py-6 text-xs font-bold md:block lg:pb-5 lg:pt-8 lg:text-[15px]">
           <Link to="/" className="hover:text-accent">
             Início
           </Link>{' '}
