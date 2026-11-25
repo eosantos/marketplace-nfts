@@ -1,7 +1,7 @@
 # docs/API.md — Contratos REST do Marketplace NFTs
 
-> Contrato alvo desta etapa. Os handlers MSW que implementam estes endpoints entram
-> nas tarefas 6–11 da Etapa 01.
+> Contrato dos endpoints. Handlers implementados: sessão, NFTs, favoritos, carrinho, perfil e carteiras
+> (Etapa 01, parte 2a). Cotação e pedidos entram na parte 2b.
 
 Todos os endpoints retornam `application/json`. Erros seguem o contrato `ApiError`:
 
@@ -118,6 +118,22 @@ Lista NFTs com busca, filtros, ordenação e paginação. Os parâmetros compõe
 ```
 
 **Erros**: `VALIDATION_ERROR`, `TRANSIENT`
+
+---
+
+### `GET /nfts/facets`
+Contagens para a sidebar da Home (categorias, redes, coleções) e faixa de preço de referência.
+Deve ser registrada antes de `/nfts/:id`.
+
+**Resposta 200** (`NftFacets`):
+```ts
+{
+  categories: { name: string, count: number }[]
+  networks: { name: string, count: number }[]
+  collections: { name: string, count: number }[]
+  priceRange: { min: string, max: string }
+}
+```
 
 ---
 
@@ -359,6 +375,15 @@ Atualiza dados e avatar. `avatar: null` remove o avatar.
 
 ---
 
+### `POST /profile/avatar`
+Envia o avatar como `multipart/form-data` (campo `avatar`). Aceita PNG, JPEG e WebP de até
+300 KB; o mock guarda o arquivo como data URL.
+
+**Resposta 200**: `Profile`
+**Erros**: `VALIDATION_ERROR` (campo `avatar`), `UNAUTHENTICATED`, `SESSION_EXPIRED`, `TRANSIENT`
+
+---
+
 ### `POST /profile/password`
 Altera a senha. A senha atual é verificada contra o hash do mock.
 
@@ -416,6 +441,45 @@ para secundárias.
 **Erros**: `VALIDATION_ERROR`, `NOT_FOUND`, `FORBIDDEN`, `UNAUTHENTICATED`, `TRANSIENT`
 
 ---
+
+### `POST /wallets/:id/connect` e `POST /wallets/:id/disconnect`
+Conexão e desconexão simuladas da carteira (o checkout consome este estado).
+
+**Resposta 200** (`WalletConnection`): `{ walletId: string, connected: boolean, network: string, address: string }`
+**Erros**: `NOT_FOUND`, `FORBIDDEN`, `UNAUTHENTICATED`, `SESSION_EXPIRED`, `TRANSIENT`
+
+---
+
+## Canal de controle dos mocks
+
+Fora de `/api`, sem latência nem falhas de cenário. Usado pelos testes E2E e para depuração.
+
+| Rota | Corpo | Efeito |
+|------|-------|--------|
+| `GET /__mocks__/state` | — | Cenário ativo e contagens do banco |
+| `POST /__mocks__/reset` | `{ scenario?: string }` | Restaura integralmente o cenário (padrão `default`) |
+| `POST /__mocks__/scenario` | `{ scenario: string }` | Troca o cenário mantendo os dados |
+
+Com os mocks ativos, o mesmo controle existe em `window.__mocks`:
+`reset(scenario?)`, `setScenario(scenario)` e `getState()`.
+
+## Cenários implementados na parte 2a
+
+| Cenário | Efeito |
+|---------|--------|
+| `default` | Latência fixa de 180 ms |
+| `empty` | Catálogo, favoritos e carrinhos vazios (use `reset`) |
+| `slow-random-latency` | 400–2600 ms, sequência reproduzível por seed |
+| `out-of-order` | Latência depende da URL: buscas terminam fora da ordem de envio |
+| `network-failure` | Falha de rede em todas as rotas de negócio |
+| `http-4xx` | `FORBIDDEN` (403) em catálogo e recursos privados; auth continua funcionando |
+| `http-5xx` | `TRANSIENT` (503) em catálogo e recursos privados; auth continua funcionando |
+| `session-expired` | Recursos privados e `GET /session` respondem `SESSION_EXPIRED` |
+| `signup-conflict` | `POST /auth/register` responde `EMAIL_TAKEN` |
+| `coupon-invalid` / `coupon-expired` | Impõem o status do cupom (consumidos pela cotação, parte 2b) |
+
+Os cenários `price-changed-at-checkout`, `sold-out-at-checkout`, `timeout-after-order-created`,
+`payment-confirmed` e `payment-refused` entram na parte 2b (cotação e pedidos).
 
 ## Estado simulado
 

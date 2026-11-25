@@ -36,3 +36,18 @@ Decisões:
 - Linha do carrinho tem `id` estável; unicidade lógica é `nftId + editionType`.
 - Cada NFT expõe as quatro edições (`1/1`, `1/10`, `1/50`, `ABERTA`), com `total: null` na aberta.
 - Cenário `empty` zera catálogo, favoritos e itens dos carrinhos; usuários e carteiras permanecem.
+
+
+## Etapa 01 — parte 2a (handlers, auth e cenários)
+
+Concluído (aguardando validação e commit):
+- Camada de serviços pura em `src/mocks/services` (auth, catálogo, favoritos, carrinho, perfil, carteiras) e handlers MSW finos em `src/mocks/handlers`.
+- Auth com hash PBKDF2 (senha em claro nunca persiste), token Bearer com expiração de 2 h, `GET /session`, logout, troca de senha que encerra as outras sessões.
+- Catálogo com busca (sem acento/caixa), filtros, abas, ordenação e paginação reais; `GET /nfts/facets` para a sidebar.
+- Favoritos idempotentes; carrinho com limite por edição (`min(disponível, limite por comprador)`), mescla por `nftId + editionType` e checagem de dono.
+- Perfil (dados, avatar por upload ou remoção, senha) e carteiras (principal única, endereço único por usuário, conectar/desconectar).
+- Cenários `default`, `empty`, `slow-random-latency`, `out-of-order`, `network-failure`, `http-4xx`, `http-5xx`, `session-expired`, `signup-conflict`, `coupon-invalid` e `coupon-expired` (este último consumido pela cotação na 2b), com PRNG por seed.
+- Canal `/__mocks__/{state,reset,scenario}` e `window.__mocks`. `VITE_MOCK_SCENARIO` só é reaplicado quando o valor do env muda.
+- Testes Vitest: `services.test.ts` e `latency.test.ts`.
+
+Pendente (parte 2b): cotação, pedidos idempotentes, máquina de estados, cenários de checkout e testes de aritmética/idempotência.

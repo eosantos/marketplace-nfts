@@ -36,6 +36,9 @@ export interface MockSequences {
   quote: number
   session: number
   wallet: number
+  /** Criadas sob demanda (bancos persistidos antes desta etapa não as possuem). */
+  cartItem?: number
+  user?: number
 }
 
 export interface MockDb {
@@ -52,4 +55,6 @@ export interface MockDb {
   orders: Order[]
   idempotency: Record<string, MockIdempotencyRecord>
   sequences: MockSequences
+  /** Estado de conexão simulada por carteira (walletId -> conectada). */
+  walletConnections?: Record<string, boolean>
 }

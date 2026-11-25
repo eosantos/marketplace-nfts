@@ -14,10 +14,13 @@ export const EthAmountSchema = z
 
 export type EthAmount = z.infer<typeof EthAmountSchema>
 
-/** Caminho de asset local (`/assets/...`) ou URL absoluta. */
+/** Caminho de asset local (`/assets/...`), URL absoluta ou data URL de avatar (png/jpeg/webp). */
 export const AssetPathSchema = z
   .string()
-  .regex(/^(?:https?:\/\/[^\s]+|\/[^\s]*)$/, 'Caminho de imagem inválido')
+  .regex(
+    /^(?:https?:\/\/[^\s]+|\/[^\s]*|data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+)$/,
+    'Caminho de imagem inválido',
+  )
 
 export type AssetPath = z.infer<typeof AssetPathSchema>
 
@@ -558,3 +561,36 @@ export const HealthResponseSchema = z.object({
 })
 
 export type HealthResponse = z.infer<typeof HealthResponseSchema>
+
+// ============================================================================
+// Facets do catálogo (sidebar da Home)
+// ============================================================================
+
+export const FacetEntrySchema = z.object({
+  name: z.string(),
+  count: z.number().int().min(0),
+})
+
+export type FacetEntry = z.infer<typeof FacetEntrySchema>
+
+export const NftFacetsSchema = z.object({
+  categories: z.array(FacetEntrySchema),
+  networks: z.array(FacetEntrySchema),
+  collections: z.array(FacetEntrySchema),
+  priceRange: z.object({ min: EthAmountSchema, max: EthAmountSchema }),
+})
+
+export type NftFacets = z.infer<typeof NftFacetsSchema>
+
+// ============================================================================
+// Conexão de carteira (simulada)
+// ============================================================================
+
+export const WalletConnectionSchema = z.object({
+  walletId: z.string(),
+  connected: z.boolean(),
+  network: NftNetworkSchema,
+  address: WalletAddressSchema,
+})
+
+export type WalletConnection = z.infer<typeof WalletConnectionSchema>

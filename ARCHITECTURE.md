@@ -189,3 +189,15 @@ Nenhum desvio até a Etapa 00.
 - **Tema:** tokens de `design/tokens.md` em `@theme` (Tailwind v4) e mapeados para os nomes do shadcn/ui (`primary`/`accent` = cobre `#d08a4b`, `card`/`popover` = `surface`, `destructive` = `danger`). Fonte Roboto Mono self-hosted via `@fontsource-variable/roboto-mono` (sem CDN).
 - **Toast:** somente `sonner` (wrapper em `src/shared/ui/sonner.tsx`). O `@radix-ui/react-toast` e o `toast.tsx` foram removidos para evitar dois sistemas de notificação.
 - **Deploy:** estático na Vercel (preset Vite), com rewrite de SPA para `/index.html` em `vercel.json`. Variáveis `VITE_ENABLE_MOCKS=true` e `VITE_MOCK_SCENARIO=default` precisam existir no projeto da Vercel antes do build, porque o Vite as embute.
+
+
+## Decisões desta etapa (Etapa 01 — parte 2a)
+
+- **Serviços + handlers:** a lógica vive em `src/mocks/services` (funções puras sobre o banco, retornam `ServiceResult`), e os handlers em `src/mocks/handlers` só leem a requisição e traduzem o resultado. Isso permite testar a regra sem navegador.
+- **Rotas por tipo:** `auth` (login/cadastro/sessão), `public` (catálogo) e `private` (recursos do usuário). Os cenários de falha afetam `public` e `private`; `auth` continua funcionando para o teste poder logar.
+- **Sessão:** token Bearer opaco (`kurio_<hex>`) guardado no banco simulado, validade de 2 horas. A política de armazenamento do token no cliente é definida na Etapa 02.
+- **Latência determinística:** padrão fixo (180 ms); `slow-random-latency` usa PRNG com seed; `out-of-order` deriva o atraso do hash da URL. Nenhum `Math.random`.
+- **Carrinho:** limite por linha = `min(disponível, limite por comprador)`; esgotado responde `AVAILABILITY_CONFLICT`. Totais e preços não são calculados aqui (cotação, parte 2b).
+- **Avatar:** upload multipart validado (PNG/JPEG/WebP, 300 KB) e guardado como data URL no banco simulado, para caber no localStorage.
+- **Controle:** `/__mocks__/*` e `window.__mocks` são o único caminho para os testes mudarem cenário/dados; nada de setar estado da UI diretamente.
+- **Cenário do env:** `VITE_MOCK_SCENARIO` é aplicado na primeira execução e sempre que o valor mudar; entre mudanças, o cenário definido pelo controle persiste no refresh.
