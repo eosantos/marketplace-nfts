@@ -1,6 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { LogIn, Search, ShoppingCart } from 'lucide-react'
+import { LogIn, ShoppingCart } from 'lucide-react'
 import { useSession } from '@/features/auth/hooks'
+import { HeaderSearch } from '@/features/catalog/components/header-search'
 import { useCartCount } from '@/features/cart/use-cart-count'
 import { cn } from '@/shared/lib/utils'
 import { UserMenu } from './user-menu'
@@ -49,9 +50,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center justify-end gap-5">
-          <Link to="/" aria-label="Buscar NFTs" className="text-foreground transition-colors hover:text-accent">
-            <Search className="h-5 w-5" aria-hidden="true" />
-          </Link>
+          <HeaderSearch />
 
           <Link
             to="/cart"

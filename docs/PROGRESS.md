@@ -7,8 +7,8 @@ Acompanhamento das etapas do desafio.
 | 00 | Ambiente e dependências | ✅ Concluída | Scaffold Vite+React+TS, todas as deps instaladas, Tailwind v4 + tw-animate-css, shadcn/ui (button, input, label, dialog, sheet, select, checkbox, skeleton, toast, form), MSW SW gerado, Playwright Chromium instalado, ESLint/Prettier/Vitest (jsdom) /Playwright configurados, README, ARCHITECTURE e PROGRESS criados. packageManager fixado (pnpm@12.23.0). Auditoria: pnpm install --frozen-lockfile, typecheck, lint, build validados; mocks ativos por padrão | `chore(setup): bootstrap vite react ts project with full dependency set` |
 | 00b | Esqueleto, tema e deploy | ✅ Concluída | Rotas esqueleto + `notFoundComponent`, cliente Axios único, MSW com `GET /api/health`, tema KURIO (Roboto Mono self-hosted), toast único (`sonner`), `vercel.json`. Reconstruída após perda de trabalho não commitado. | `feat(setup): restore route skeleton, msw bootstrap and kurio theme` |
 | 01 | Mocks e contratos | ✅ Concluída (aguardando merge na main) | Contratos Zod, banco simulado, fixtures, serviços e handlers REST (auth, catálogo/facets, favoritos, carrinho, perfil, carteiras, cotação e pedidos), 16 cenários determinísticos, canal `/__mocks__` e `window.__mocks`, barramento de eventos do banco. | `feat(mocks): ...` (3 commits) |
-| 02 | Autenticação | 🚧 Em validação | Login e cadastro (modal no desktop, tela cheia no mobile), sessão persistida, Bearer no Axios, 401 → diálogo de sessão expirada com retomada, redirect seguro, rotas privadas, isolamento de cache entre usuários, header com menu do usuário. | — |
-| 03 | Catálogo (Início) | ⏳ Pendente | Busca, filtros, ordenação, paginação, URL como estado | — |
+| 02 | Autenticação | ✅ Concluída | Login e cadastro (modal no desktop, tela cheia no mobile), sessão persistida, Bearer no Axios, 401 → diálogo de sessão expirada com retomada, redirect seguro, rotas privadas, isolamento de cache, header com menu do usuário. | `feat(auth): add login, signup, session handling and private routes` |
+| 03 | Catálogo (Início) | 🚧 Em validação | Home completa (hero, sidebar de filtros, grade, abas, ordenação, paginação, destaque, promos, Diário da Cunhagem, rodapé), busca no header, drawer de filtros e barra inferior no mobile. URL como estado, skeleton com shimmer, estados de erro/vazio. | — |
 | 04 | Detalhe do NFT | ⏳ Pendente | Galeria, favoritos, quantidade, compra | — |
 | 05 | Carrinho | ⏳ Pendente | Itens, cupom, persistência, sincronização | — |
 | 06 | Tempo real (Socket.IO) | ⏳ Pendente | nft.updated, order.updated, reconexão | — |
@@ -82,3 +82,14 @@ Decisões e desvios do Figma:
 - "Entrar com Google/Facebook" e "Esqueceu a senha?" seguem o visual, mas avisam que estão indisponíveis (fora do escopo, sem simular sucesso).
 - A Home ainda não existe: o fundo do modal é a página vazia com header até a Etapa 03.
 - No mobile não há header global; cada tela terá a própria barra (Etapa 03 em diante).
+
+## Etapa 03 — Início e catálogo
+
+Concluído (aguardando validação e commit):
+- Home conforme o Figma: hero com destaques, sidebar (Coleções, Faixa de preço, Rede, NFT em destaque), abas, ordenação, grade 3 colunas, paginação, promos, Diário da Cunhagem e rodapé.
+- URL como estado (`validateSearch` com fallback + `stripSearchParams`), debounce na busca, `keepPreviousData`, `AbortSignal`, skeleton com shimmer, erro com "Tentar novamente" e vazio com "Limpar filtros".
+- Mobile: busca + drawer de filtros, grade em 2 colunas e barra inferior.
+- Mocks: `GET /articles`. Dado de artigo nunca fica em componente.
+- Testes: `search.test.ts` (fallback da URL, parâmetros de API, janela de paginação, conversões de preço).
+
+Pendente de refino: valores exatos do Figma (espaçamentos, tipografia) quando a cópia editável do arquivo estiver disponível.

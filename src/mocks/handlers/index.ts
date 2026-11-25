@@ -1,3 +1,4 @@
+import { articleHandlers } from './articles'
 import { authHandlers } from './auth'
 import { cartHandlers } from './cart'
 import { controlHandlers } from './control'
@@ -15,6 +16,7 @@ export const handlers = [
   ...controlHandlers,
   ...authHandlers,
   ...nftHandlers,
+  ...articleHandlers,
   ...favoritesHandlers,
   ...cartHandlers,
   ...profileHandlers,

@@ -1,50 +1,59 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
-import { http } from '@/shared/api/http'
+import { createFileRoute, stripSearchParams } from '@tanstack/react-router'
+import { CatalogResults } from '@/features/catalog/components/catalog-results'
+import { CatalogTabs } from '@/features/catalog/components/catalog-tabs'
+import { FeaturedNft } from '@/features/catalog/components/featured-nft'
+import { FiltersPanel } from '@/features/catalog/components/filters-panel'
+import { Hero } from '@/features/catalog/components/hero'
+import { Journal } from '@/features/catalog/components/journal'
+import { MobileSearchBar } from '@/features/catalog/components/mobile-search-bar'
+import { PromoCards } from '@/features/catalog/components/promo-cards'
+import { SortSelect } from '@/features/catalog/components/sort-select'
+import { CATALOG_SEARCH_DEFAULTS, catalogSearchSchema } from '@/features/catalog/search'
+import { MobileTabBar } from '@/shared/layout/mobile-tab-bar'
+import { SiteFooter } from '@/shared/layout/site-footer'
 
 export const Route = createFileRoute('/')({
+  // Busca, filtros, aba, ordenação e página vivem na URL; valores inválidos voltam ao padrão.
+  validateSearch: catalogSearchSchema,
+  search: { middlewares: [stripSearchParams(CATALOG_SEARCH_DEFAULTS)] },
   component: HomePage,
 })
 
-// Verificação temporária da cadeia Axios -> MSW -> TanStack Query (removida na Etapa 03).
-function HealthCheck() {
-  const { data, isPending, isError } = useQuery({
-    queryKey: ['health'],
-    queryFn: async ({ signal }) => {
-      const res = await http.get<{ status: string }>('/health', { signal })
-      return res.data
-    },
-  })
-
-  if (isPending) return <span>verificando...</span>
-  if (isError) return <span className="text-danger">falhou (mocks desligados?)</span>
-  return <span className="text-accent-strong">{data.status}</span>
-}
-
 function HomePage() {
+  const search = Route.useSearch()
+
   return (
-    <main className="mx-auto flex min-h-[70vh] max-w-[1200px] flex-col items-center justify-center gap-6 px-6 text-center">
-      <h1 className="text-4xl font-bold tracking-widest">KURIO</h1>
-      <p className="max-w-md text-sm text-muted-foreground">
-        Ambiente configurado. A Home será implementada na etapa 03.
-      </p>
-      <p className="text-sm">
-        Mocks (GET /api/health): <HealthCheck />
-      </p>
-      <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-accent">
-        <Link to="/login">/login</Link>
-        <Link to="/signup">/signup</Link>
-        <Link to="/cart">/cart</Link>
-        <Link to="/checkout">/checkout</Link>
-        <Link to="/profile">/profile</Link>
-        <Link to="/wallets">/wallets</Link>
-        <Link to="/nft/$nftId" params={{ nftId: '1' }}>
-          /nft/1
-        </Link>
-        <Link to="/order/$orderId" params={{ orderId: '1' }}>
-          /order/1
-        </Link>
-      </nav>
-    </main>
+    <>
+      <main className="mx-auto max-w-[1200px] px-5 pb-28 md:px-0 md:pb-0">
+        <MobileSearchBar search={search} />
+        <Hero />
+
+        <div id="catalogo" className="mt-10 grid scroll-mt-6 gap-8 md:mt-14 md:grid-cols-[310px_1fr]">
+          <aside aria-label="Filtros" className="hidden content-start gap-6 md:grid">
+            <FiltersPanel search={search} />
+            <FeaturedNft />
+          </aside>
+
+          <section aria-labelledby="catalog-title">
+            <h2 id="catalog-title" className="sr-only">
+              Catálogo de NFTs
+            </h2>
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3 md:border-b md:border-border">
+              <CatalogTabs active={search.tab} />
+              <div className="hidden md:block">
+                <SortSelect value={search.orderBy} />
+              </div>
+            </div>
+            <CatalogResults search={search} />
+          </section>
+        </div>
+
+        <PromoCards />
+        <Journal />
+      </main>
+
+      <SiteFooter />
+      <MobileTabBar />
+    </>
   )
 }
