@@ -54,3 +54,15 @@ export async function goToReview(page: Page): Promise<void> {
 export async function confirmPurchase(page: Page): Promise<void> {
   await page.getByRole('button', { name: 'Confirmar compra' }).click()
 }
+
+/**
+ * Provoca a expiração de sessão por uma ação da própria tela (restaurar a sessão em reload é
+ * silencioso): espera a tela assentar, troca o cenário e favorita (chamada autenticada → 401).
+ */
+export async function expireSessionOnDetail(page: Page): Promise<void> {
+  await page.goto(`/nft/${NFT_ID}`)
+  await page.waitForLoadState('networkidle')
+  await expect(page.getByRole('button', { name: /favorit/i }).filter({ visible: true }).first()).toBeVisible()
+  await setScenario(page, 'session-expired')
+  await page.getByRole('button', { name: /favorit/i }).filter({ visible: true }).first().click()
+}

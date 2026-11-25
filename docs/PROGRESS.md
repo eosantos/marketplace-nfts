@@ -136,3 +136,6 @@ Concluído (aguardando validação e commit):
 - Mocks: cenário `wallet-refused`, flag `connected` em `GET /wallets`, e pedido exige carteira conectada (reenvio idempotente não exige).
 - Testes: `checkout.test.ts` (15: diff de cotação, persistência, envio com recuperação, formulários) e 3 casos novos nos mocks (conexão obrigatória, recusa, estado na lista).
 - Verificação visual e o fluxo completo no navegador ficam com o desenvolvedor e com os testes E2E da Etapa 09.
+
+## Etapa 12 — Cobertura E2E completa
+Concluído (aguardando validação e commit): specs de catálogo, sessão/favoritos, carrinho/cupom, realtime no carrinho/checkout, teclado e overflow; traces `retain-on-failure`; justificativa da Performance mobile no relatório Lighthouse.
