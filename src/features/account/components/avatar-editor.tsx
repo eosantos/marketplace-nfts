@@ -39,7 +39,7 @@ export function AvatarEditor({ avatar, name }: { avatar: string | undefined; nam
         Avatar
       </span>
       <div className="flex items-center gap-4">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-surface">
+        <div className="flex h-16 w-16 lg:h-[50px] lg:w-[50px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-surface">
           {avatar ? (
             <img src={avatar} alt={`Avatar de ${name}`} className="h-full w-full object-cover" />
           ) : (
@@ -63,6 +63,7 @@ export function AvatarEditor({ avatar, name }: { avatar: string | undefined; nam
           type="button"
           variant="outline"
           size="sm"
+          className="lg:h-10 lg:border-accent lg:bg-accent lg:px-6 lg:font-bold lg:text-on-accent"
           disabled={busy}
           aria-describedby={error ? 'avatar-error' : 'avatar-hint'}
           onClick={() => inputRef.current?.click()}

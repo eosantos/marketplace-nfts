@@ -15,8 +15,8 @@ interface FieldProps {
 /** Rótulo visível + asterisco + erro associado (aria-describedby fica no controle via `describedBy`). */
 export function Field({ id, label, required, error, className, children }: FieldProps) {
   return (
-    <div className={cn('grid gap-1.5', className)}>
-      <label htmlFor={id} className="text-sm">
+    <div className={cn('grid gap-1.5 lg:gap-[7px]', className)}>
+      <label htmlFor={id} className="text-sm lg:text-[15px]">
         {label}
         {required ? (
           <span className="ml-0.5 text-danger" aria-hidden="true">

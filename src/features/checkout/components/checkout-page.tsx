@@ -415,7 +415,7 @@ function CheckoutFlow({ userId }: { userId: string }) {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[minmax(0,1fr)_332px] md:gap-12">
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[minmax(0,1fr)_332px] md:gap-12 lg:grid-cols-[minmax(0,1fr)_405px] lg:gap-8">
           <div className="grid min-w-0 grid-cols-1 gap-6">
             {phase.name === 'changes' ? (
               <ChangesPanel
@@ -509,7 +509,7 @@ function CheckoutFlow({ userId }: { userId: string }) {
                 form="checkout-form"
                 size="lg"
                 disabled={ctaDisabled}
-                className="w-full rounded-none font-bold max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
+                className="w-full rounded-none font-bold lg:h-[45px] lg:text-base max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
               >
                 {ctaLabel}
               </Button>
@@ -521,7 +521,7 @@ function CheckoutFlow({ userId }: { userId: string }) {
                 onClick={() => {
                   void confirm()
                 }}
-                className="w-full rounded-none font-bold max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
+                className="w-full rounded-none font-bold lg:h-[45px] lg:text-base max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
               >
                 {ctaLabel}
               </Button>

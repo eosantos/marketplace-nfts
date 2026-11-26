@@ -7,10 +7,12 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   /** Rótulo acessível (visualmente oculto: o Figma usa só placeholder). */
   label: string
   error?: string | undefined
+  /** Classes extras do rótulo (ex.: tornar visível em telas maiores). */
+  labelClassName?: string
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
-  { label, error, className, id, ...props },
+  { label, error, className, id, labelClassName, ...props },
   ref,
 ) {
   const generatedId = useId()
@@ -19,7 +21,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
 
   return (
     <div className="grid gap-1.5">
-      <label htmlFor={inputId} className="sr-only">
+      <label htmlFor={inputId} className={cn('sr-only', labelClassName)}>
         {label}
       </label>
       <Input

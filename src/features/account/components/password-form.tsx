@@ -9,6 +9,8 @@ import { passwordFormSchema, type PasswordFormValues } from '@/features/profile/
 import { parseApiError } from '@/shared/api/errors'
 import { Button } from '@/shared/ui/button'
 
+const LABEL_CLASS = 'lg:not-sr-only lg:text-[15px] lg:leading-6'
+
 export function PasswordForm() {
   const change = useChangePassword()
   const [formError, setFormError] = useState<string | null>(null)
@@ -46,19 +48,21 @@ export function PasswordForm() {
 
   return (
     <form onSubmit={(event) => void onSubmit(event)} noValidate className="grid gap-4" aria-labelledby="password-title">
-      <h2 id="password-title" className="text-lg font-bold">
+      <h2 id="password-title" className="text-lg font-bold lg:text-base">
         Alterar senha
       </h2>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:max-w-[417px] lg:grid-cols-1 lg:gap-[15px]">
         <PasswordField
+          labelClassName={LABEL_CLASS}
           label="Senha atual"
           placeholder="Senha atual"
           autoComplete="current-password"
           error={errors.currentPassword?.message}
           {...register('currentPassword')}
         />
-        <div className="hidden md:block" aria-hidden="true" />
+        <div className="hidden md:block lg:hidden" aria-hidden="true" />
         <PasswordField
+          labelClassName={LABEL_CLASS}
           label="Nova senha"
           placeholder="Nova senha"
           autoComplete="new-password"
@@ -66,6 +70,7 @@ export function PasswordForm() {
           {...register('newPassword')}
         />
         <PasswordField
+          labelClassName={LABEL_CLASS}
           label="Confirmar nova senha"
           placeholder="Confirmar nova senha"
           autoComplete="new-password"

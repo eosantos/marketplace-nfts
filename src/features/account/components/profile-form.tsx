@@ -50,7 +50,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
   return (
     <form onSubmit={(event) => void onSubmit(event)} noValidate className="grid gap-6">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-x-7 lg:gap-y-7">
         <Field id="pf-display" label="Nome de exibição" required error={errors.displayName?.message}>
           <input {...fieldA11y('pf-display', errors.displayName?.message)} autoComplete="name" className={inputClass} {...register('displayName')} />
         </Field>
@@ -86,7 +86,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
         </p>
       ) : null}
 
-      <Button type="submit" className="justify-self-start max-md:w-full" disabled={update.isPending || !isDirty}>
+      <Button type="submit" className="justify-self-start max-md:w-full lg:h-10 lg:w-[131px] lg:text-sm" disabled={update.isPending || !isDirty}>
         {update.isPending ? 'Salvando...' : 'Salvar'}
       </Button>
     </form>
