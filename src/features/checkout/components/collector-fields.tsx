@@ -11,9 +11,9 @@ interface CollectorFieldsProps {
 export function CollectorFields({ register, errors }: CollectorFieldsProps) {
   return (
     <fieldset className="grid min-w-0 grid-cols-1 gap-4">
-      <legend className="mb-3 text-base font-bold">Perfil do colecionador</legend>
+      <legend className="mb-3 text-base font-bold lg:mb-2 lg:text-lg">Perfil do colecionador</legend>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-x-6 lg:gap-y-[18px]">
         <Field id="co-displayName" label="Nome de exibição" required error={errors.displayName?.message}>
           <input
             {...fieldA11y('co-displayName', errors.displayName?.message)}
