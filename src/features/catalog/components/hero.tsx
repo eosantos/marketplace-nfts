@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 import { SkeletonImage } from '@/shared/ui/skeleton-image'
 
@@ -30,9 +31,10 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-title"
-      className="grid items-center gap-6 rounded-3xl bg-surface p-5 md:grid-cols-[1fr_450px] md:rounded-none md:bg-transparent md:p-0 md:pt-8"
+      className="relative grid items-center gap-6 overflow-hidden rounded-3xl bg-surface bg-gradient-to-r from-[#5b3a25] to-[#2c1b13] px-4 pb-9 pt-3 md:grid-cols-[1fr_450px] md:overflow-visible md:bg-none md:rounded-none md:bg-transparent md:p-0 md:pt-8"
     >
-      <div className="grid grid-cols-[1fr_130px] items-center gap-4 md:grid-cols-1 md:gap-0 md:pl-10">
+      <span aria-hidden="true" className="pointer-events-none absolute -right-8 -top-6 h-[260px] w-[260px] rounded-full bg-accent/10 md:hidden" />
+      <div className="relative grid grid-cols-[1fr_138px] items-center gap-4 md:grid-cols-1 md:gap-0 md:pl-10">
         <div>
           <p className="text-xs md:text-sm lg:text-base">Bem-vindo à Kurio</p>
           <h1
@@ -51,21 +53,39 @@ export function Hero() {
           </p>
           <a
             href="#catalogo"
-            className="mt-4 inline-flex h-8 items-center rounded bg-accent px-4 text-xs font-bold uppercase text-on-accent transition-opacity hover:opacity-90 md:mt-8 md:h-10 md:px-7 md:text-sm lg:px-8 lg:text-base"
+            className="mt-2 inline-flex items-center gap-2 text-xs font-bold uppercase text-accent transition-opacity hover:opacity-90 md:mt-8 md:rounded md:bg-accent md:text-on-accent md:h-10 md:px-7 md:h-10 md:px-7 md:text-sm lg:px-8 lg:text-base"
           >
             Explorar
+            <ArrowRight className="h-4 w-4 md:hidden" aria-hidden="true" />
           </a>
         </div>
 
-        <SkeletonImage
-          src={slide.src}
-          alt={slide.alt}
-          width={450}
-          height={450}
-          fetchPriority="high"
-          decoding="async"
-          className="aspect-square w-full rounded-2xl object-cover md:hidden"
-        />
+        <div className="relative md:hidden">
+          <SkeletonImage
+            src={slide.src}
+            alt={slide.alt}
+            width={450}
+            height={450}
+            fetchPriority="high"
+            decoding="async"
+            className="aspect-square w-full rounded-2xl object-cover"
+          />
+          <img
+            src={SLIDES[(index + 2) % SLIDES.length].src}
+            alt=""
+            aria-hidden="true"
+            width={64}
+            height={64}
+            decoding="async"
+            className="absolute -bottom-2 -left-4 h-16 w-16 rounded-2xl border-2 border-surface object-cover"
+          />
+        </div>
+      </div>
+
+      <div aria-hidden="true" className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2 md:hidden">
+        {SLIDES.map((item, position) => (
+          <span key={item.src} className={cn('h-2 w-2 rounded-full bg-accent', position === index ? 'opacity-100' : 'opacity-60')} />
+        ))}
       </div>
 
       <div
