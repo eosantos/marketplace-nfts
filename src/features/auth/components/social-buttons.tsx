@@ -7,14 +7,14 @@ function notifyUnavailable(provider: string): void {
 }
 
 const buttonClass =
-  'flex h-10 w-full items-center justify-center gap-3 rounded border border-border text-xs font-medium text-muted-foreground transition-colors hover:border-accent hover:text-foreground max-md:h-12 max-md:rounded-xl'
+  'flex h-10 w-full items-center justify-center gap-3 rounded border border-border text-xs font-medium text-muted-foreground transition-colors md:text-[13px] md:font-bold hover:border-accent hover:text-foreground max-md:h-12 max-md:rounded-xl'
 
 export function SocialButtons() {
   return (
-    <div className="grid gap-3">
-      <div className="flex items-center gap-3 text-xs text-foreground">
+    <div className="grid gap-3 md:gap-4">
+      <div className="flex items-center gap-3 text-xs text-foreground md:-mx-20 md:gap-0">
         <span className="h-px flex-1 bg-border" aria-hidden="true" />
-        <span>Ou continue com</span>
+        <span className="md:px-3">Ou continue com</span>
         <span className="h-px flex-1 bg-border" aria-hidden="true" />
       </div>
       <button

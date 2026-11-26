@@ -51,11 +51,11 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             event.preventDefault()
             contentRef.current?.querySelector<HTMLInputElement>('input')?.focus()
           }}
-          className="fixed z-50 overflow-y-auto bg-surface text-foreground outline-none max-md:inset-0 max-md:px-7 max-md:py-16 md:left-1/2 md:top-1/2 md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:border-b-8 md:border-accent md:px-12 md:pb-14 md:pt-10"
+          className="fixed z-50 overflow-y-auto bg-surface text-foreground outline-none max-md:inset-0 max-md:px-7 max-md:py-16 md:left-1/2 md:top-1/2 md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:border-b-[10px] md:border-accent md:px-20 md:pb-16 md:pt-12"
         >
           <DialogPrimitive.Close
             aria-label="Fechar"
-            className="absolute right-4 top-4 hidden rounded p-1 text-accent transition-opacity hover:opacity-80 md:block"
+            className="absolute right-2 top-2 hidden rounded p-1 text-accent transition-opacity hover:opacity-80 md:block"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </DialogPrimitive.Close>
@@ -68,7 +68,7 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             {copy.title}
           </DialogPrimitive.Title>
 
-          <nav aria-label="Entrar ou criar conta" className="mb-6 hidden items-center justify-center gap-3 text-lg font-bold md:flex">
+          <nav aria-label="Entrar ou criar conta" className="mb-9 hidden items-center justify-center gap-2.5 text-xl leading-6 font-bold md:flex">
             <Link
               to="/login"
               search={{ redirect: redirectTo }}
@@ -88,7 +88,7 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             </Link>
           </nav>
 
-          <DialogPrimitive.Description className="mb-6 hidden text-center text-xs text-foreground md:block">
+          <DialogPrimitive.Description className="mb-6 hidden text-center text-xs leading-4 text-foreground md:block">
             {copy.description}
           </DialogPrimitive.Description>
 
