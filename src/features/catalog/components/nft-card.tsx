@@ -17,7 +17,7 @@ interface NftCardProps {
  */
 export function NftCard({ nft, priority = false }: NftCardProps) {
   return (
-    <article className="group relative">
+    <article data-skel-group className="group relative">
       <Link to="/nft/$nftId" params={{ nftId: nft.id }} className="block">
         <div className="relative rounded-3xl bg-surface p-1 pb-4 md:aspect-[258/300] md:rounded-none md:p-4 md:pb-3">
           {nft.rarity !== 'COMUM' ? (
@@ -36,8 +36,8 @@ export function NftCard({ nft, priority = false }: NftCardProps) {
             className="aspect-square w-full rounded-2xl object-cover md:aspect-auto md:h-full"
           />
         </div>
-        <h3 className="mt-3 text-sm">{nft.name}</h3>
-        <p className="mt-1 flex items-baseline gap-2">
+        <h3 className="skel-text mt-3 text-sm">{nft.name}</h3>
+        <p className="skel-text mt-1 flex items-baseline gap-2">
           <span className="font-bold text-accent-strong">{nft.price} ETH</span>
           {nft.oldPrice ? (
             <span className="text-sm text-muted-foreground line-through">{nft.oldPrice} ETH</span>

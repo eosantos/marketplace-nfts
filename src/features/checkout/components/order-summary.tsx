@@ -37,11 +37,11 @@ export function OrderSummary({ quote, loading, refreshing, coupon }: OrderSummar
           </div>
           <ul className="mt-3 grid gap-2 lg:mt-5 lg:gap-3">
             {quote.items.map((item) => (
-              <li key={`${item.nftId}-${item.editionType}`} className="flex min-w-0 items-center gap-3 bg-surface p-2 lg:p-0 lg:pr-3">
+              <li key={`${item.nftId}-${item.editionType}`} data-skel-group className="flex min-w-0 items-center gap-3 bg-surface p-2 lg:p-0 lg:pr-3">
                 <SkeletonImage src={item.nftImage} alt="" width={64} height={64} loading="lazy" decoding="async" className="h-16 w-16 rounded-lg object-cover lg:h-[70px] lg:w-[70px]" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-bold lg:text-base">{item.nftName}</p>
-                  <p className="text-xs text-muted-foreground lg:text-sm">
+                  <p className="skel-text truncate text-sm font-bold lg:text-base">{item.nftName}</p>
+                  <p className="skel-text text-xs text-muted-foreground lg:text-sm">
                     Edição: {item.editionType} · (x {item.quantity})
                   </p>
                 </div>

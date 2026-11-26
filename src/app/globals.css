@@ -108,6 +108,29 @@
     }
   }
 
+  /*
+   * Texto em shimmer enquanto a imagem do mesmo grupo carrega: marque o contêiner com
+   * `data-skel-group` e os textos com `skel-text`. O texto continua no DOM (leitores de tela,
+   * testes e SEO não mudam); só fica transparente sobre um bloco com brilho até a imagem chegar.
+   */
+  [data-skel-group]:has(.img-skeleton) .skel-text,
+  [data-skel-group]:has(.img-skeleton) .skel-text * {
+    color: transparent !important;
+    user-select: none;
+  }
+  [data-skel-group]:has(.img-skeleton) .skel-text {
+    border-radius: 4px;
+    background-color: rgb(255 255 255 / 0.06);
+    background-image: linear-gradient(90deg, transparent 25%, rgb(255 255 255 / 0.09) 50%, transparent 75%);
+    background-size: 300% 100%;
+    animation: img-shimmer 1.4s infinite linear;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-skel-group]:has(.img-skeleton) .skel-text {
+      animation: none;
+    }
+  }
+
   /* Gota de suor do macaco da 404: balança de leve (desligada em prefers-reduced-motion). */
   .monkey-sweat {
     transform-box: fill-box;

@@ -102,24 +102,24 @@ function NftDetailContent({ nft }: { nft: Nft }) {
 
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-[100px_minmax(0,1fr)] md:gap-7 lg:grid-cols-[100px_444px_minmax(0,1fr)]">
+      <div data-skel-group className="grid gap-6 md:grid-cols-[100px_minmax(0,1fr)] md:gap-7 lg:grid-cols-[100px_444px_minmax(0,1fr)]">
         <Gallery nft={nft} />
 
         <div className="relative min-w-0 max-md:-mx-5 max-md:-mt-[59px] max-md:rounded-t-[32px] max-md:bg-surface max-md:px-6 max-md:pb-32 max-md:pt-6 md:col-span-2 lg:col-span-1">
           <div className="flex items-start justify-between gap-3">
-            <h1 className="text-xl font-bold md:text-[28px]">{nft.name}</h1>
+            <h1 className="skel-text text-xl font-bold md:text-[28px]">{nft.name}</h1>
             <p role="img" className="flex items-center gap-1 rounded-full border border-accent px-3 py-1 text-xs md:hidden" aria-label={`Nota ${nft.rating.score.toFixed(1)} de 5, ${nft.rating.count} avaliações`}>
               <span aria-hidden="true">★ {nft.rating.score.toFixed(1)} ({nft.rating.count})</span>
             </p>
           </div>
 
           <div className="mt-2 hidden items-center justify-between gap-4 border-b border-border pb-3 md:flex">
-            <p className="text-2xl font-bold text-accent-strong">{nft.price} ETH</p>
+            <p className="skel-text text-2xl font-bold text-accent-strong">{nft.price} ETH</p>
             <StarRating rating={nft.rating} />
           </div>
 
           <h2 className="mt-4 hidden text-sm font-bold md:block lg:text-[15px]">Sobre este NFT:</h2>
-          <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground md:mt-1 md:line-clamp-none">
+          <p className="skel-text mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground md:mt-1 md:line-clamp-none">
             {nft.description}
           </p>
 
@@ -129,7 +129,7 @@ function NftDetailContent({ nft }: { nft: Nft }) {
 
           <DesktopPurchaseRow nft={nft} purchase={purchase} />
 
-          <dl className="mt-6 grid gap-2 text-sm text-muted-foreground lg:mt-5 lg:leading-6">
+          <dl className="skel-text mt-6 grid gap-2 text-sm text-muted-foreground lg:mt-5 lg:leading-6">
             <div>
               <dt className="inline">ID do token: </dt>
               <dd className="inline">{nft.tokenId}</dd>

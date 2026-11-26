@@ -11,9 +11,9 @@ export function FeaturedNft() {
   if (!nft) return null
 
   return (
-    <section aria-labelledby="featured-title" className="bg-surface">
+    <section data-skel-group aria-labelledby="featured-title" className="bg-surface">
       <div className="px-5 pb-3 pt-5">
-        <h2 id="featured-title" className="text-xl font-bold text-accent">
+        <h2 id="featured-title" className="skel-text text-xl font-bold text-accent">
           NFT EM DESTAQUE
         </h2>
         <p className="mt-1 text-center text-lg font-bold">OFERTA LIMITADA</p>
@@ -28,7 +28,7 @@ export function FeaturedNft() {
           decoding="async"
           className="aspect-square w-full rounded-2xl object-cover"
         />
-        <div className="flex items-baseline justify-between px-5 py-4 text-sm">
+        <div className="skel-text mx-5 my-4 flex items-baseline justify-between text-sm">
           <span>{nft.name}</span>
           <span className="font-bold text-accent-strong">{nft.price} ETH</span>
         </div>
