@@ -35,7 +35,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
   return (
     <li
       className={cn(
-        'grid grid-cols-[70px_1fr_auto] items-center gap-x-4 gap-y-2 bg-surface p-3 md:gap-x-4',
+        'grid grid-cols-[100px_1fr_auto] items-center gap-x-3 gap-y-0 overflow-hidden rounded-2xl bg-surface pr-3 md:gap-x-4 md:gap-y-2 md:rounded-none md:p-3',
         'md:grid-cols-[1fr_110px_120px_110px_36px]',
         'lg:grid-cols-[311px_139px_136px_1fr_20px] lg:gap-x-0 lg:bg-transparent lg:p-0',
         actions.isRemoving && 'opacity-50',
@@ -50,17 +50,17 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
             height={70}
             loading="lazy"
             decoding="async"
-            className="h-[70px] w-[70px] rounded-lg object-cover"
+            className="h-[70px] w-[70px] rounded-lg object-cover max-md:row-span-2 max-md:h-full max-md:min-h-[102px] max-md:w-full max-md:rounded-none"
           />
         ) : (
           <Skeleton className="h-[70px] w-[70px]" />
         )}
-        <div className="min-w-0">
+        <div className="min-w-0 max-md:pt-3">
           {data ? (
             <>
               <p className="truncate text-sm font-bold lg:text-base">{data.name}</p>
               <p className="text-xs text-muted-foreground">
-                ID do token: {data.tokenId} · Edição: {line.editionType}
+                <span className="max-md:hidden">ID do token: {data.tokenId} · </span>Edição: {line.editionType}
               </p>
             </>
           ) : nft.isError ? (
@@ -74,7 +74,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         </div>
       </div>
 
-      <div className="text-sm font-bold text-accent-strong max-md:col-start-2 max-md:row-start-2 lg:text-base">
+      <div className="text-sm font-bold text-accent-strong max-md:col-start-2 max-md:row-start-2 max-md:pb-3 max-md:text-lg lg:text-base">
         {unitPrice ? `${padEth(unitPrice)} ETH` : <Skeleton className="h-4 w-16" />}
       </div>
 

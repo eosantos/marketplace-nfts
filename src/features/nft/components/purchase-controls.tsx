@@ -59,9 +59,9 @@ export function QuantityStepper({ purchase }: { purchase: NftPurchase }) {
         aria-label="Diminuir quantidade"
         disabled={purchase.quantity <= 1 || purchase.soldOut}
         onClick={purchase.decrement}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40 lg:h-8 lg:w-8"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40 max-md:h-5 max-md:w-5 lg:h-8 lg:w-8"
       >
-        <Minus className="h-5 w-5" aria-hidden="true" />
+        <Minus className="h-5 w-5 max-md:h-3.5 max-md:w-3.5" aria-hidden="true" />
       </button>
       <output aria-live="polite" className="w-6 text-center text-sm lg:text-lg">
         {purchase.soldOut ? 0 : purchase.quantity}
@@ -73,11 +73,11 @@ export function QuantityStepper({ purchase }: { purchase: NftPurchase }) {
         disabled={purchase.soldOut}
         onClick={purchase.increment}
         className={cn(
-          'flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40 lg:h-8 lg:w-8',
+          'flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40 max-md:h-5 max-md:w-5 lg:h-8 lg:w-8',
           atMax && !purchase.soldOut && 'opacity-60',
         )}
       >
-        <Plus className="h-5 w-5" aria-hidden="true" />
+        <Plus className="h-5 w-5 max-md:h-3.5 max-md:w-3.5" aria-hidden="true" />
       </button>
     </div>
   )
@@ -110,13 +110,13 @@ export function MobilePurchaseBar({ nft, purchase }: { nft: Nft; purchase: NftPu
   const total = new Decimal(nft.price).times(purchase.soldOut ? 1 : purchase.quantity).toFixed(2)
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 grid gap-3 rounded-t-3xl bg-surface p-4 md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-30 grid gap-3 rounded-t-3xl bg-surface p-6 md:hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">Qtd.</span>
           <QuantityStepper purchase={purchase} />
         </div>
-        <p className="text-lg font-bold text-accent-strong">{total} ETH</p>
+        <p className="text-xl font-bold text-accent-strong">{total} ETH</p>
       </div>
       <div className="flex gap-3">
         <button
@@ -125,7 +125,7 @@ export function MobilePurchaseBar({ nft, purchase }: { nft: Nft; purchase: NftPu
           onClick={() => {
             purchase.submit(true)
           }}
-          className="h-12 flex-1 rounded-xl bg-gradient-to-r from-accent to-[#a8703f] text-sm font-bold text-on-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-[60px] w-[196px] flex-none rounded-full bg-gradient-to-r from-accent to-[#a8703f] text-sm font-bold text-on-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           {purchase.soldOut ? 'Esgotado' : 'Comprar NFT'}
         </button>
@@ -136,7 +136,7 @@ export function MobilePurchaseBar({ nft, purchase }: { nft: Nft; purchase: NftPu
           onClick={() => {
             purchase.submit(false)
           }}
-          className="flex h-12 w-12 items-center justify-center rounded-xl border border-border text-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-background/50 text-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ShoppingCart className="h-5 w-5" aria-hidden="true" />
         </button>
