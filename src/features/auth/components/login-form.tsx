@@ -33,7 +33,10 @@ export function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
       router.history.push(safeRedirect(redirectTo))
     } catch (error) {
       const apiError = parseApiError(error)
-      const mapped = applyApiFieldErrors(apiError, setError, { email: 'email', password: 'password' })
+      const mapped = applyApiFieldErrors(apiError, setError, {
+        email: 'email',
+        password: 'password',
+      })
       if (!mapped) setFormError(apiError.message)
     }
   })
@@ -68,7 +71,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
         onClick={() => {
           toast.info('Recuperação de senha indisponível nesta demonstração.')
         }}
-        className="justify-self-end text-xs text-accent hover:underline"
+        className="justify-self-end text-xs text-accent hover:underline md:text-sm"
       >
         Esqueceu a senha?
       </button>
@@ -79,7 +82,12 @@ export function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" className="mt-1 w-full font-bold max-md:h-12 max-md:rounded-xl" disabled={isSubmitting}>
+      <Button
+        type="submit"
+        size="lg"
+        className="mt-1 w-full font-bold md:mt-2.5 md:h-[45px] md:text-base max-md:h-12 max-md:rounded-xl"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? 'Entrando...' : 'Entrar'}
       </Button>
     </form>
