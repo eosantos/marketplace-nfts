@@ -37,6 +37,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
       className={cn(
         'grid grid-cols-[70px_1fr_auto] items-center gap-x-4 gap-y-2 bg-surface p-3 md:gap-x-4',
         'md:grid-cols-[1fr_110px_120px_110px_36px]',
+        'lg:grid-cols-[311px_139px_136px_1fr_20px] lg:gap-x-0 lg:bg-transparent lg:p-0',
         actions.isRemoving && 'opacity-50',
       )}
     >
@@ -57,7 +58,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         <div className="min-w-0">
           {data ? (
             <>
-              <p className="truncate text-sm font-bold">{data.name}</p>
+              <p className="truncate text-sm font-bold lg:text-base">{data.name}</p>
               <p className="text-xs text-muted-foreground">
                 ID do token: {data.tokenId} · Edição: {line.editionType}
               </p>
@@ -73,7 +74,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         </div>
       </div>
 
-      <div className="text-sm font-bold text-accent-strong max-md:col-start-2 max-md:row-start-2">
+      <div className="text-sm font-bold text-accent-strong max-md:col-start-2 max-md:row-start-2 lg:text-base">
         {unitPrice ? `${padEth(unitPrice)} ETH` : <Skeleton className="h-4 w-16" />}
       </div>
 
@@ -92,7 +93,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         />
       </div>
 
-      <div className="text-sm font-bold text-accent-strong max-md:hidden" aria-busy={quoteLoading && !quoteItem}>
+      <div className="text-sm font-bold text-accent-strong max-md:hidden lg:text-base" aria-busy={quoteLoading && !quoteItem}>
         {quoteItem ? `${padEth(quoteItem.subtotal)} ETH` : quoteLoading ? <Skeleton className="h-4 w-16" /> : '—'}
       </div>
 
@@ -101,7 +102,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         aria-label={`Remover ${name} do carrinho`}
         disabled={actions.isRemoving}
         onClick={actions.remove}
-        className="flex h-9 w-9 items-center justify-center text-accent transition-opacity hover:opacity-80 max-md:col-start-3 max-md:row-start-1 max-md:self-start max-md:justify-self-end"
+        className="flex h-9 w-9 items-center justify-center text-accent lg:h-5 lg:w-5 lg:justify-self-end transition-opacity hover:opacity-80 max-md:col-start-3 max-md:row-start-1 max-md:self-start max-md:justify-self-end"
       >
         <Trash2 className="h-5 w-5" aria-hidden="true" />
       </button>

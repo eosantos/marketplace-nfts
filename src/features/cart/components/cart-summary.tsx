@@ -46,7 +46,7 @@ function CouponForm({
 
   return (
     <div>
-      <label htmlFor="coupon-code" className="text-xs font-bold">
+      <label htmlFor="coupon-code" className="text-xs font-bold lg:text-sm">
         Código promocional
       </label>
 
@@ -95,7 +95,7 @@ function CouponForm({
 
 function Row({ label, children, caption }: { label: string; children: React.ReactNode; caption?: string }) {
   return (
-    <div className="flex items-start justify-between gap-4 text-sm">
+    <div className="flex items-start justify-between gap-4 text-sm lg:text-[15px]">
       <dt>{label}</dt>
       <dd className="text-right">
         {children}
@@ -115,11 +115,11 @@ export function CartSummary({ quote, isGuest, appliedCoupon, onApplyCoupon, onRe
 
   return (
     <aside aria-labelledby="summary-title" className="bg-surface p-5 max-md:rounded-t-3xl md:bg-transparent md:p-0">
-      <h2 id="summary-title" className="border-b border-border pb-3 text-base font-bold md:text-lg">
+      <h2 id="summary-title" className="border-b border-border pb-3 text-base font-bold md:text-lg lg:pb-1.5 lg:leading-6">
         Resumo da carteira
       </h2>
 
-      <div className="mt-4">
+      <div className="mt-4 lg:mt-6">
         <CouponForm appliedCoupon={appliedCoupon} onApply={onApplyCoupon} onRemove={onRemoveCoupon} />
       </div>
 
@@ -149,7 +149,7 @@ export function CartSummary({ quote, isGuest, appliedCoupon, onApplyCoupon, onRe
           )}
         </div>
       ) : (
-        <dl aria-busy={refreshing} className={cn('mt-6 grid gap-3 transition-opacity', refreshing && data && 'opacity-60')}>
+        <dl aria-busy={refreshing} className={cn('mt-6 grid gap-3 transition-opacity lg:gap-4', refreshing && data && 'opacity-60')}>
           {data ? (
             <>
               <Row label="Subtotal">{padEth(data.subtotal)} ETH</Row>
@@ -159,7 +159,7 @@ export function CartSummary({ quote, isGuest, appliedCoupon, onApplyCoupon, onRe
               </Row>
               <div className="mt-2 flex items-center justify-between border-t border-border pt-4 text-base font-bold">
                 <dt>Total</dt>
-                <dd className="text-accent-strong" data-testid="cart-total">
+                <dd className="text-accent-strong lg:text-lg" data-testid="cart-total">
                   {data.total} ETH
                 </dd>
               </div>
@@ -176,7 +176,7 @@ export function CartSummary({ quote, isGuest, appliedCoupon, onApplyCoupon, onRe
       )}
 
       {canCheckout ? (
-        <Button asChild size="lg" className="mt-6 w-full rounded-none font-bold max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]">
+        <Button asChild size="lg" className="mt-6 w-full rounded-none font-bold lg:h-10 lg:text-[15px] max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]">
           <Link to="/checkout">{isGuest ? 'Entrar e finalizar' : 'Conectar e finalizar'}</Link>
         </Button>
       ) : (
@@ -185,7 +185,7 @@ export function CartSummary({ quote, isGuest, appliedCoupon, onApplyCoupon, onRe
         </Button>
       )}
 
-      <Link to="/" className="mt-4 block text-center text-sm text-accent underline-offset-4 hover:underline">
+      <Link to="/" className="mt-4 block text-center text-sm text-accent lg:text-[15px] underline-offset-4 hover:underline">
         Continuar explorando
       </Link>
     </aside>

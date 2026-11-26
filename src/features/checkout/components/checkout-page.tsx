@@ -375,7 +375,7 @@ function CheckoutFlow({ userId }: { userId: string }) {
         <h1 className="text-lg font-bold">Pagamento com carteira</h1>
       </div>
 
-      <nav aria-label="Trilha" className="hidden py-6 text-xs font-bold md:block">
+      <nav aria-label="Trilha" className="hidden py-6 text-xs font-bold md:block lg:pb-2 lg:pt-8 lg:text-[15px]">
         <Link to="/" className="hover:text-accent">
           Início
         </Link>{' '}

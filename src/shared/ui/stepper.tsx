@@ -14,7 +14,7 @@ interface StepperProps {
 }
 
 const buttonClass =
-  'flex h-6 w-6 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40'
+  'flex h-6 w-6 lg:h-5 lg:w-5 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40'
 
 /** Controle de quantidade: o "+" no limite continua clicável (aria-disabled) para anunciar o motivo. */
 export function Stepper({ value, min = 1, max, onChange, onLimit, label, className }: StepperProps) {
