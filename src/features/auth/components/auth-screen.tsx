@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Link, useRouter } from '@tanstack/react-router'
 import { X } from 'lucide-react'
+import { cn } from '@/shared/lib/utils'
 import { DialogOverlay, DialogPortal } from '@/shared/ui/dialog'
 import { LoginForm } from './login-form'
 import { SignupForm } from './signup-form'
@@ -51,7 +52,10 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             event.preventDefault()
             contentRef.current?.querySelector<HTMLInputElement>('input')?.focus()
           }}
-          className="fixed z-50 overflow-y-auto bg-surface text-foreground outline-none max-md:inset-0 max-md:px-7 max-md:py-16 md:left-1/2 md:top-1/2 md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:border-b-[10px] md:border-accent md:px-20 md:pb-16 md:pt-12"
+          className={cn(
+            'fixed z-50 overflow-y-auto bg-surface text-foreground outline-none max-md:inset-0 max-md:px-7 max-md:py-16 md:left-1/2 md:top-1/2 md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:border-b-[10px] md:border-accent md:px-20 md:pt-12',
+            isLogin ? 'md:pb-[92px]' : 'md:pb-16',
+          )}
         >
           <DialogPrimitive.Close
             aria-label="Fechar"
@@ -60,7 +64,10 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             <X className="h-5 w-5" aria-hidden="true" />
           </DialogPrimitive.Close>
 
-          <div className="mb-10 text-center text-3xl font-bold tracking-[0.2em] md:hidden" aria-hidden="true">
+          <div
+            className="mb-10 text-center text-3xl font-bold tracking-[0.2em] md:hidden"
+            aria-hidden="true"
+          >
             KURIO
           </div>
 
@@ -68,7 +75,10 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             {copy.title}
           </DialogPrimitive.Title>
 
-          <nav aria-label="Entrar ou criar conta" className="mb-9 hidden items-center justify-center gap-2.5 text-xl leading-6 font-bold md:flex">
+          <nav
+            aria-label="Entrar ou criar conta"
+            className="mb-9 hidden items-center justify-center gap-2.5 text-xl leading-6 font-bold md:flex"
+          >
             <Link
               to="/login"
               search={{ redirect: redirectTo }}
@@ -102,14 +112,22 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             {isLogin ? (
               <>
                 Novo na Kurio?{' '}
-                <Link to="/signup" search={{ redirect: redirectTo }} className="text-accent underline underline-offset-4 hover:no-underline">
+                <Link
+                  to="/signup"
+                  search={{ redirect: redirectTo }}
+                  className="text-accent underline underline-offset-4 hover:no-underline"
+                >
                   Crie uma conta
                 </Link>
               </>
             ) : (
               <>
                 Já tem uma conta?{' '}
-                <Link to="/login" search={{ redirect: redirectTo }} className="text-accent underline underline-offset-4 hover:no-underline">
+                <Link
+                  to="/login"
+                  search={{ redirect: redirectTo }}
+                  className="text-accent underline underline-offset-4 hover:no-underline"
+                >
                   Entre
                 </Link>
               </>

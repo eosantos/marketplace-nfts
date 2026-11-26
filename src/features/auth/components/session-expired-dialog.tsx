@@ -36,7 +36,9 @@ export function SessionExpiredDialog() {
           }}
           className="fixed left-1/2 top-1/2 z-[60] grid w-[min(92vw,420px)] -translate-x-1/2 -translate-y-1/2 gap-4 border-b-8 border-accent bg-surface p-6 text-foreground outline-none"
         >
-          <DialogPrimitive.Title className="text-lg font-bold">Sua sessão expirou</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="text-lg font-bold">
+            Sua sessão expirou
+          </DialogPrimitive.Title>
           <DialogPrimitive.Description className="text-sm text-muted-foreground">
             Por segurança, entre novamente para continuar de onde parou.
           </DialogPrimitive.Description>
