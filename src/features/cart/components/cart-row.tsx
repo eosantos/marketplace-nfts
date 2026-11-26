@@ -34,6 +34,7 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
 
   return (
     <li
+      data-skel-group
       className={cn(
         'grid grid-cols-[100px_1fr_auto] items-center gap-x-3 gap-y-0 overflow-hidden rounded-2xl bg-surface pr-3 md:gap-x-4 md:gap-y-2 md:rounded-none md:p-3',
         'md:grid-cols-[1fr_110px_120px_110px_36px]',
@@ -58,8 +59,8 @@ export function CartRow({ line, quoteItem, quoteLoading }: CartRowProps) {
         <div className="min-w-0 max-md:pt-3">
           {data ? (
             <>
-              <p className="truncate text-sm font-bold lg:text-base">{data.name}</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="skel-text truncate text-sm font-bold lg:text-base">{data.name}</p>
+              <p className="skel-text text-xs text-muted-foreground">
                 <span className="max-md:hidden">ID do token: {data.tokenId} · </span>Edição: {line.editionType}
               </p>
             </>

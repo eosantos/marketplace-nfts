@@ -30,21 +30,22 @@ export function Hero() {
 
   return (
     <section
+      data-skel-group
       aria-labelledby="hero-title"
       className="relative grid items-center gap-6 overflow-hidden rounded-3xl bg-surface bg-gradient-to-r from-[#5b3a25] to-[#2c1b13] px-4 pb-9 pt-3 md:grid-cols-[1fr_450px] md:overflow-visible md:bg-none md:rounded-none md:bg-transparent md:p-0 md:pt-8"
     >
       <span aria-hidden="true" className="pointer-events-none absolute -right-8 -top-6 h-[260px] w-[260px] rounded-full bg-accent/10 md:hidden" />
       <div className="relative grid grid-cols-[1fr_138px] items-center gap-4 md:grid-cols-1 md:gap-0 md:pl-10">
         <div>
-          <p className="text-xs md:text-sm lg:text-base">Bem-vindo à Kurio</p>
+          <p className="skel-text text-xs md:text-sm lg:text-base">Bem-vindo à Kurio</p>
           <h1
             id="hero-title"
-            className="mt-2 text-xl font-bold leading-tight md:mt-4 md:max-w-[500px] md:text-[40px] md:leading-[70px] lg:text-[43px]"
+            className="skel-text mt-2 text-xl font-bold leading-tight md:mt-4 md:max-w-[500px] md:text-[40px] md:leading-[70px] lg:text-[43px]"
           >
             <span className="hidden md:inline">SEJA DONO DO FUTURO DA ARTE DIGITAL</span>
             <span className="md:hidden">SEJA DONO DA CULTURA DIGITAL</span>
           </h1>
-          <p className="mt-3 max-w-[460px] text-xs lg:max-w-[560px] text-muted-foreground md:mt-4 md:text-sm md:leading-6">
+          <p className="skel-text mt-3 max-w-[460px] text-xs lg:max-w-[560px] text-muted-foreground md:mt-4 md:text-sm md:leading-6">
             <span className="hidden md:inline">
               Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte
               digital rara, apoie artistas e tenha uma parte da cultura da internet.

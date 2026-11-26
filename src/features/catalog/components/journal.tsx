@@ -31,7 +31,7 @@ export function Journal() {
               ))
             : articles.map((article) => (
                 <li key={article.id}>
-                  <article className="h-full overflow-hidden rounded-lg bg-surface">
+                  <article data-skel-group className="h-full overflow-hidden rounded-lg bg-surface">
                     <SkeletonImage
                       src={article.image}
                       alt=""
@@ -42,12 +42,12 @@ export function Journal() {
                       className="h-[140px] w-full object-cover object-top md:h-[195px] md:object-[center_25%]"
                     />
                     <div className="p-4">
-                      <p className="text-[10px] text-muted-foreground lg:text-xs">
+                      <p className="skel-text text-[10px] text-muted-foreground lg:text-xs">
                         {dateFormat.format(new Date(article.publishedAt))} | Leitura de{' '}
                         {article.readMinutes} min
                       </p>
-                      <h3 className="mt-2 text-sm font-bold lg:text-base">{article.title}</h3>
-                      <p className="mt-1 text-xs text-muted-foreground">{article.excerpt}</p>
+                      <h3 className="skel-text mt-2 text-sm font-bold lg:text-base">{article.title}</h3>
+                      <p className="skel-text mt-1 text-xs text-muted-foreground">{article.excerpt}</p>
                       <span
                         aria-disabled="true"
                         title="Em breve"

@@ -90,6 +90,7 @@ export function Receipt({ order }: { order: Order }) {
         <ul className="mt-2 grid gap-2 md:mt-3 md:gap-3">
           {snapshot.items.map((item) => (
             <li
+              data-skel-group
               key={`${item.nftId}-${item.editionType}`}
               className="grid grid-cols-[1fr_auto] items-center gap-x-3 sm:grid-cols-[1fr_70px_90px] md:grid-cols-[1fr_76px_110px]"
             >
@@ -104,8 +105,8 @@ export function Receipt({ order }: { order: Order }) {
                   className="h-16 w-16 rounded-lg object-cover md:h-[70px] md:w-[70px]"
                 />
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-bold md:text-base">{item.nftName}</p>
-                  <p className="text-xs text-muted-foreground md:text-sm">
+                  <p className="skel-text truncate text-sm font-bold md:text-base">{item.nftName}</p>
+                  <p className="skel-text text-xs text-muted-foreground md:text-sm">
                     ID do token: {item.tokenId} · {item.editionType}
                     <span className="sm:hidden"> · (x {item.quantity})</span>
                   </p>
