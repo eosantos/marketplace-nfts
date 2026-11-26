@@ -51,17 +51,17 @@ export function ProfileForm({ profile }: { profile: Profile }) {
   return (
     <form onSubmit={(event) => void onSubmit(event)} noValidate className="grid gap-6">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-x-7 lg:gap-y-7">
-        <Field id="pf-display" label="Nome de exibição" required error={errors.displayName?.message}>
+        <Field id="pf-display" label="Nome de exibição" required className="lg:gap-3" error={errors.displayName?.message}>
           <input {...fieldA11y('pf-display', errors.displayName?.message)} autoComplete="name" className={inputClass} {...register('displayName')} />
         </Field>
-        <Field id="pf-user" label="Nome de usuário" required error={errors.userName?.message}>
+        <Field id="pf-user" label="Nome de usuário" required className="lg:gap-3" error={errors.userName?.message}>
           <input {...fieldA11y('pf-user', errors.userName?.message)} autoComplete="username" className={inputClass} {...register('userName')} />
         </Field>
-        <Field id="pf-profile" label="Nome do perfil" required error={errors.profileName?.message}>
+        <Field id="pf-profile" label="Nome do perfil" required className="lg:gap-3" error={errors.profileName?.message}>
           <input {...fieldA11y('pf-profile', errors.profileName?.message)} className={inputClass} {...register('profileName')} />
         </Field>
-        <div className="grid gap-1.5">
-          <label htmlFor="pf-email" className="text-sm">
+        <div className="grid gap-1.5 lg:gap-3">
+          <label htmlFor="pf-email" className="text-sm lg:text-[15px]">
             E-mail
           </label>
           <input
