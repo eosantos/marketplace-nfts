@@ -30,7 +30,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
         className={cn(
-          'h-10 rounded border-border bg-transparent px-4 text-sm ring-offset-surface focus-visible:border-accent max-md:h-12 max-md:rounded-xl',
+          'h-10 rounded border-border bg-transparent px-4 text-sm ring-offset-surface focus-visible:border-accent max-md:h-[50px] max-md:rounded-xl',
           error && 'border-danger',
           className,
         )}
@@ -66,7 +66,7 @@ export const PasswordField = forwardRef<HTMLInputElement, TextFieldProps>(functi
         }}
         aria-label={visible ? 'Ocultar senha' : 'Mostrar senha'}
         aria-pressed={visible}
-        className="absolute right-1 top-0 flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-md:h-12"
+        className="absolute right-1 top-0 flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-md:h-[50px]"
       >
         {visible ? (
           <EyeOff className="h-5 w-5" aria-hidden="true" />

@@ -71,7 +71,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
         onClick={() => {
           toast.info('Recuperação de senha indisponível nesta demonstração.')
         }}
-        className="justify-self-end text-xs text-accent hover:underline md:text-sm"
+        className="justify-self-end text-sm text-accent hover:underline"
       >
         Esqueceu a senha?
       </button>
@@ -85,7 +85,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
       <Button
         type="submit"
         size="lg"
-        className="mt-1 w-full font-bold md:mt-2.5 md:h-[45px] md:text-base max-md:h-12 max-md:rounded-xl"
+        className="mt-1 w-full font-bold md:mt-2.5 md:h-[45px] md:text-base max-md:mt-[26px] max-md:h-[60px] max-md:rounded-xl max-md:text-base"
         disabled={isSubmitting}
       >
         {isSubmitting ? 'Entrando...' : 'Entrar'}

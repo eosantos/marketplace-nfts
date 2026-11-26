@@ -53,7 +53,7 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             contentRef.current?.querySelector<HTMLInputElement>('input')?.focus()
           }}
           className={cn(
-            'fixed z-50 overflow-y-auto bg-surface text-foreground outline-none max-md:inset-0 max-md:px-7 max-md:py-16 md:left-1/2 md:top-1/2 md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:border-b-[10px] md:border-accent md:px-20 md:pt-12',
+            'fixed z-50 overflow-y-auto bg-surface text-foreground outline-none max-md:inset-0 max-md:bg-background max-md:px-7 max-md:pb-16 max-md:pt-[130px] md:left-1/2 md:top-1/2 md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:border-b-[10px] md:border-accent md:px-20 md:pt-12',
             isLogin ? 'md:pb-[92px]' : 'md:pb-16',
           )}
         >
@@ -65,13 +65,13 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
           </DialogPrimitive.Close>
 
           <div
-            className="mb-10 text-center text-3xl font-bold tracking-[0.2em] md:hidden"
+            className="mb-[88px] text-center text-3xl font-bold tracking-[0.2em] md:hidden"
             aria-hidden="true"
           >
             KURIO
           </div>
 
-          <DialogPrimitive.Title className="mb-6 text-center text-base font-bold md:sr-only">
+          <DialogPrimitive.Title className="mb-9 text-center text-base font-bold md:sr-only">
             {copy.title}
           </DialogPrimitive.Title>
 
@@ -108,14 +108,14 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
             <SocialButtons />
           </div>
 
-          <p className="mt-8 text-center text-sm text-muted-foreground md:hidden">
+          <p className="mt-10 text-center text-sm text-muted-foreground md:hidden">
             {isLogin ? (
               <>
                 Novo na Kurio?{' '}
                 <Link
                   to="/signup"
                   search={{ redirect: redirectTo }}
-                  className="text-accent underline underline-offset-4 hover:no-underline"
+                  className="hover:text-accent"
                 >
                   Crie uma conta
                 </Link>
@@ -126,7 +126,7 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
                 <Link
                   to="/login"
                   search={{ redirect: redirectTo }}
-                  className="text-accent underline underline-offset-4 hover:no-underline"
+                  className="hover:text-accent"
                 >
                   Entre
                 </Link>
