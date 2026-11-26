@@ -30,7 +30,7 @@ export function SiteHeader() {
   const cartCount = useCartCount()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   // O detalhe do NFT pertence ao "Mercado" (como no Figma): ele aparece ativo e leva ao catálogo.
-  const marketActive = pathname.startsWith('/nft/')
+  const marketActive = pathname.startsWith('/nft/') || pathname === '/cart' || pathname === '/checkout'
 
   return (
     <header className="hidden md:block">

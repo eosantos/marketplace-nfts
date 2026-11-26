@@ -29,7 +29,7 @@ export function AlsoViewed({ excludeIds }: { excludeIds: ReadonlySet<string> }) 
       <h2 id="also-viewed-title" className="border-b border-border pb-3 text-base font-bold text-accent">
         Colecionadores também viram
       </h2>
-      <ul className="mt-6 grid grid-cols-5 gap-6">
+      <ul className="mt-6 grid grid-cols-5 gap-6 lg:mt-8">
         {query.isPending
           ? Array.from({ length: VISIBLE }, (_, index) => (
               <li key={index}>

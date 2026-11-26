@@ -114,7 +114,7 @@ export function CartPage() {
         <h1 className="text-lg font-bold">Carrinho de NFTs</h1>
       </div>
 
-      <nav aria-label="Trilha" className="hidden py-6 text-xs font-bold md:block">
+      <nav aria-label="Trilha" className="hidden py-6 text-xs font-bold md:block lg:pb-2 lg:pt-8 lg:text-[15px]">
         <Link to="/" className="hover:text-accent">
           Início
         </Link>{' '}
@@ -141,16 +141,16 @@ export function CartPage() {
       ) : cart.lines.length === 0 ? (
         <EmptyCart />
       ) : (
-        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_332px] md:gap-12">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_332px] md:gap-12 lg:gap-[86px]">
           <section aria-label="Itens do carrinho">
-            <div className="hidden grid-cols-[1fr_110px_120px_110px_36px] gap-x-4 border-b border-border px-3 pb-3 text-sm font-bold md:grid">
+            <div className="hidden grid-cols-[1fr_110px_120px_110px_36px] gap-x-4 border-b border-border px-3 pb-3 text-sm font-bold md:grid lg:grid-cols-[311px_139px_136px_1fr_20px] lg:gap-x-0 lg:px-0 lg:pb-1.5 lg:text-base lg:leading-6">
               <span>NFTs</span>
               <span>Preço</span>
               <span>Edições</span>
               <span>Total</span>
               <span />
             </div>
-            <ul className="mt-3 grid gap-3">
+            <ul className="mt-3 grid gap-3 lg:mt-5">
               {cart.lines.map((line) => (
                 <CartRow
                   key={line.key}
