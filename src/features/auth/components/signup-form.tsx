@@ -98,7 +98,7 @@ export function SignupForm({ redirectTo }: { redirectTo: string | undefined }) {
       <Button
         type="submit"
         size="lg"
-        className="mt-3 w-full font-bold md:h-[45px] md:text-base max-md:h-12 max-md:rounded-xl"
+        className="mt-3 w-full font-bold md:h-[45px] md:text-base max-md:h-[60px] max-md:rounded-xl max-md:text-base"
         disabled={isSubmitting}
       >
         {isSubmitting ? 'Criando conta...' : 'Criar conta'}
