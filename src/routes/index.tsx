@@ -24,7 +24,7 @@ function HomePage() {
 
   return (
     <>
-      <main className="mx-auto max-w-[1200px] px-5 pb-28 md:px-0 md:pb-0">
+      <main className="mx-auto max-w-[1200px] px-6 pb-28 md:px-0 md:pb-0">
         <MobileSearchBar search={search} />
         <Hero />
 

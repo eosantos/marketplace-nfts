@@ -12,7 +12,7 @@ export function CatalogTabs({ active }: { active: NftListTab }) {
           search={(previous) => ({ ...previous, tab, page: 1 })}
           aria-current={tab === active ? 'true' : undefined}
           className={cn(
-            'border-b-2 pb-1 text-sm transition-colors max-md:text-xs',
+            'border-b-2 pb-1 text-sm transition-colors max-md:text-sm',
             tab === active
               ? 'border-accent font-bold text-accent'
               : 'border-transparent hover:text-accent',

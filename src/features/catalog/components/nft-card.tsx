@@ -19,7 +19,7 @@ export function NftCard({ nft, priority = false }: NftCardProps) {
   return (
     <article className="group relative">
       <Link to="/nft/$nftId" params={{ nftId: nft.id }} className="block">
-        <div className="relative aspect-[258/300] bg-surface p-4 pb-3">
+        <div className="relative rounded-3xl bg-surface p-1 pb-4 md:aspect-[258/300] md:rounded-none md:p-4 md:pb-3">
           {nft.rarity !== 'COMUM' ? (
             <span className="absolute left-0 top-0 bg-accent px-3 py-1 text-xs font-bold text-on-accent">
               {nft.rarity}
@@ -33,7 +33,7 @@ export function NftCard({ nft, priority = false }: NftCardProps) {
             loading={priority ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
-            className="h-full w-full rounded-2xl object-cover"
+            className="aspect-square w-full rounded-2xl object-cover md:aspect-auto md:h-full"
           />
         </div>
         <h3 className="mt-3 text-sm">{nft.name}</h3>
@@ -46,7 +46,7 @@ export function NftCard({ nft, priority = false }: NftCardProps) {
       </Link>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 aspect-[258/300]">
-        <FavoriteButton nft={nft} variant="round" className="pointer-events-auto absolute right-3 top-3 md:hidden" />
+        <FavoriteButton nft={nft} variant="round" className="pointer-events-auto absolute right-2.5 top-2.5 md:hidden" />
         <div className="pointer-events-auto absolute inset-x-0 bottom-3 hidden justify-center gap-2 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100 md:flex">
           <QuickAddButton nft={nft} />
           <FavoriteButton nft={nft} variant="card" />
