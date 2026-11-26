@@ -509,7 +509,7 @@ function CheckoutFlow({ userId }: { userId: string }) {
                 form="checkout-form"
                 size="lg"
                 disabled={ctaDisabled}
-                className="w-full rounded-none font-bold lg:h-[45px] lg:text-base max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
+                className="w-full rounded-none font-bold lg:h-[45px] lg:text-base max-md:h-[60px] max-md:rounded-full max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
               >
                 {ctaLabel}
               </Button>
@@ -521,7 +521,7 @@ function CheckoutFlow({ userId }: { userId: string }) {
                 onClick={() => {
                   void confirm()
                 }}
-                className="w-full rounded-none font-bold lg:h-[45px] lg:text-base max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
+                className="w-full rounded-none font-bold lg:h-[45px] lg:text-base max-md:h-[60px] max-md:rounded-full max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]"
               >
                 {ctaLabel}
               </Button>

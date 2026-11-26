@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, ZoomIn } from 'lucide-react'
+import { ChevronLeft, ZoomIn } from 'lucide-react'
 import { useRouter } from '@tanstack/react-router'
 import { FavoriteButton } from '@/features/favorites/components/favorite-button'
 import type { Nft } from '@/shared/contracts'
@@ -53,9 +53,9 @@ export function Gallery({ nft }: { nft: Nft }) {
           onClick={() => {
             router.history.back()
           }}
-          className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface/90 md:hidden"
+          className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-accent/15 text-accent md:hidden"
         >
-          <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+          <ChevronLeft className="h-5 w-5" aria-hidden="true" />
         </button>
         <FavoriteButton nft={nft} variant="round" className="absolute right-3 top-3 md:hidden" />
 

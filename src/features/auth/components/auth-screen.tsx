@@ -104,7 +104,7 @@ export function AuthScreen({ mode, redirectTo }: AuthScreenProps) {
 
           {isLogin ? <LoginForm redirectTo={redirectTo} /> : <SignupForm redirectTo={redirectTo} />}
 
-          <div className="mt-6">
+          <div className="mt-6 max-md:mt-10">
             <SocialButtons />
           </div>
 

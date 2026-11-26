@@ -76,9 +76,9 @@ function CouponForm({
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? 'coupon-error' : undefined}
             placeholder="Digite o código promocional..."
-            className="h-10 rounded-none border-accent bg-transparent text-xs focus-visible:ring-0"
+            className="h-10 rounded-none border-accent bg-transparent text-xs focus-visible:ring-0 max-md:h-[52px] max-md:rounded-l-full max-md:pl-5"
           />
-          <Button type="submit" disabled={pending} className="h-10 rounded-none px-4 text-sm font-bold">
+          <Button type="submit" disabled={pending} className="h-10 rounded-none px-4 text-sm font-bold max-md:h-[52px] max-md:rounded-full max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f] max-md:px-6">
             {pending ? '...' : 'Aplicar'}
           </Button>
         </form>
@@ -176,11 +176,11 @@ export function CartSummary({ quote, isGuest, appliedCoupon, onApplyCoupon, onRe
       )}
 
       {canCheckout ? (
-        <Button asChild size="lg" className="mt-6 w-full rounded-none font-bold lg:h-10 lg:text-[15px] max-md:h-12 max-md:rounded-xl max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]">
+        <Button asChild size="lg" className="mt-6 w-full rounded-none font-bold lg:h-10 lg:text-[15px] max-md:h-[60px] max-md:rounded-full max-md:bg-gradient-to-r max-md:from-accent max-md:to-[#a8703f]">
           <Link to="/checkout">{isGuest ? 'Entrar e finalizar' : 'Conectar e finalizar'}</Link>
         </Button>
       ) : (
-        <Button size="lg" disabled className="mt-6 w-full rounded-none font-bold max-md:h-12 max-md:rounded-xl">
+        <Button size="lg" disabled className="mt-6 w-full rounded-none font-bold max-md:h-[60px] max-md:rounded-full">
           Conectar e finalizar
         </Button>
       )}

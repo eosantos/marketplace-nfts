@@ -62,7 +62,7 @@ export function WalletPicker({ wallets, loading, selectedId, network, error, onS
                 }}
                 className="peer sr-only"
               />
-              <div className="flex items-center justify-between gap-3 border border-border bg-surface p-3 transition-colors peer-checked:border-accent peer-focus-visible:ring-2 peer-focus-visible:ring-ring">
+              <div className="flex items-center justify-between gap-3 border border-border bg-surface p-3 transition-colors max-md:rounded-2xl max-md:border-transparent max-md:p-4 peer-checked:border-accent peer-focus-visible:ring-2 peer-focus-visible:ring-ring">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-bold">
                     {wallet.nickname}
